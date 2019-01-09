@@ -13,7 +13,8 @@ public class Adapter extends PagerAdapter {
 
     private Context context;
     private LayoutInflater inflater;
-    private Integer [] images = {R.drawable.coffee, R.drawable.cooking, R.drawable.wine}; // image of classes
+    //TODO (gayeon) : data should be supplied from server
+    private Integer [] images = {R.drawable.coffee, R.drawable.cooking, R.drawable.wine};
     private String [] classes = {"Coffee", "Cooking", "Wine tasting"};
 
     public Adapter(Context context) {
@@ -49,7 +50,6 @@ public class Adapter extends PagerAdapter {
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);
         return view;
-
     }
 
     @Override
@@ -58,6 +58,5 @@ public class Adapter extends PagerAdapter {
         ViewPager vp = (ViewPager) container;
         View view = (View) object;
         vp.removeView(view);
-
     }
 }

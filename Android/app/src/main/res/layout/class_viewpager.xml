@@ -39,8 +39,5 @@
             tools:layout_editor_absoluteX="16dp" />
 
     </RelativeLayout>
-
-
-
 </android.support.constraint.ConstraintLayout>
 

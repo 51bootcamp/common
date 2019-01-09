@@ -7,22 +7,24 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class PlaceActivity extends AppCompatActivity {
 
     ImageButton PlaceimgButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_place);
 
         PlaceimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
 
         PlaceimgButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Toast.makeText(MainActivity.this, "It works", Toast.LENGTH_LONG).show();
-                Intent secondActivity = new Intent(MainActivity.this, SecondActivity.class);
-                startActivity(secondActivity);
+                Toast.makeText(PlaceActivity.this, "It works",
+                        Toast.LENGTH_LONG).show();
+                Intent trendingClassActivity = new Intent(PlaceActivity.this,
+                        TrendingClassActivity.class);
+                startActivity(trendingClassActivity);
             }
         });
     }
