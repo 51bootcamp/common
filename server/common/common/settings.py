@@ -34,7 +34,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
-    'polls.apps.PollsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,15 +76,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'common.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -130,7 +120,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-#test for csrf cookie
+# Test for csrf cookie
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 # Static files (CSS, JavaScript, Images)

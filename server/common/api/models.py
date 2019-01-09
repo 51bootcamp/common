@@ -1,17 +1,13 @@
 from django.db import models
 
-# Create your models here.
-
 class User(models.Model):
 	userEmail = models.CharField(max_length = 40, primary_key = True)
 	userName = models.CharField(max_length = 40)
-	thirdPartySignUp = models.IntegerField(default = 1)
+	accountType = models.CharField(max_length = 40, default = "FACEBOOK")
 	isLecturer = models.BooleanField(default = False)
 
 	def __str__(self):
 		return self.userName
-
-
 
 class Class(models.Model):
 	className = models.CharField(max_length = 40)
@@ -29,11 +25,11 @@ class TimeTable(models.Model):
 	startTime = models.IntegerField()
 	endTime = models.IntegerField()
 	timezone = models.IntegerField(default = -8) # san-francisco's timezone
-	isAvailable = models.BooleanField(default = True)
+	isBooked = models.BooleanField(default = False)
 	classID = models.ForeignKey(Class, on_delete = models.CASCADE)
 
 class Reservation(models.Model):
-	reesrvationID = models.AutoField(primary_key = True)
+	resrvationID = models.AutoField(primary_key = True)
 	numOfReserve = models.IntegerField()
 	userEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 	timeTableIdx = models.ForeignKey(TimeTable, on_delete = models.CASCADE)
