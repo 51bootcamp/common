@@ -6,32 +6,26 @@ class User(models.Model):
 	accountType = models.CharField(max_length = 40, default = "FACEBOOK")
 	isLecturer = models.BooleanField(default = False)
 
-	def __str__(self):
-		return self.userName
-
 class Class(models.Model):
+	classID = models.IntegerField(primary_key = True)
 	className = models.CharField(max_length = 40)
-	minPersonnel = models.IntegerField(default = 4)
-	maxPersonnel = models.IntegerField(default = 8)
+	minGuestCount = models.IntegerField(default = 4)
+	maxGuestCount = models.IntegerField(default = 8)
 	price = models.FloatField()
-	userEmail = models.ForeignKey(User, on_delete = models.CASCADE)
-
-	def __str__(self):
-		return self.className
+	expertEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 
 class TimeTable(models.Model):
 	timeTableIdx = models.AutoField(primary_key = True)
 	date = models.DateField(auto_now = False)
 	startTime = models.IntegerField()
 	endTime = models.IntegerField()
-	timezone = models.IntegerField(default = -8) # san-francisco's timezone
-	isBooked = models.BooleanField(default = False)
+	timezone = models.CharField(max_length = 40, 
+								default = "America/Los_Angeles")
 	classID = models.ForeignKey(Class, on_delete = models.CASCADE)
+	isBooked = models.BooleanField(default = False)
 
 class Reservation(models.Model):
-	resrvationID = models.AutoField(primary_key = True)
-	numOfReserve = models.IntegerField()
+	reservationID = models.AutoField(primary_key = True)
+	guestCount = models.IntegerField()
 	userEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 	timeTableIdx = models.ForeignKey(TimeTable, on_delete = models.CASCADE)
-
-

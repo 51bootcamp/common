@@ -1,10 +1,11 @@
-from django.shortcuts import render
-
-# Create your views here.
-from django.http import HttpResponse, JsonResponse
 from api.models import * #import models
-#csrf except
-from django.views.decorators.csrf import csrf_exempt
+
+from datetime import datetime
+import pytz
+
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt #csrf exempt
 
 from rest_framework import status, viewsets
 from rest_framework.decorators import api_view
@@ -12,14 +13,17 @@ from rest_framework.response import Response
 
 import json
 
-def check_http_mehtod(request, type):
-	if request.type == type:
-		return True
-	else: 
-		return False
-
 def index(request):
 	return HttpResponse("Hello woRld! you're at the api index.")
+
+def epochToLocalTime(startTime, endTime, timezone):
+	tz = pytz.timezone(timezone)
+	startlocalTime = datetime.fromtimestamp(startTime, tz)
+	startlocalTime = startlocalTime.strftime("%I : %M %p")
+	endlocalTime = datetime.fromtimestamp(endTime, tz)
+	endlocalTime = endlocalTime.strftime("%I : %M %p")
+
+	return startlocalTime, endlocalTime
 
 @csrf_exempt
 def signup(request):
@@ -30,14 +34,17 @@ def signup(request):
 
 	try:
 		User.objects.get(pk = jsonBody['userEmail'])
+
 	except User.DoesNotExist:
 		newUser = User(userEmail =  jsonBody['userEmail'], 
 			userName = jsonBody['userName'], 
 			accountType = jsonBody['accountType'])
 		newUser.save()
-		return HttpResponse("Signup Success");
+		
+		return HttpResponse("Signup Success", status = 201);
+
 	else:
-		return HttpResponse("you are already registered", status = 300)
+		return HttpResponse("you are already registered", status = 409)
 
 @csrf_exempt
 def login(request):
@@ -48,29 +55,127 @@ def login(request):
 
 	try:
 		user = User.objects.get(pk = jsonBody['userEmail'])
+
 	except User.DoesNotExist:
-		return HttpResponse("PLz signup first", status = 300)
+		return HttpResponse("Please signup first", status = 409)
+
 	else:
-		#checking password routine in here, if we have our own signup feature
-		return JsonResponse({"userName":user.userName})
+		#TODO: Password Check routine
+		return JsonResponse({"userName":user.userName}, status = 202)
 
 def getClass(request):
 	jsonBody = json.loads(request.body)
+
 	try:
 		availableClassList = TimeTable.objects.filter(
 			date = jsonBody['date'], isBooked = False)
-		availableClassList = availableClassList.values("classID").distinct()
-		
-	except (TimeTable.objects.DoesNotExist, Class.objects.DoesNotExist) as e:
+
+	except TimeTable.objects.DoesNotExist:
 		return HttpResponse("No class")
+
 	else:
-		return JsonResponse({'foo':'bars'})
+		availableClassList = availableClassList.values("classID").distinct()
+		print(availableClassList)
+
+		li = []
+		for query in availableClassList:
+			jsondict = {}
+			availableClass = Class.objects.get(pk = query['classID'])
+			jsondict["classID"] = availableClass.classID
+			jsondict["className"] = availableClass.className
+			li.append(jsondict) #append: O(1)
+
+		return JsonResponse({"classList" : li})
 
 def getClassInfo(request):
 	jsonBody = json.loads(request.body)
+
+	selectedClass = Class.objects.get(pk = jsonBody["classID"])
+	expert = User.objects.get(pk = selectedClass.expertEmail_id)
+	timeslot = TimeTable.objects.filter(classID = selectedClass,
+										isBooked = False)
+
+	availableTimeTable = []
+	for i in timeslot:
+		jsondict = {}
+		jsondict["timeTableIdx"] = i.timeTableIdx
+		st, et = epochToLocalTime(i.startTime,
+								  i.endTime,
+								  i.timezone)
+		jsondict["startTime"] = st
+		jsondict["endTime"] = et
+		availableTimeTable.append(jsondict)
+
+	return JsonResponse({
+							"classID"			: selectedClass.classID,
+							"className"			: selectedClass.className,
+							"expertName" 		: expert.userName,
+							"minGuestCount" 	: selectedClass.minGuestCount,
+							"maxGuestCount" 	: selectedClass.maxGuestCount,
+							"availableTimeTable": availableTimeTable
+						})
+
+def makeReservation(jsonBody):
+	bookingUser = User.objects.get(pk = jsonBody['userEmail'])
+	selectedTimeTable = TimeTable.objects.get(pk = jsonBody['timeTableIdx'])
+
+	if selectedTimeTable.isBooked:
+		return HttpResponse("Already booked", status = 409)
+	newReservation = Reservation(timeTableIdx = selectedTimeTable,
+								userEmail = bookingUser,
+								guestCount = jsonBody['guestCount'])
+	selectedTimeTable.isBooked = True
+	#TODO: think about how to deal with synchronization
+	#mark the isbooked field first and than
+	selectedTimeTable.save(update_fields = ['isBooked'])
+	#made the reservation
+	newReservation.save()
+	selectedClass = selectedTimeTable.classID
+
+	expert = User.objects.get(pk = selectedClass.expertEmail_id)
+	startTime, endTime = epochToLocalTime(selectedTimeTable.startTime,
+								 selectedTimeTable.endTime,
+								 selectedTimeTable.timezone)
+
+	return JsonResponse({
+							"expertName" 	: expert.userName,
+							"className" 	: selectedClass.className,
+							"date" 			: selectedTimeTable.date,
+							"startTime" 	: startTime,
+							"endTime" 		: endTime
+						})
+
+def getReservation(jsonBody):
 	try:
-		c = Class.objects.get(pk = jsonBody["classID"])
-	except Class.DoesNotExist:
-		return HttpResponse("No class")
+		reservation = Reservation.objects.get(userEmail = jsonBody['userEmail'])
+
+	except Reservation.DoesNotExist:
+		return HttpResponse("No upcoming class", status = 203)
+
 	else:
-		return JsonResponse({"foo":"bar"})
+		bookedTimeTable = reservation.timeTableIdx
+		bookedClass = bookedTimeTable.classID
+		expert = User.objects.get(pk = bookedClass.expertEmail_id)
+
+		startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
+									 bookedTimeTable.endTime,
+									 bookedTimeTable.timezone)
+
+	return JsonResponse({
+							"expertName" 	: expert.userName,
+							"className" 	: bookedClass.className,
+							"date" 			: bookedTimeTable.date,
+							"startTime" 	: startTime,
+							"endTime" 		: endTime
+						})
+
+@csrf_exempt
+def reserve(request):
+	jsonBody = json.loads(request.body)
+	if request.method == 'POST':
+		return makeReservation(jsonBody)
+	if request.method == 'GET':
+		return getReservation(jsonBody)
+
+
+

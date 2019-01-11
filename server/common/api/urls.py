@@ -15,6 +15,7 @@ urlpatterns = [
     path('login/', views.login, name = 'login'),
     path('class/', views.getClassInfo, name = 'getClassInfo'),
     path('class/date', views.getClass, name ='getClass'),
+    path('reserve/', views.reserve, name = 'reserve'),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^docs/', schema_view)
 
