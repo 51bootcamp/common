@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Common</string>
+    <string name="facebook_app_id">280313849253776</string>
+    <string name="fb_login_protocol_scheme">fb280313849253776</string>
+    <string name="welcome_message">Welcome</string>
+    <string name="login_with">Login with</string>
+    <string name="or">Or</string>
+    <string name="email_text"> </string>
+    <string name="password_text"> </string>
+    <string name="login_button">Login</string>
     <string name="locations">Locations Near You</string>
     <string name="trendingClasses">Trending Classes</string>
     <string name="calendar">Select Date</string>
+
 </resources>
