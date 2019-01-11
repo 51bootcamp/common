@@ -63,19 +63,16 @@ def login(request):
 		#TODO: Password Check routine
 		return JsonResponse({"userName":user.userName}, status = 202)
 
-def getClass(request):
-	jsonBody = json.loads(request.body)
-
+def getClassList(request, date):
 	try:
 		availableClassList = TimeTable.objects.filter(
-			date = jsonBody['date'], isBooked = False)
+			date = date, isBooked = False)
 
 	except TimeTable.objects.DoesNotExist:
 		return HttpResponse("No class")
 
 	else:
 		availableClassList = availableClassList.values("classID").distinct()
-		print(availableClassList)
 
 		li = []
 		for query in availableClassList:
@@ -87,12 +84,11 @@ def getClass(request):
 
 		return JsonResponse({"classList" : li})
 
-def getClassInfo(request):
-	jsonBody = json.loads(request.body)
-
-	selectedClass = Class.objects.get(pk = jsonBody["classID"])
+def getClassInfo(request, classID, date):
+	selectedClass = Class.objects.get(pk = classID)
 	expert = User.objects.get(pk = selectedClass.expertEmail_id)
 	timeslot = TimeTable.objects.filter(classID = selectedClass,
+										date = date,
 										isBooked = False)
 
 	availableTimeTable = []
@@ -115,7 +111,10 @@ def getClassInfo(request):
 							"availableTimeTable": availableTimeTable
 						})
 
-def makeReservation(jsonBody):
+@csrf_exempt
+def makeReservation(request):
+	jsonBody = json.loads(request.body)
+
 	bookingUser = User.objects.get(pk = jsonBody['userEmail'])
 	selectedTimeTable = TimeTable.objects.get(pk = jsonBody['timeTableIdx'])
 
@@ -145,9 +144,9 @@ def makeReservation(jsonBody):
 							"endTime" 		: endTime
 						})
 
-def getReservation(jsonBody):
+def getReservation(request, userEmail):
 	try:
-		reservation = Reservation.objects.get(userEmail = jsonBody['userEmail'])
+		reservation = Reservation.objects.get(userEmail = userEmail)
 
 	except Reservation.DoesNotExist:
 		return HttpResponse("No upcoming class", status = 203)
@@ -168,14 +167,5 @@ def getReservation(jsonBody):
 							"startTime" 	: startTime,
 							"endTime" 		: endTime
 						})
-
-@csrf_exempt
-def reserve(request):
-	jsonBody = json.loads(request.body)
-	if request.method == 'POST':
-		return makeReservation(jsonBody)
-	if request.method == 'GET':
-		return getReservation(jsonBody)
-
 
 

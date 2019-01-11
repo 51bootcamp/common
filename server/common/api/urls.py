@@ -13,9 +13,12 @@ urlpatterns = [
 	path('', views.index, name='index'),
     path('signup/', views.signup, name = 'signup'),
     path('login/', views.login, name = 'login'),
-    path('class/', views.getClassInfo, name = 'getClassInfo'),
-    path('class/date', views.getClass, name ='getClass'),
-    path('reserve/', views.reserve, name = 'reserve'),
+    path('class/<str:date>/', views.getClassList, name ='getClassList'),
+    path('class/<str:date>/<int:classID>', views.getClassInfo, 
+    	name = 'getClassInfo'),
+    path('reserve/', views.makeReservation, name = 'makeReservation'),
+    path('reserve/<str:userEmail>', views.getReservation, 
+    	name = 'getReservation'),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^docs/', schema_view)
 
