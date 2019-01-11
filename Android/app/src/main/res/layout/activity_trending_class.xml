@@ -10,7 +10,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -46,9 +46,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.132"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/trendingClassesViewText"
+                app:layout_constraintTop_toBottomOf=
+                    "@+id/trendingClassesViewText"
                 app:layout_constraintVertical_bias="0.0"
-                tools:ignore="MissingConstraints"></android.support.v4.view.ViewPager>
+                tools:ignore="MissingConstraints">
+            </android.support.v4.view.ViewPager>
 
             <TextView
                 android:id="@+id/CalendarTextView"
@@ -79,7 +81,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.516"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/CalendarTextView"
+                app:layout_constraintTop_toBottomOf=
+                    "@+id/CalendarTextView"
                 tools:ignore="MissingConstraints"></DatePicker>
 
         </LinearLayout>

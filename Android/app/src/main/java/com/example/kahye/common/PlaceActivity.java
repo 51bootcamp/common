@@ -1,4 +1,4 @@
-package com.example.yello.common;
+package com.example.kahye.common;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,12 +22,11 @@ public class PlaceActivity extends AppCompatActivity {
             public void onClick(View v){
                 Toast.makeText(PlaceActivity.this, "It works",
                         Toast.LENGTH_LONG).show();
-                Intent trendingClassActivity = new Intent(PlaceActivity.this,
+                Intent trendingClassActivity = new Intent(
+                        PlaceActivity.this,
                         TrendingClassActivity.class);
                 startActivity(trendingClassActivity);
             }
         });
     }
 }
-
-

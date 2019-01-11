@@ -1,4 +1,4 @@
-package com.example.yello.common;
+package com.example.kahye.common;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,8 @@ public class Adapter extends PagerAdapter {
     private Context context;
     private LayoutInflater inflater;
     //TODO (gayeon) : data should be supplied from server
-    private Integer [] images = {R.drawable.coffee, R.drawable.cooking, R.drawable.wine};
+    private Integer [] images = {R.drawable.coffee, R.drawable.cooking,
+            R.drawable.wine};
     private String [] classes = {"Coffee", "Cooking", "Wine tasting"};
 
     public Adapter(Context context) {
@@ -39,7 +41,8 @@ public class Adapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
 
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.class_viewpager, null);
         ImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageResource(images[position]);
@@ -53,7 +56,7 @@ public class Adapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(ViewGroup container, int position, Object object){
 
         ViewPager vp = (ViewPager) container;
         View view = (View) object;
