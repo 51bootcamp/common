@@ -1,10 +1,13 @@
 package com.example.kahye.common;
 
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class TrendingClassActivity extends AppCompatActivity {
@@ -12,6 +15,7 @@ public class TrendingClassActivity extends AppCompatActivity {
     Adapter adapter;
     ViewPager classViewPager;
     DatePicker datePicker;
+    ImageButton classButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +33,9 @@ public class TrendingClassActivity extends AppCompatActivity {
 
         //calendar
         datePicker = (DatePicker)findViewById(R.id.datepicker);
-        datePicker.init(datePicker.getYear(), datePicker.getMonth(),
-                datePicker.getDayOfMonth(),
+        datePicker.init(datePicker.getYear(),
+                         datePicker.getMonth(),
+                         datePicker.getDayOfMonth(),
                 new DatePicker.OnDateChangedListener(){
 
                     @Override

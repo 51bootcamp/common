@@ -20,8 +20,6 @@ public class PlaceActivity extends AppCompatActivity {
 
         PlaceimgButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Toast.makeText(PlaceActivity.this, "It works",
-                        Toast.LENGTH_LONG).show();
                 Intent trendingClassActivity = new Intent(
                         PlaceActivity.this,
                         TrendingClassActivity.class);
