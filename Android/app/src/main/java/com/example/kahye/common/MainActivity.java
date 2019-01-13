@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.facebook.CallbackManager;
-
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -43,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
-
-                //
                 setResult(RESULT_CANCELED);
                 finish();
             }
@@ -63,5 +60,4 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }

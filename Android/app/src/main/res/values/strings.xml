@@ -10,6 +10,6 @@
     <string name="login_button">Login</string>
     <string name="locations">Locations Near You</string>
     <string name="trendingClasses">Trending Classes</string>
-    <string name="calendar">Select Date</string>
+    <string name="selectDateText">Select Date</string>
 
 </resources>

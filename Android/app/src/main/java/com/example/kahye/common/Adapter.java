@@ -2,9 +2,6 @@ package com.example.kahye.common;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -14,11 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.time.Instant;
-
 public class Adapter extends PagerAdapter {
-
     private Context context;
     private LayoutInflater inflater;
     ImageButton classButton;
@@ -48,7 +41,8 @@ public class Adapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(final ViewGroup container, final int position) {
+    public Object instantiateItem(final ViewGroup container,
+                                  final int position) {
 
         inflater = (LayoutInflater) context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -79,7 +73,6 @@ public class Adapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object){
-
         ViewPager vp = (ViewPager) container;
         View view = (View) object;
         vp.removeView(view);
