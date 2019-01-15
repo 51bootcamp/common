@@ -28,10 +28,10 @@
 
     <ImageButton
         android:id="@+id/cafeImgButton"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LocationsTextView"
         app:srcCompat="@drawable/cafe"

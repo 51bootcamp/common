@@ -20,8 +20,7 @@ public class PlaceActivity extends AppCompatActivity {
 
         PlaceimgButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                Intent trendingClassActivity = new Intent(
-                        PlaceActivity.this,
+                Intent trendingClassActivity = new Intent(PlaceActivity.this,
                         TrendingClassActivity.class);
                 startActivity(trendingClassActivity);
             }

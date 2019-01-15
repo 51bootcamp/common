@@ -5,11 +5,19 @@
     <string name="welcome_message">Welcome</string>
     <string name="login_with">Login with</string>
     <string name="or">Or</string>
-    <string name="email_text"> </string>
     <string name="password_text"> </string>
     <string name="login_button">Login</string>
     <string name="locations">Locations Near You</string>
     <string name="trendingClasses">Trending Classes</string>
+    <string name="calendar">Select Date</string>
+    <string name="get_started_with">Get started with</string>
+    <string name="or_sign_up_with">Or sign up with</string>
+    <string name="sign_up_text_button">Sign Up</string>
+    <string name="login_text_button">Log in</string>
+    <string name="need_an_account_text">Need an account?</string>
+    <string name="email_text_button">Email</string>
+    <string name="back_login_to_main_text_button">Log in</string>
+    <string name="already_onboard_text">Already onboard?</string>
+    <string name="select_from_data_text">Select From Dates</string>
     <string name="selectDateText">Select Date</string>
-
 </resources>

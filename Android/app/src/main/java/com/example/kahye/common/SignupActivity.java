@@ -4,15 +4,13 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-public class MainActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
 
     private LoginButton loginButton;
     private CallbackManager callbackManager;
@@ -20,39 +18,37 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signup);
 
         callbackManager = CallbackManager.Factory.create();
-
         loginButton = (LoginButton) findViewById(R.id.facebook_login_button);
         loginButton.setReadPermissions("email");
 
         // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                //below this commented out, code works well
-                setResult(RESULT_OK);
-                Intent placeIntent = new Intent(MainActivity.this,
-                        PlaceActivity.class);
-                startActivity(placeIntent);
-                finish();
-            }
+        loginButton.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        setResult(RESULT_OK);
+                        Intent placeIntent = new Intent(SignupActivity.this,
+                                PlaceActivity.class);
+                        startActivity(placeIntent);
+                        finish();
+                    }
 
-            @Override
-            public void onCancel() {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
+                    @Override
+                    public void onCancel() {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
 
-            @Override
-            public void onError(FacebookException exception) {
-                //TODO(kahye): Handle exception
-            }
-        });
+                    @Override
+                    public void onError(FacebookException exception) {
+                        //TODO(kahye): Handle exception
+                    }
+                });
+
     }
-
     @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode,
@@ -60,11 +56,10 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
-
     public void click(View view) {
-        Intent signupintent = new Intent(MainActivity.this,
-                                          SignupActivity.class);
-        startActivity(signupintent);
+        Intent loginintent = new Intent(SignupActivity.this,
+                MainActivity.class);
+        startActivity(loginintent);
     }
-}
 
+}

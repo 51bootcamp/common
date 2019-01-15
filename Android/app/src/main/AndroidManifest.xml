@@ -41,6 +41,7 @@
         </activity>
         <activity android:name=".PlaceActivity" />
         <activity android:name=".TrendingClassActivity" />
+        <activity android:name=".SignupActivity"/>
         <activity android:name=".ReservationActivity"></activity>
     </application>
 
