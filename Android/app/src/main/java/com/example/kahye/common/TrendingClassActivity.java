@@ -1,5 +1,6 @@
 package com.example.kahye.common;
 
+import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,9 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TrendingClassActivity extends AppCompatActivity {
 
@@ -39,7 +43,7 @@ public class TrendingClassActivity extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth){
-                        String msg = String.format("%d/%d/%d", year,
+                        String msg = String.format("%d-%d-%d", year,
                                 monthOfYear+1, dayOfMonth);
                         Toast.makeText(TrendingClassActivity.this, msg,
                                 Toast.LENGTH_SHORT).show();

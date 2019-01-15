@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Adapter extends PagerAdapter {
     private Context context;
     private LayoutInflater inflater;
@@ -56,9 +59,19 @@ public class Adapter extends PagerAdapter {
                 Context context = container.getContext();
                 Intent reserveIntent = new Intent(
                         context, ReservationActivity.class);
-                Bundle bundle=new Bundle();
+
+                // current time
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdf = new SimpleDateFormat(
+                        "yyyy-MM-dd");
+                String getDate = sdf.format(date);
+
+                // transfer data to another activity
+                Bundle bundle = new Bundle();
                 bundle.putInt("classImg", images[position]);
                 reserveIntent.putExtras(bundle);
+                reserveIntent.putExtra("Date", getDate);
                 context.startActivity(reserveIntent);
             }
         });
