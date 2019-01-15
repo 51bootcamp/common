@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.kahye.common.SignupActivity">
 
-
     <TextView
         android:id="@+id/welcome_text"
         android:layout_width="wrap_content"

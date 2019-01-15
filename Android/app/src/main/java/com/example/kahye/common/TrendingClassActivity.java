@@ -8,6 +8,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+
 public class TrendingClassActivity extends AppCompatActivity {
 
     Adapter adapter;
@@ -30,17 +31,17 @@ public class TrendingClassActivity extends AppCompatActivity {
         classViewPager.setClipChildren(false);
 
         //calendar
-        datePicker = (DatePicker)findViewById(R.id.datepicker);
+        datePicker = (DatePicker) findViewById(R.id.datepicker);
         datePicker.init(datePicker.getYear(),
                 datePicker.getMonth(),
                 datePicker.getDayOfMonth(),
-                new DatePicker.OnDateChangedListener(){
+                new DatePicker.OnDateChangedListener() {
 
                     @Override
                     public void onDateChanged(DatePicker view, int year,
-                                              int monthOfYear, int dayOfMonth){
+                                              int monthOfYear, int dayOfMonth) {
                         String msg = String.format("%d/%d/%d", year,
-                                monthOfYear+1, dayOfMonth);
+                                monthOfYear + 1, dayOfMonth);
                         Toast.makeText(TrendingClassActivity.this, msg,
                                 Toast.LENGTH_SHORT).show();
                     }

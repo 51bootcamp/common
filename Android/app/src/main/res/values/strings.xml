@@ -20,4 +20,5 @@
     <string name="already_onboard_text">Already onboard?</string>
     <string name="select_from_data_text">Select From Dates</string>
     <string name="selectDateText">Select Date</string>
+    <string name="logout_button">Log out</string>
 </resources>

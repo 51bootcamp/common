@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
+
 public class PlaceActivity extends AppCompatActivity {
 
     ImageButton PlaceimgButton;
@@ -17,6 +20,7 @@ public class PlaceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_place);
 
         PlaceimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
+        LoginButton LoginButton = findViewById(R.id.facebook_login_button);
 
         PlaceimgButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -25,6 +29,18 @@ public class PlaceActivity extends AppCompatActivity {
                 Intent trendingClassActivity = new Intent(PlaceActivity.this,
                         TrendingClassActivity.class);
                 startActivity(trendingClassActivity);
+            }
+        });
+
+        LoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logOut();
+
+                Intent mainIntent = new Intent(PlaceActivity.this,
+                        MainActivity.class);
+                startActivity(mainIntent);
+                finish();
             }
         });
     }
