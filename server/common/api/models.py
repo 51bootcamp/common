@@ -29,11 +29,3 @@ class Reservation(models.Model):
 	guestCount = models.IntegerField()
 	userEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 	timeTableIdx = models.ForeignKey(TimeTable, on_delete = models.CASCADE)
-
-class Image(models.Model):
-	imageIdx = models.AutoField(primary_key = True)
-	coverImage = models.ImageField(blank = True, null = True)
-	imageType = models.IntegerField(default = 1)
-						#Just class image for MVP
-						#classImage : 1 , placeImage : 2
-	classID = models.ForeignKey(Class, on_delete = models.CASCADE)
