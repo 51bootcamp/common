@@ -74,7 +74,6 @@ def getClassList(request, date):
         availableClassList = availableClassList.values("classID").distinct()
 
         li = []
-
         for query in availableClassList:
             jsondict = {}
             imageList = []
