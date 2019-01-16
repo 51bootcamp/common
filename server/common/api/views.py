@@ -36,11 +36,11 @@ def signup(request):
         User.objects.get(pk = jsonBody['userEmail'])
 
     except User.DoesNotExist:
-        newUser = User(userEmail =  jsonBody['userEmail'], 
-            userName = jsonBody['userName'], 
+        newUser = User(userEmail =  jsonBody['userEmail'],
+            userName = jsonBody['userName'],
             accountType = jsonBody['accountType'])
         newUser.save()
-        
+
         return HttpResponse("Signup Success", status = 201);
 
     else:
@@ -82,7 +82,6 @@ def getClassList(request, date):
             availableClass = Class.objects.get(pk = query['classID'])
             jsondict["classID"] = availableClass.classID
             jsondict["className"] = availableClass.className
-
             classImageList = Image.objects.filter(classID =
                                                   availableClass.classID)
             for img in classImageList :
@@ -174,8 +173,44 @@ def getReservation(request, userEmail):
 
     return JsonResponse({
                             "expertName"    : expert.userName,
+                            "classID"       : bookedClass.classID,
                             "className"     : bookedClass.className,
+                            "price"         : bookedClass.price,
                             "date"          : bookedTimeTable.date,
                             "startTime"     : startTime,
                             "endTime"       : endTime
                         })
+
+@csrf_exempt
+def imageUpload(request):
+    if request.method == 'POST':
+        # just for checking image upload properly
+        selectedClass = Class.objects.get(pk = 4)
+
+        newImage = Image(coverImage=request.FILES['coverImage'],
+                         ImageType=1,
+                         classID = selectedClass
+                         )
+        newImage.save()
+
+        return HttpResponse("upload image correctly", status = 200)
+
+@csrf_exempt
+def writeReview(request):
+    jsonBody = json.loads(request.body)
+
+    bookingUser = User.objects.get(pk = jsonBody['userEmail'])
+    clasID = Class.objects.get(pk = jsonBody['classID'])
+
+    newReview = Review(title = jsonBody['title'],
+                       content = jsonBody['content'],
+                       rating = jsonBody['rating'],
+                       classID = classID,
+                       userID = bookingUser
+    )
+
+    newReview.save()
+
+    return JsonResponse({
+        "reviewIdx" : newReview.reviewIdx
+    })
