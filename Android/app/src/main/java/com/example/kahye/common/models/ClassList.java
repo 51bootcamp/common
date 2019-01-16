@@ -10,41 +10,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class _classList implements Parcelable {
+public class ClassList implements Parcelable {
 
     @SerializedName("classList")
     @Expose
-    private List<_class> classList = new ArrayList<_class>();
+    private List<Class> classList = new ArrayList<Class>();
 
-    public List<_class> getClassList() {
+    public List<Class> getClassList() {
         return classList;
     }
 
-    public void setClassList(List<_class> classList) {
+    public void setClassList(List<Class> classList) {
         this.classList = classList;
     }
 
-    public final static Creator<_classList> CREATOR = new Creator<_classList>() {
+    public final static Creator<ClassList> CREATOR = new Creator<ClassList>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public _classList createFromParcel(Parcel in) {
-            return new _classList(in);
+        public ClassList createFromParcel(Parcel in) {
+            return new ClassList(in);
         }
 
-        public _classList[] newArray(int size) {
-            return (new _classList[size]);
+        public ClassList[] newArray(int size) {
+            return (new ClassList[size]);
         }
 
     };
 
-    protected _classList(Parcel in) {
-        in.readList(this.classList, (com.example.kahye.common.models._classList.class.getClassLoader()));
+    protected ClassList(Parcel in) {
+        in.readList(this.classList, (ClassList.class.getClassLoader()));
     }
 
-    public _classList() {
+    public ClassList() {
     }
 
 

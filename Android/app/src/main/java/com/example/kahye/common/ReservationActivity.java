@@ -14,14 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kahye.common.models._class;
+import com.example.kahye.common.models.Class;
 import com.example.kahye.common.models.timeTable;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ReservationActivity extends AppCompatActivity {
@@ -32,7 +30,7 @@ public class ReservationActivity extends AppCompatActivity {
     ImageButton downButton;
     Button alertButton;
     String selectedDate;
-    _class selectedClass;
+    Class selectedClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,7 @@ public class ReservationActivity extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
 
         // classInfo
-        selectedClass = bundle.getParcelable("classInfo");
+        selectedClass = bundle.getParcelable("_classInfo");
         setContentView(R.layout.activity_reservation);
 
         // class Img

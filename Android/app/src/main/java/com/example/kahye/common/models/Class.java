@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class _class implements Parcelable {
+public class Class implements Parcelable {
     @SerializedName("classID")
     @Expose
     private Integer classID;
@@ -77,23 +77,23 @@ public class _class implements Parcelable {
         this.availableTimeTable = availableTimeTable;
     }
 
-    public final static Creator<_class> CREATOR = new Creator<_class>() {
+    public final static Creator<Class> CREATOR = new Creator<Class>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public _class createFromParcel(Parcel in) {
-            return new _class(in);
+        public Class createFromParcel(Parcel in) {
+            return new Class(in);
         }
 
-        public _class[] newArray(int size) {
-            return (new _class[size]);
+        public Class[] newArray(int size) {
+            return (new Class[size]);
         }
 
     };
 
-    protected _class(Parcel in) {
+    protected Class(Parcel in) {
         this.classID = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.className = ((String) in.readValue((String.class.getClassLoader())));
         this.expertName = ((String) in.readValue((String.class.getClassLoader())));
@@ -102,7 +102,7 @@ public class _class implements Parcelable {
         in.readList(this.availableTimeTable, (com.example.kahye.common.models.timeTable.class.getClassLoader()));
     }
 
-    public _class() {
+    public Class() {
     }
 
     public void writeToParcel(Parcel dest, int flags) {

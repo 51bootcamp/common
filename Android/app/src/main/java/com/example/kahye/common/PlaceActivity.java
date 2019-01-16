@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.kahye.common.api_interface.apiInterface;
-import com.example.kahye.common.models._classList;
+import com.example.kahye.common.api_interface.ApiInterface;
+import com.example.kahye.common.models.ClassList;
 import com.example.kahye.common.network.RetrofitInstance;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
@@ -39,8 +39,8 @@ public class PlaceActivity extends AppCompatActivity {
                 Toast.makeText(PlaceActivity.this, "It works",
                         Toast.LENGTH_LONG).show();
 
-                apiInterface service = RetrofitInstance.getRetrofitInstance()
-                        .create(apiInterface.class);
+                ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                        .create(ApiInterface.class);
 
                 //get current date
                 long now = System.currentTimeMillis();
@@ -50,12 +50,12 @@ public class PlaceActivity extends AppCompatActivity {
                 //for test, set the date Jan. 01. 2019
                 selectedDate = "2019-01-07";
 
-                Call<_classList> request = service.getClassList(selectedDate);
+                Call<ClassList> request = service.getClassList(selectedDate);
 
-                request.enqueue(new Callback<_classList>() {
+                request.enqueue(new Callback<ClassList>() {
                     @Override
-                    public void onResponse(Call<_classList> call, Response<_classList> response) {
-                        _classList classList = response.body();
+                    public void onResponse(Call<ClassList> call, Response<ClassList> response) {
+                        ClassList classList = response.body();
 
                         Intent trendingClassActivity = new Intent(
                                 PlaceActivity.this,
@@ -68,7 +68,7 @@ public class PlaceActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<_classList> call, Throwable t) {
+                    public void onFailure(Call<ClassList> call, Throwable t) {
                         //TODO (woongjin) : how to deal with failure
                     }
                 });

@@ -1,6 +1,5 @@
 package com.example.kahye.common;
 
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,10 +8,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.kahye.common.models._classList;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.example.kahye.common.models.ClassList;
 
 public class TrendingClassActivity extends AppCompatActivity {
 
@@ -27,7 +23,7 @@ public class TrendingClassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Bundle bundle = getIntent().getExtras();
-        _classList classList = bundle.getParcelable("_classList");
+        ClassList classList = bundle.getParcelable("_classList");
         selectedDate = bundle.getString("_date");
 
         setContentView(R.layout.activity_trending_class);

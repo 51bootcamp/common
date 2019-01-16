@@ -11,24 +11,21 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.kahye.common.api_interface.apiInterface;
-import com.example.kahye.common.models._class;
-import com.example.kahye.common.models._classList;
+import com.example.kahye.common.api_interface.ApiInterface;
+import com.example.kahye.common.models.Class;
+import com.example.kahye.common.models.ClassList;
 import com.example.kahye.common.network.RetrofitInstance;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Adapter extends PagerAdapter {
-    private _classList classList;
+    private ClassList classList;
     private String selectedDate;
     private Context context;
     private LayoutInflater inflater;
-    private _class selectedClass;
+    private Class selectedClass;
 
     ImageButton classButton;
 
@@ -36,7 +33,7 @@ public class Adapter extends PagerAdapter {
     private Integer [] images = {R.drawable.coffee, R.drawable.cooking};
     private String [] classes = {};
 
-    public Adapter(Context context, _classList classList, String selectedDate) {
+    public Adapter(Context context, ClassList classList, String selectedDate) {
         this.context = context;
         this.classList = classList;
         this.selectedDate = selectedDate;
@@ -80,20 +77,20 @@ public class Adapter extends PagerAdapter {
             public void onClick(View view) {
                 final Intent reserveIntent = new Intent(
                         context, ReservationActivity.class);
-                apiInterface service = RetrofitInstance.getRetrofitInstance()
-                        .create(apiInterface.class);
+                ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                        .create(ApiInterface.class);
                 //TODO(woonjin): get the today's date and change the arguments
-                Call<_class> request = service.getClassInfo("2019-01-07",
+                Call<Class> request = service.getClassInfo("2019-01-07",
                         classList.getClassList().get(position).getClassID());
-                request.enqueue(new Callback<_class>() {
+                request.enqueue(new Callback<Class>() {
                     @Override
-                    public void onResponse(Call<_class> call, Response<_class> response) {
+                    public void onResponse(Call<Class> call, Response<Class> response) {
                         Context context = container.getContext();
                         selectedClass = response.body();
 
                         Bundle bundle = new Bundle();
                         bundle.putInt("classImg", images[position]);
-                        reserveIntent.putExtra("classInfo", selectedClass);
+                        reserveIntent.putExtra("_classInfo", selectedClass);
                         reserveIntent.putExtra("_date", selectedDate);
                         reserveIntent.putExtras(bundle);
 
@@ -101,7 +98,7 @@ public class Adapter extends PagerAdapter {
                     }
 
                     @Override
-                    public void onFailure(Call<_class> call, Throwable t) {
+                    public void onFailure(Call<Class> call, Throwable t) {
                         //TODO (woongjin) : how to deal with failure
                     }
                 });

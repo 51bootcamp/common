@@ -16,13 +16,13 @@ public class RetrofitInstance {
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .client(getokhttpClient())
+                    .client(getOkhttpClient())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
         return retrofit;
     }
-    private static OkHttpClient getokhttpClient(){
+    private static OkHttpClient getOkhttpClient(){
         if (client == null){
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
