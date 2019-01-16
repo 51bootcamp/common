@@ -75,10 +75,11 @@ def getClassList(request, date):
         availableClassList = availableClassList.values("classID").distinct()
 
         li = []
-        imageList = []
 
         for query in availableClassList:
             jsondict = {}
+            imageList = []
+
             availableClass = Class.objects.get(pk = query['classID'])
             jsondict["classID"] = availableClass.classID
             jsondict["className"] = availableClass.className

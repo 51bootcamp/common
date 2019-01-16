@@ -33,7 +33,13 @@ class Reservation(models.Model):
 class Image(models.Model):
 	imageIdx = models.AutoField(primary_key = True)
 	coverImage = models.ImageField(blank = True, null = True)
-	imageType = models.IntegerField(default = 1)
-						#Just class image for MVP
-						#classImage : 1 , placeImage : 2
+
+	CLASSIMAGE = 1
+	PLACEIMAGE = 2
+	IMAGE_CHOICES = (
+		(CLASSIMAGE, 'classImage'),
+		(PLACEIMAGE, 'placeImage'),
+	)
+
+	ImageType = models.IntegerField(default=1, choices=IMAGE_CHOICES)
 	classID = models.ForeignKey(Class, on_delete = models.CASCADE)
