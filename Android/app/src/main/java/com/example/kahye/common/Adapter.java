@@ -11,21 +11,35 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.kahye.common.api_interface.apiInterface;
+import com.example.kahye.common.models._class;
+import com.example.kahye.common.models._classList;
+import com.example.kahye.common.network.RetrofitInstance;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Adapter extends PagerAdapter {
+    private _classList classList;
+    private String selectedDate;
     private Context context;
     private LayoutInflater inflater;
+    private _class selectedClass;
+
     ImageButton classButton;
 
-    //TODO (gayeon) : data should be supplied from server
-    private Integer [] images = {R.drawable.coffee, R.drawable.cooking,
-            R.drawable.wine};
-    private String [] classes = {"Coffee", "Cooking", "Wine tasting"};
+    //TODO(woongjin) get images from server
+    private Integer [] images = {R.drawable.coffee, R.drawable.cooking};
+    private String [] classes = {};
 
-    public Adapter(Context context) {
+    public Adapter(Context context, _classList classList, String selectedDate) {
         this.context = context;
+        this.classList = classList;
+        this.selectedDate = selectedDate;
     }
 
     @Override
@@ -46,6 +60,13 @@ public class Adapter extends PagerAdapter {
     @Override
     public Object instantiateItem(final ViewGroup container,
                                   final int position) {
+        Integer listSize = classList.getClassList().size();
+        classes = new String[listSize];
+
+        //set class name
+        for(int i = 0; i < listSize; i++){
+            classes[i] = classList.getClassList().get(i).getClassName();
+        }
 
         inflater = (LayoutInflater) context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -53,26 +74,38 @@ public class Adapter extends PagerAdapter {
         classButton = (ImageButton) view.findViewById(R.id.classButton);
         classButton.setImageResource(images[position]);
 
+
         classButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = container.getContext();
-                Intent reserveIntent = new Intent(
+                final Intent reserveIntent = new Intent(
                         context, ReservationActivity.class);
+                apiInterface service = RetrofitInstance.getRetrofitInstance()
+                        .create(apiInterface.class);
+                //TODO(woonjin): get the today's date and change the arguments
+                Call<_class> request = service.getClassInfo("2019-01-07",
+                        classList.getClassList().get(position).getClassID());
+                request.enqueue(new Callback<_class>() {
+                    @Override
+                    public void onResponse(Call<_class> call, Response<_class> response) {
+                        Context context = container.getContext();
+                        selectedClass = response.body();
 
-                // current time
-                long now = System.currentTimeMillis();
-                Date date = new Date(now);
-                SimpleDateFormat sdf = new SimpleDateFormat(
-                        "yyyy-MM-dd");
-                String getDate = sdf.format(date);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("classImg", images[position]);
+                        reserveIntent.putExtra("classInfo", selectedClass);
+                        reserveIntent.putExtra("_date", selectedDate);
+                        reserveIntent.putExtras(bundle);
 
-                // transfer data to another activity
-                Bundle bundle = new Bundle();
-                bundle.putInt("classImg", images[position]);
-                reserveIntent.putExtras(bundle);
-                reserveIntent.putExtra("Date", getDate);
-                context.startActivity(reserveIntent);
+                        context.startActivity(reserveIntent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<_class> call, Throwable t) {
+                        //TODO (woongjin) : how to deal with failure
+                    }
+                });
+
             }
         });
 

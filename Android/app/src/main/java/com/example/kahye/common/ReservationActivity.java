@@ -14,6 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kahye.common.models._class;
+import com.example.kahye.common.models.timeTable;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -28,21 +31,27 @@ public class ReservationActivity extends AppCompatActivity {
     ImageButton upButton;
     ImageButton downButton;
     Button alertButton;
+    String selectedDate;
+    _class selectedClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
+        Bundle bundle = this.getIntent().getExtras();
+
+        // classInfo
+        selectedClass = bundle.getParcelable("classInfo");
+        setContentView(R.layout.activity_reservation);
 
         // class Img
-        Bundle bundle = this.getIntent().getExtras();
         int pic = bundle.getInt("classImg");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
         classImgView.setImageResource(pic);
 
-        final String getTime = getIntent().getStringExtra("Date");
+        selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);
-        dateView.setText(getTime);
+        dateView.setText(selectedDate);
 
         // time list
         ListView timeListView = (ListView) findViewById(R.id.timeListView);
@@ -50,27 +59,29 @@ public class ReservationActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, timeList);
 
-        //TODO (gayeon) : load data from server
-        timeList.add("2:00PM ~ 4:00PM");
-        timeList.add("4:00PM ~ 6:00PM");
-        timeList.add("6:00PM ~ 8:00PM");
-        timeList.add("8:00PM ~ 10:00PM");
+        List<timeTable>  timeslot = selectedClass.getAvailableTimeTable();
+        for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
+            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ " +
+                    timeslot.get(timeListIdx).getEndTime().toString();
+            timeList.add(timeString);
+        }
 
         timeListView.setAdapter(adapter);
 
-        // count tickets
+        //count tickets
         numTickets = (TextView) findViewById(R.id.numOfTickets);
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
 
-        ticketCnt = 0;
+        //Set ticketcnt default value as minGuestCount
+        ticketCnt = selectedClass.getminGuestCount();
         numTickets.setText(Integer.toString(ticketCnt));
 
         upButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(ticketCnt >= 20){
-                    numTickets.setText(Integer.toString(20));
+                if(ticketCnt >= selectedClass.getmaxGuestCount()){
+                    numTickets.setText(Integer.toString(selectedClass.getmaxGuestCount()));
                     Toast.makeText(ReservationActivity.this,
                             "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
@@ -84,8 +95,8 @@ public class ReservationActivity extends AppCompatActivity {
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ticketCnt <= 0)
-                    numTickets.setText(Integer.toString(0));
+                if (ticketCnt <= selectedClass.getminGuestCount())
+                    numTickets.setText(Integer.toString(selectedClass.getminGuestCount()));
                 else
                     numTickets.setText(Integer.toString(--ticketCnt));
             }
@@ -99,7 +110,7 @@ public class ReservationActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ReservationActivity.this);
                 builder.setTitle("Make a Reservation")
-                        .setMessage(getTime +  "  " + ticketCnt + " " +
+                        .setMessage(selectedDate +  "  " + ticketCnt + " " +
                                 "tickets \n Do you want to " +
                                 "reserve a class?");
                 builder.setPositiveButton("Yes", new DialogInterface

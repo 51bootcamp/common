@@ -9,6 +9,8 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.kahye.common.models._classList;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -18,16 +20,22 @@ public class TrendingClassActivity extends AppCompatActivity {
     ViewPager classViewPager;
     DatePicker datePicker;
     ImageButton classButton;
+    String selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getIntent().getExtras();
+        _classList classList = bundle.getParcelable("_classList");
+        selectedDate = bundle.getString("_date");
+
         setContentView(R.layout.activity_trending_class);
 
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
-        adapter = new Adapter(this);
+        adapter = new Adapter(this, classList, selectedDate);
         classViewPager.setAdapter((PagerAdapter) adapter);
 
         //for multiple images view
