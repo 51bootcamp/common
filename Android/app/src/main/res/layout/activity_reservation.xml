@@ -41,7 +41,8 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Class Info" />
+                android:lineSpacingExtra ="8dp"
+                android:textSize="18dp"/>
 
             <TextView
                 android:id="@+id/dateView"
@@ -54,24 +55,39 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:text="Date"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold"/>
 
-            <ListView
-                android:id="@+id/timeListView"
-                android:layout_alignParentLeft="true"
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/timeScrollerView"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
                 android:layout_below="@id/dateView"
-                android:layout_width="368dp"
-                android:layout_height="200dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="12dp"
-                android:scrollbars="vertical" />
+                android:layout_margin="12dp"
+                android:background="@android:color/white"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ListView
+                        android:id="@+id/timeListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_alignParentLeft="true"
+                        android:listSelector="#d3d3d3"
+                        android:nestedScrollingEnabled="true"
+                        android:scrollbars="vertical" />
+                </LinearLayout>
+
+            </android.support.v4.widget.NestedScrollView>
 
             <TextView
                 android:id="@+id/ticketTextView"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/timeListView"
+                android:layout_below="@id/timeScrollerView"
                 android:layout_width="327dp"
                 android:layout_height="31dp"
                 android:layout_marginStart="20dp"
@@ -79,7 +95,9 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:text="Tickets"
-                android:textSize="24sp"/>
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:ignore="NotSibling" />
 
             <ImageButton
                 android:id="@+id/downButton"

@@ -46,9 +46,7 @@ public class PlaceActivity extends AppCompatActivity {
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//                selectedDate = sdf.format(date);
-                //for test, set the date Jan. 01. 2019
-                selectedDate = "2019-01-07";
+                selectedDate = sdf.format(date);
 
                 Call<ClassList> request = service.getClassList(selectedDate);
 

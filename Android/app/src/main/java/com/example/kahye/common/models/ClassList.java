@@ -20,12 +20,7 @@ public class ClassList implements Parcelable {
         return classList;
     }
 
-    public void setClassList(List<Class> classList) {
-        this.classList = classList;
-    }
-
     public final static Creator<ClassList> CREATOR = new Creator<ClassList>() {
-
 
         @SuppressWarnings({
                 "unchecked"
@@ -47,7 +42,6 @@ public class ClassList implements Parcelable {
     public ClassList() {
     }
 
-
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeList(classList);
     }
@@ -56,7 +50,4 @@ public class ClassList implements Parcelable {
         return 0;
     }
 
-
 }
-
-

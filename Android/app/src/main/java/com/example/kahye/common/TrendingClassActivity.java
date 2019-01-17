@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kahye.common.models.ClassList;
+import com.squareup.picasso.Picasso;
 
 public class TrendingClassActivity extends AppCompatActivity {
 
@@ -18,6 +19,10 @@ public class TrendingClassActivity extends AppCompatActivity {
     ImageButton classButton;
     String selectedDate;
 
+    Integer[] images = {R.drawable.coffee, R.drawable.cooking};
+    String[] imagesURL = {};
+    String[] classes = {};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,12 +31,23 @@ public class TrendingClassActivity extends AppCompatActivity {
         ClassList classList = bundle.getParcelable("_classList");
         selectedDate = bundle.getString("_date");
 
+        //set-up for adapter
+        Integer listSize = classList.getClassList().size();
+        classes = new String[listSize];
+        imagesURL = new String[listSize];
+
+        //set class name
+        for(int i = 0; i < listSize; i++){
+            classes[i] = classList.getClassList().get(i).getClassName();
+            imagesURL[i] = classList.getClassList().get(i).getCoverImage().get(0);
+        }
+
         setContentView(R.layout.activity_trending_class);
 
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
-        adapter = new Adapter(this, classList, selectedDate);
+        adapter = new Adapter(this, classList, imagesURL, selectedDate);
         classViewPager.setAdapter((PagerAdapter) adapter);
 
         //for multiple images view

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.kahye.myapplication"
-        minSdkVersion 27
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -26,6 +26,11 @@ dependencies {
     //okhttp
     implementation "com.squareup.okhttp3:okhttp:3.12.1"
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+
+    //Picaso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
 
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 

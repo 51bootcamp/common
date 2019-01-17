@@ -27,58 +27,40 @@ public class Class implements Parcelable {
     private Integer maxGuestCount;
     @SerializedName("availableTimeTable")
     @Expose
-    private List<timeTable> availableTimeTable = new ArrayList<timeTable>();
+    private List<TimeTable> availableTimeTable = new ArrayList<TimeTable>();
+    @SerializedName("coverImage")
+    @Expose
+    private List<String> coverImage = new ArrayList<String>();
 
     public Integer getClassID() {
         return classID;
-    }
-
-    public void setClassID(Integer classID) {
-        this.classID = classID;
     }
 
     public String getClassName() {
         return className;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
     public String getExpertName() {
         return expertName;
     }
 
-    public void setExpertName(String expertName) {
-        this.expertName = expertName;
-    }
-
-    public Integer getminGuestCount() {
+    public Integer getMinGuestCount() {
         return minGuestCount;
     }
 
-    public void setminGuestCount(Integer minGuestCount) {
-        this.minGuestCount = minGuestCount;
-    }
-
-    public Integer getmaxGuestCount() {
+    public Integer getMaxGuestCount() {
         return maxGuestCount;
     }
 
-    public void setmaxGuestCount(Integer maxGuestCount) {
-        this.maxGuestCount = maxGuestCount;
-    }
-
-    public List<timeTable> getAvailableTimeTable() {
+    public List<TimeTable> getAvailableTimeTable() {
         return availableTimeTable;
     }
 
-    public void setAvailableTimeTable(List<timeTable> availableTimeTable) {
-        this.availableTimeTable = availableTimeTable;
+    public List<String> getCoverImage() {
+        return coverImage;
     }
 
     public final static Creator<Class> CREATOR = new Creator<Class>() {
-
 
         @SuppressWarnings({
                 "unchecked"
@@ -99,7 +81,11 @@ public class Class implements Parcelable {
         this.expertName = ((String) in.readValue((String.class.getClassLoader())));
         this.minGuestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.maxGuestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        in.readList(this.availableTimeTable, (com.example.kahye.common.models.timeTable.class.getClassLoader()));
+
+        in.readList(this.availableTimeTable,
+                (com.example.kahye.common.models.TimeTable.class.getClassLoader()));
+        in.readList(this.coverImage, (java.lang.String.class.getClassLoader()));
+
     }
 
     public Class() {
@@ -112,6 +98,8 @@ public class Class implements Parcelable {
         dest.writeValue(minGuestCount);
         dest.writeValue(maxGuestCount);
         dest.writeList(availableTimeTable);
+        dest.writeList(coverImage);
+
     }
 
     public int describeContents() {
