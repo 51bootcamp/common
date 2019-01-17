@@ -1,6 +1,5 @@
 package com.example.kahye.common;
 
-import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +8,8 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.example.kahye.common.models.ClassList;
+import com.squareup.picasso.Picasso;
 
 public class TrendingClassActivity extends AppCompatActivity {
 
@@ -18,16 +17,37 @@ public class TrendingClassActivity extends AppCompatActivity {
     ViewPager classViewPager;
     DatePicker datePicker;
     ImageButton classButton;
+    String selectedDate;
+
+    Integer[] images = {R.drawable.coffee, R.drawable.cooking};
+    String[] imagesURL = {};
+    String[] classes = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle bundle = getIntent().getExtras();
+        ClassList classList = bundle.getParcelable("_classList");
+        selectedDate = bundle.getString("_date");
+
+        //set-up for adapter
+        Integer listSize = classList.getClassList().size();
+        classes = new String[listSize];
+        imagesURL = new String[listSize];
+
+        //set class name
+        for(int i = 0; i < listSize; i++){
+            classes[i] = classList.getClassList().get(i).getClassName();
+            imagesURL[i] = classList.getClassList().get(i).getCoverImage().get(0);
+        }
+
         setContentView(R.layout.activity_trending_class);
 
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
-        adapter = new Adapter(this);
+        adapter = new Adapter(this, classList, imagesURL, selectedDate);
         classViewPager.setAdapter((PagerAdapter) adapter);
 
         //for multiple images view

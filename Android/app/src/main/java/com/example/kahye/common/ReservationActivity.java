@@ -5,7 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
+
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,69 +17,102 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kahye.common.models.Class;
+import com.example.kahye.common.models.TimeTable;
+import com.squareup.picasso.Picasso;
+
 import java.io.InputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ReservationActivity extends AppCompatActivity {
 
-    private int ticketCnt;
-    TextView numTickets;
-    ImageButton upButton;
-    ImageButton downButton;
-    Button alertButton;
+    private Button alertButton;
+    private Class selectedClass;
+    private int ticketCount;
+    private ImageButton upButton;
+    private ImageButton downButton;
+    private String selectedDate;
+    private String selectedTime;
+    private TextView numTickets;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation);
+        Bundle bundle = this.getIntent().getExtras();
+
+        // classInfo
+        selectedClass = bundle.getParcelable("_classInfo");
+        setContentView(R.layout.activity_reservation);
 
         // class Img
-        Bundle bundle = this.getIntent().getExtras();
-        int pic = bundle.getInt("classImg");
+        //Todo(woongjin) change the hardcoded url to read config file and use it
+        String imageURL = "http:10.0.2.2:8000" + bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
-        classImgView.setImageResource(pic);
+        Picasso.get().load(imageURL)
+                .fit()
+                .into(classImgView);
 
-        final String getTime = getIntent().getStringExtra("Date");
+        // class Info
+        TextView classInfoView = (TextView)findViewById(R.id.classInfoView);
+        String className = bundle.getString("className");
+        classInfoView.setText("Class: " + selectedClass.getClassName() + "\nExpert: "
+                + selectedClass.getExpertName() + "\nMin: "
+                + selectedClass.getMinGuestCount().toString() +  "\nMax: "
+                + selectedClass.getMaxGuestCount().toString());
+
+        selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);
-        dateView.setText(getTime);
+        dateView.setText(selectedDate);
 
         // time list
-        ListView timeListView = (ListView) findViewById(R.id.timeListView);
+        final ListView timeListView = (ListView) findViewById(R.id.timeListView);
         final List<String> timeList = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, timeList);
 
-        //TODO (gayeon) : load data from server
-        timeList.add("2:00PM ~ 4:00PM");
-        timeList.add("4:00PM ~ 6:00PM");
-        timeList.add("6:00PM ~ 8:00PM");
-        timeList.add("8:00PM ~ 10:00PM");
+        List<TimeTable>  timeslot = selectedClass.getAvailableTimeTable();
+        for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
+            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ " +
+                    timeslot.get(timeListIdx).getEndTime().toString();
+            timeList.add(timeString);
+        }
 
         timeListView.setAdapter(adapter);
+        timeListView.setOnItemClickListener(new AdapterView
+                .OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view,
+                                    int position, long l) {
+                view.setSelected(true);
+                Object o = timeListView.getItemAtPosition(position);
+                selectedTime = o.toString();
+            }
+        });
 
-        // count tickets
+        //count tickets
         numTickets = (TextView) findViewById(R.id.numOfTickets);
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
 
-        ticketCnt = 0;
-        numTickets.setText(Integer.toString(ticketCnt));
+        //Set ticketcnt default value as minGuestCount
+        ticketCount = selectedClass.getMinGuestCount();
+        numTickets.setText(Integer.toString(ticketCount));
 
         upButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(ticketCnt >= 20){
-                    numTickets.setText(Integer.toString(20));
+                if(ticketCount >= selectedClass.getMaxGuestCount()){
+                    numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
                     Toast.makeText(ReservationActivity.this,
                             "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    numTickets.setText(Integer.toString(++ticketCnt));
+                    numTickets.setText(Integer.toString(++ticketCount));
                 }
             }
         });
@@ -84,10 +120,10 @@ public class ReservationActivity extends AppCompatActivity {
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ticketCnt <= 0)
-                    numTickets.setText(Integer.toString(0));
+                if (ticketCount <= selectedClass.getMinGuestCount())
+                    numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
                 else
-                    numTickets.setText(Integer.toString(--ticketCnt));
+                    numTickets.setText(Integer.toString(--ticketCount));
             }
         });
 
@@ -98,26 +134,43 @@ public class ReservationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ReservationActivity.this);
-                builder.setTitle("Make a Reservation")
-                        .setMessage(getTime +  "  " + ticketCnt + " " +
-                                "tickets \n Do you want to " +
-                                "reserve a class?");
-                builder.setPositiveButton("Yes", new DialogInterface
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface
-                        .OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss(); // turn back to ReservationActivity
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                if(selectedTime != null && ticketCount != 0){
+                    // title
+                    TextView title = new TextView(
+                            ReservationActivity.this);
+                    title.setGravity(Gravity.CENTER);
+                    title.setText("Reservation");
+                    title.setTextSize(20);
+                    title.setPadding(10, 20, 10, 10);
+                    builder.setCustomTitle(title);
+
+                    // msg
+                    TextView msg = new TextView(
+                            ReservationActivity.this);
+                    msg.setText(selectedDate + "\n" + selectedTime + "\n" +
+                            ticketCount + " " + "tickets \n Do you want to "
+                            + "reserve a class?");
+                    msg.setGravity(Gravity.CENTER_HORIZONTAL);
+                    builder.setView(msg);
+
+                    builder.setPositiveButton("Yes", new DialogInterface
+                            .OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            //TODO(gayeon):send reservation data to server
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface
+                            .OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which){
+                            dialog.dismiss(); // back to ReservationActivity
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
     }

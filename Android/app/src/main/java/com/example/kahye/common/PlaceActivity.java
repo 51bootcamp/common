@@ -7,12 +7,24 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.kahye.common.api_interface.ApiInterface;
+import com.example.kahye.common.models.ClassList;
+import com.example.kahye.common.network.RetrofitInstance;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaceActivity extends AppCompatActivity {
 
     ImageButton PlaceimgButton;
+    String selectedDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +34,42 @@ public class PlaceActivity extends AppCompatActivity {
         PlaceimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         LoginButton LoginButton = findViewById(R.id.facebook_login_button);
 
-        PlaceimgButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Intent trendingClassActivity = new Intent(
-                        PlaceActivity.this,
-                        TrendingClassActivity.class);
-                startActivity(trendingClassActivity);
+        PlaceimgButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(PlaceActivity.this, "It works",
+                        Toast.LENGTH_LONG).show();
+
+                ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                        .create(ApiInterface.class);
+
+                //get current date
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                selectedDate = sdf.format(date);
+
+                Call<ClassList> request = service.getClassList(selectedDate);
+
+                request.enqueue(new Callback<ClassList>() {
+                    @Override
+                    public void onResponse(Call<ClassList> call, Response<ClassList> response) {
+                        ClassList classList = response.body();
+
+                        Intent trendingClassActivity = new Intent(
+                                PlaceActivity.this,
+                                TrendingClassActivity.class);
+
+                        trendingClassActivity.putExtra("_classList", classList);
+                        trendingClassActivity.putExtra("_date",selectedDate);
+
+                        startActivity(trendingClassActivity);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ClassList> call, Throwable t) {
+                        //TODO (woongjin) : how to deal with failure
+                    }
+                });
             }
         });
 
