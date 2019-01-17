@@ -14,8 +14,8 @@ class Class(models.Model):
 	maxGuestCount = models.IntegerField(default = 8)
 	price = models.FloatField()
 	classRating = models.FloatField(default = 0.0,
-									validators = [MaxValueValidator(5.0),
-												  MinValueValidator(0.0)])
+						validators = [MaxValueValidator(5.0),
+						MinValueValidator(0.0)])
 	RatingCount = models.IntegerField(default=0)
 	expertEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 
