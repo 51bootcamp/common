@@ -21,7 +21,8 @@ from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/',include('api.urls'))
+    path('api/v1/',include('api.urls')),
+    url('', include('social_django.urls', namespace='social')),
 ]
 
 # Uploaded image file shows on web page

@@ -65,8 +65,7 @@ def login(request):
 
 def getClassList(request, date):
     try:
-        availableClassList = TimeTable.objects.filter(
-            date = date, isBooked = False)
+        availableClassList = TimeTable.objects.filter( date = date )
 
     except TimeTable.objects.DoesNotExist:
         return HttpResponse("No class")
@@ -88,17 +87,16 @@ def getClassList(request, date):
             for img in classImageList :
                 imageList.append(img.coverImage.url)
             jsondict["coverImage"] = imageList
-
+            jsondict["classRating"] = availableClass.classRating
             li.append(jsondict) #append: O(1)
 
+        li = sorted(li, key=lambda jsondict : jsondict["classRating"] , reverse = True)
         return JsonResponse({"classList" : li}, status = 200)
 
 def getClassInfo(request, classID, date):
     selectedClass = Class.objects.get(pk = classID)
     expert = User.objects.get(pk = selectedClass.expertEmail_id)
-    timeslot = TimeTable.objects.filter(classID = selectedClass,
-                                        date = date,
-                                        isBooked = False)
+    timeslot = TimeTable.objects.filter(classID = selectedClass, date = date)
 
     availableTimeTable = []
     for i in timeslot:
@@ -109,6 +107,7 @@ def getClassInfo(request, classID, date):
                                   i.timezone)
         jsondict["startTime"] = st
         jsondict["endTime"] = et
+        jsondict["isBooked"] = i.isBooked
         availableTimeTable.append(jsondict)
 
     return JsonResponse({
