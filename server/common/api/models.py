@@ -12,6 +12,7 @@ class Class(models.Model):
 	minGuestCount = models.IntegerField(default = 4)
 	maxGuestCount = models.IntegerField(default = 8)
 	price = models.FloatField()
+	classRating = models.FloatField(default = 0.0)
 	expertEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 
 class TimeTable(models.Model):
