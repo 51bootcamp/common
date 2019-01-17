@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-
 import android.view.View;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,7 +30,7 @@ public class ReservationActivity extends AppCompatActivity {
 
     private Button alertButton;
     private Class selectedClass;
-    private int ticketCnt;
+    private int ticketCount;
     private ImageButton upButton;
     private ImageButton downButton;
     private String selectedDate;
@@ -49,6 +49,7 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         // class Img
+        //Todo(woongjin) change the hardcoded url to read config file and use it
         String imageURL = "http:10.0.2.2:8000" + bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
         Picasso.get().load(imageURL)
@@ -63,7 +64,6 @@ public class ReservationActivity extends AppCompatActivity {
                 + selectedClass.getMinGuestCount().toString() +  "\nMax: "
                 + selectedClass.getMaxGuestCount().toString());
 
-        //date text view
         selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);
         dateView.setText(selectedDate);
@@ -99,20 +99,20 @@ public class ReservationActivity extends AppCompatActivity {
         downButton = (ImageButton) findViewById(R.id.downButton);
 
         //Set ticketcnt default value as minGuestCount
-        ticketCnt = selectedClass.getMinGuestCount();
-        numTickets.setText(Integer.toString(ticketCnt));
+        ticketCount = selectedClass.getMinGuestCount();
+        numTickets.setText(Integer.toString(ticketCount));
 
         upButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(ticketCnt >= selectedClass.getMaxGuestCount()){
+                if(ticketCount >= selectedClass.getMaxGuestCount()){
                     numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
                     Toast.makeText(ReservationActivity.this,
                             "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
-                    numTickets.setText(Integer.toString(++ticketCnt));
+                    numTickets.setText(Integer.toString(++ticketCount));
                 }
             }
         });
@@ -120,10 +120,10 @@ public class ReservationActivity extends AppCompatActivity {
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ticketCnt <= selectedClass.getMinGuestCount())
+                if (ticketCount <= selectedClass.getMinGuestCount())
                     numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
                 else
-                    numTickets.setText(Integer.toString(--ticketCnt));
+                    numTickets.setText(Integer.toString(--ticketCount));
             }
         });
 
@@ -135,7 +135,7 @@ public class ReservationActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ReservationActivity.this);
 
-                if(selectedTime != null && ticketCnt != 0){
+                if(selectedTime != null && ticketCount != 0){
                     // title
                     TextView title = new TextView(
                             ReservationActivity.this);
@@ -149,7 +149,7 @@ public class ReservationActivity extends AppCompatActivity {
                     TextView msg = new TextView(
                             ReservationActivity.this);
                     msg.setText(selectedDate + "\n" + selectedTime + "\n" +
-                            ticketCnt + " " + "tickets \n Do you want to "
+                            ticketCount + " " + "tickets \n Do you want to "
                             + "reserve a class?");
                     msg.setGravity(Gravity.CENTER_HORIZONTAL);
                     builder.setView(msg);

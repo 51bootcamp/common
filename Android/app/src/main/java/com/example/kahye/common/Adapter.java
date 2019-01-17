@@ -27,6 +27,7 @@ public class Adapter extends PagerAdapter {
     private Context context;
     private LayoutInflater inflater;
     private Class selectedClass;
+    //Todo(woongjin) change the hardcoded url to read config file and use it
     private String baseImgUrl= "http://10.0.2.2:8000";
 
     ImageButton classButton;
