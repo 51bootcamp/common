@@ -90,7 +90,7 @@ def getClassList(request, date):
             jsondict["classRating"] = availableClass.classRating
             li.append(jsondict) #append: O(1)
 
-        li = sorted(li, key=lambda jsondict : jsondict["classRating"] , reverse = True)
+        li = sorted(li, key=lambda classList : classList["classRating"] , reverse = True)
         return JsonResponse({"classList" : li}, status = 200)
 
 def getClassInfo(request, classID, date):
