@@ -75,11 +75,20 @@ def getClassList(request, date):
         availableClassList = availableClassList.values("classID").distinct()
 
         li = []
+
         for query in availableClassList:
             jsondict = {}
+            imageList = []
+
             availableClass = Class.objects.get(pk = query['classID'])
             jsondict["classID"] = availableClass.classID
             jsondict["className"] = availableClass.className
+
+            classImageList = Image.objects.filter(classID = availableClass.classID)
+            for img in classImageList :
+                imageList.append(img.coverImage.url)
+            jsondict["coverImage"] = imageList
+
             li.append(jsondict) #append: O(1)
 
         return JsonResponse({"classList" : li}, status = 200)
