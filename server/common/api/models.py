@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 class User(models.Model):
@@ -12,7 +13,13 @@ class Class(models.Model):
 	minGuestCount = models.IntegerField(default = 4)
 	maxGuestCount = models.IntegerField(default = 8)
 	price = models.FloatField()
-	classRating = models.FloatField(default = 0.0)
+	classRating = models.FloatField(default = 0.0,
+									validators = [
+										MaxValueValidator(5.0),
+										MinValueValidator(0)
+									]
+	)
+	RatingCount = models.IntegerField(default=0)
 	expertEmail = models.ForeignKey(User, on_delete = models.CASCADE)
 
 class TimeTable(models.Model):
