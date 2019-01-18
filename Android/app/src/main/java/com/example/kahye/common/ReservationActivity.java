@@ -172,10 +172,10 @@ public class ReservationActivity extends AppCompatActivity {
                     // msg
                     TextView msg = new TextView(
                             ReservationActivity.this);
-                    msg.setText(selectedClass.getClassName() + "\n" +selectedDate + "\n" +
+                    msg.setText(selectedClass.getClassName() + "\n"
+                            + selectedDate + "\n" +
                             selectedTime + "\n" + " " +
                             ticketCount + " " + "tickets");
-//                    msg.setGravity(Gravity.CENTER_HORIZONTAL);
                     msg.setGravity(Gravity.LEFT);
                     Typeface tf = getResources().getFont(R.font.rockb);
                     msg.setTypeface(tf);
