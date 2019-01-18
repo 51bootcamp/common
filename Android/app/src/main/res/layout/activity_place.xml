@@ -17,6 +17,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/locations"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,19 +27,40 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.017" />
 
-    <ImageButton
-        android:id="@+id/cafeImgButton"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:id="@+id/place"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:adjustViewBounds="true"
-        android:background=
-            "@drawable/com_facebook_auth_dialog_background"
-        android:scaleType="fitCenter"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LocationsTextView"
-        app:srcCompat="@drawable/cafe"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@+id/LocationsTextView">
+
+        <ImageButton
+            android:id="@+id/cafeImgButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:adjustViewBounds="true"
+            android:background=
+                "@drawable/com_facebook_auth_dialog_background"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/cafe"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/placeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="210dp"
+            android:text="San Francisco"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="18dp" />
+
+    </RelativeLayout>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebook_login_button"

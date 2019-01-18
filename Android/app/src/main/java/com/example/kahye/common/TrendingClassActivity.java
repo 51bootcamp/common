@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.kahye.common.models.ClassList;
-import com.squareup.picasso.Picasso;
 
 public class TrendingClassActivity extends AppCompatActivity {
 
@@ -22,6 +21,7 @@ public class TrendingClassActivity extends AppCompatActivity {
     Integer[] images = {R.drawable.coffee, R.drawable.cooking};
     String[] imagesURL = {};
     String[] classes = {};
+    String[] expertNameList = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,14 @@ public class TrendingClassActivity extends AppCompatActivity {
         Integer listSize = classList.getClassList().size();
         classes = new String[listSize];
         imagesURL = new String[listSize];
+        expertNameList = new String[listSize];
 
         //set class name
         for(int i = 0; i < listSize; i++){
             classes[i] = classList.getClassList().get(i).getClassName();
-            imagesURL[i] = classList.getClassList().get(i).getCoverImage().get(0);
+            imagesURL[i] = classList.getClassList().get(i).getCoverImage()
+                    .get(0);
+            expertNameList[i] = classList.getClassList().get(i).getExpertName();
         }
 
         setContentView(R.layout.activity_trending_class);
@@ -47,7 +50,8 @@ public class TrendingClassActivity extends AppCompatActivity {
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
-        adapter = new Adapter(this, classList, imagesURL, selectedDate);
+        adapter = new Adapter(this, classList, imagesURL,
+                expertNameList, selectedDate);
         classViewPager.setAdapter((PagerAdapter) adapter);
 
         //for multiple images view

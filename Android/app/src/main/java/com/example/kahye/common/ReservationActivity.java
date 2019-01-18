@@ -37,7 +37,6 @@ public class ReservationActivity extends AppCompatActivity {
     private String selectedTime;
     private TextView numTickets;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +48,10 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         // class Img
-        //Todo(woongjin) change the hardcoded url to read config file and use it
-        String imageURL = "http:10.0.2.2:8000" + bundle.getString("classImgURL");
+        //Todo(woongjin) change the hardcoded url to read config file
+        // and use it
+        String imageURL = "http://52.8.187.167:8000" + bundle.getString(
+                "classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
         Picasso.get().load(imageURL)
                 .fit()
@@ -59,8 +60,8 @@ public class ReservationActivity extends AppCompatActivity {
         // class Info
         TextView classInfoView = (TextView)findViewById(R.id.classInfoView);
         String className = bundle.getString("className");
-        classInfoView.setText("Class: " + selectedClass.getClassName() + "\nExpert: "
-                + selectedClass.getExpertName() + "\nMin: "
+        classInfoView.setText("Class: " + selectedClass.getClassName() +
+                "\nExpert: " + selectedClass.getExpertName() + "\nMin: "
                 + selectedClass.getMinGuestCount().toString() +  "\nMax: "
                 + selectedClass.getMaxGuestCount().toString());
 
@@ -69,15 +70,17 @@ public class ReservationActivity extends AppCompatActivity {
         dateView.setText(selectedDate);
 
         // time list
-        final ListView timeListView = (ListView) findViewById(R.id.timeListView);
+        final ListView timeListView = (ListView) findViewById(
+                R.id.timeListView);
         final List<String> timeList = new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, timeList);
 
         List<TimeTable>  timeslot = selectedClass.getAvailableTimeTable();
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
-            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ " +
-                    timeslot.get(timeListIdx).getEndTime().toString();
+            String timeString = timeslot.get(timeListIdx).getStartTime().
+                    toString() + " ~ " + timeslot.get(timeListIdx).getEndTime
+                    ().toString();
             timeList.add(timeString);
         }
 
@@ -106,7 +109,8 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(ticketCount >= selectedClass.getMaxGuestCount()){
-                    numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
+                    numTickets.setText(Integer.toString(selectedClass.
+                            getMaxGuestCount()));
                     Toast.makeText(ReservationActivity.this,
                             "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
@@ -121,7 +125,8 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (ticketCount <= selectedClass.getMinGuestCount())
-                    numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
+                    numTickets.setText(Integer.toString(selectedClass.
+                            getMinGuestCount()));
                 else
                     numTickets.setText(Integer.toString(--ticketCount));
             }
@@ -149,8 +154,8 @@ public class ReservationActivity extends AppCompatActivity {
                     TextView msg = new TextView(
                             ReservationActivity.this);
                     msg.setText(selectedDate + "\n" + selectedTime + "\n" +
-                            ticketCount + " " + "tickets \n Do you want to "
-                            + "reserve a class?");
+                            ticketCount + " " + "tickets \n Do you want to"
+                            + " reserve a class?");
                     msg.setGravity(Gravity.CENTER_HORIZONTAL);
                     builder.setView(msg);
 
