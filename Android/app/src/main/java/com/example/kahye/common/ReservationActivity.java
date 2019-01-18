@@ -111,6 +111,7 @@ public class ReservationActivity extends AppCompatActivity {
                     timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
                     + timeslot.get(timeListIdx).getEndTime().toString();
             timeList.add(timeString);
+            timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
         timeListView.setAdapter(adapter);

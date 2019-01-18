@@ -17,6 +17,9 @@ public class TimeTable implements Parcelable {
     @SerializedName("endTime")
     @Expose
     private String endTime;
+    @SerializedName("isBooked")
+    @Expose
+    private Boolean isBooked;
 
     public Integer getTimeTableIdx() {
         return timeTableIdx;
@@ -29,6 +32,8 @@ public class TimeTable implements Parcelable {
     public String getEndTime() {
         return endTime;
     }
+
+    public Boolean getIsBooked() { return isBooked; }
 
     public final static Creator<TimeTable> CREATOR = new Creator<TimeTable>() {
 
@@ -49,6 +54,7 @@ public class TimeTable implements Parcelable {
         this.timeTableIdx = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.startTime = ((String) in.readValue((String.class.getClassLoader())));
         this.endTime = ((String) in.readValue((String.class.getClassLoader())));
+        this.isBooked = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
     public TimeTable() {
@@ -58,6 +64,7 @@ public class TimeTable implements Parcelable {
         dest.writeValue(timeTableIdx);
         dest.writeValue(startTime);
         dest.writeValue(endTime);
+        dest.writeValue(isBooked);
     }
 
     public int describeContents() {
