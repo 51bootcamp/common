@@ -24,8 +24,6 @@ import com.example.kahye.common.models.Class;
 import com.example.kahye.common.models.TimeTable;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -59,12 +57,10 @@ public class ReservationActivity extends AppCompatActivity {
 
         // class Img
         // Todo(woongjin) change the hardcoded url to read config file
-        String imageURL = "http://52.8.187.167:8000" + bundle.getString(
-                "classImgURL");
+        String imageURL = "http://52.8.187.167:8000" +
+                bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
-        Picasso.get().load(imageURL)
-                .fit()
-                .into(classImgView);
+        Picasso.get().load(imageURL).fit().into(classImgView);
 
         // class Info
         classNameView = (TextView)findViewById(R.id.classTextView);
@@ -75,8 +71,9 @@ public class ReservationActivity extends AppCompatActivity {
         className = bundle.getString("className");
         classNameView.setText(selectedClass.getClassName());
         expertNameView.setText(selectedClass.getExpertName());
-        numOfPeopleView.setText(selectedClass.getMinGuestCount().toString()
-                + " - " + selectedClass.getMaxGuestCount().toString());
+        numOfPeopleView.setText(
+                selectedClass.getMinGuestCount().toString() + " - "
+                        + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
 
         classNameView.setBackgroundColor(Color.parseColor(
@@ -97,9 +94,9 @@ public class ReservationActivity extends AppCompatActivity {
 
         List<TimeTable>  timeslot = selectedClass.getAvailableTimeTable();
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
-            String timeString = timeslot.get(timeListIdx).getStartTime().
-                    toString() + " ~ " + timeslot.get(timeListIdx).getEndTime
-                    ().toString();
+            String timeString =
+                    timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
+                    + timeslot.get(timeListIdx).getEndTime().toString();
             timeList.add(timeString);
         }
 
@@ -217,12 +214,10 @@ public class ReservationActivity extends AppCompatActivity {
         }
 
         int totalHeight = 0;
-
         int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
                 View.MeasureSpec.AT_MOST);
         for (int i = 0; i < listAdapter.getCount(); i++) {
             View listItem = listAdapter.getView(i, null, listView);
-
             listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
             totalHeight += listItem.getMeasuredHeight();
         }
