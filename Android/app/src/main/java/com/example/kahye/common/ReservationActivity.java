@@ -2,6 +2,7 @@ package com.example.kahye.common;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -173,23 +174,30 @@ public class ReservationActivity extends AppCompatActivity {
                             ReservationActivity.this);
                     title.setGravity(Gravity.CENTER);
                     title.setText("Reservation");
-                    title.setTextSize(20);
+                    title.setTextSize(30);
+                    title.setTypeface(null, Typeface.BOLD);
                     title.setPadding(10, 20, 10, 10);
                     builder.setCustomTitle(title);
 
                     // msg
                     TextView msg = new TextView(
                             ReservationActivity.this);
-                    msg.setText(selectedDate + "\n" + selectedTime + "\n" +
-                            ticketCount + " " + "tickets \n Do you want to"
-                            + " reserve a class?");
-                    msg.setGravity(Gravity.CENTER_HORIZONTAL);
+                    msg.setText(selectedClass.getClassName() + "\n"
+                            + selectedDate + "\n" +
+                            selectedTime + "\n" + " " +
+                            ticketCount + " " + "tickets");
+                    msg.setGravity(Gravity.LEFT);
+                    Typeface tf = getResources().getFont(R.font.rockb);
+                    msg.setTypeface(tf);
+                    msg.setLineSpacing(2,1);
+                    msg.setTextSize(20);
+                    msg.setPadding(50, 20, 10, 20);
                     builder.setView(msg);
 
                     builder.setPositiveButton("Yes", new DialogInterface
                             .OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog,int which){
+                        public void onClick(DialogInterface dialog, int which){
                             //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
@@ -216,7 +224,7 @@ public class ReservationActivity extends AppCompatActivity {
                     builder.setNegativeButton("No", new DialogInterface
                             .OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog,int which){
+                        public void onClick(DialogInterface dialog, int which){
                             dialog.dismiss(); // back to ReservationActivity
                         }
                     });
