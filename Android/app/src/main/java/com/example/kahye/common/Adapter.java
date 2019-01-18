@@ -2,6 +2,7 @@ package com.example.kahye.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,29 +24,33 @@ import retrofit2.Response;
 
 public class Adapter extends PagerAdapter {
     private ClassList classList;
-    private String selectedDate;
     private Context context;
+    private String selectedDate;
     private LayoutInflater inflater;
     private Class selectedClass;
-    //Todo(woongjin) change the hardcoded url to read config file and use it
-    private String baseImgUrl= "http://10.0.2.2:8000";
+    //Todo(woongjin) change the hardcoded url to read config file and
+    // use it
+    private String baseImgUrl= "http://52.8.187.167:8000";
 
     ImageButton classButton;
+    TextView classTextView;
+    TextView expertTextView;
 
-    //TODO(woongjin) get images from server
-    private Integer [] images = {R.drawable.coffee, R.drawable.cooking, R.drawable.wine};
     private String [] imagesURL = {};
     private String [] classes = {};
+    private String[] expertNameList = {};
 
-    public Adapter(Context context, ClassList classList, String[] imagesURL, String selectedDate) {
+    public Adapter(Context context, ClassList classList, String[] imagesURL,
+                   String[] expertNameList, String selectedDate) {
         this.context = context;
         this.classList = classList;
         this.imagesURL = imagesURL;
+        this.expertNameList = expertNameList;
         this.selectedDate = selectedDate;
     }
 
     @Override
-    public int getCount() { return images.length; }
+    public int getCount() { return classList.getClassList().size(); }
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
@@ -72,10 +77,10 @@ public class Adapter extends PagerAdapter {
                 (Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.class_viewpager, null);
         classButton = (ImageButton) view.findViewById(R.id.classButton);
+
         Picasso.get()
                 .load(baseImgUrl + imagesURL[position])
                 .resize(2048, 1600)
-
                 .onlyScaleDown()
                 .into(classButton);
 
@@ -86,18 +91,21 @@ public class Adapter extends PagerAdapter {
                         context, ReservationActivity.class);
                 ApiInterface service = RetrofitInstance.getRetrofitInstance()
                         .create(ApiInterface.class);
-                //TODO(woonjin): get the today's date and change the arguments
+                //TODO(woonjin): get the today's date and change the
+                // arguments
                 Call<Class> request = service.getClassInfo(selectedDate,
                         classList.getClassList().get(position).getClassID());
                 request.enqueue(new Callback<Class>() {
                     @Override
-                    public void onResponse(Call<Class> call, Response<Class> response) {
+                    public void onResponse(Call<Class> call,
+                                           Response<Class> response) {
                         Context context = container.getContext();
                         selectedClass = response.body();
 
                         Bundle bundle = new Bundle();
                         bundle.putString("classImgURL", imagesURL[position]);
-                        reserveIntent.putExtra("_classInfo", selectedClass);
+                        reserveIntent.putExtra("_classInfo",
+                                selectedClass);
                         reserveIntent.putExtra("_date", selectedDate);
                         reserveIntent.putExtras(bundle);
 
@@ -112,8 +120,16 @@ public class Adapter extends PagerAdapter {
             }
         });
 
-        TextView classTextView = view.findViewById(R.id.classTextView);
+        // put data on class Img
+        classTextView = view.findViewById(R.id.classTextView);
         classTextView.setText(classes[position]);
+        classTextView.setBackgroundColor(Color.parseColor(
+                "#9931343a"));
+
+        expertTextView = view.findViewById(R.id.expertTextView);
+        expertTextView.setText(expertNameList[position]);
+        expertTextView.setBackgroundColor(Color.parseColor(
+                "#9931343a"));
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);

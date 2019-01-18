@@ -26,6 +26,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/trendingClasses"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.145"
@@ -35,8 +36,8 @@
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/classViewPager"
-                android:layout_width="374dp"
-                android:layout_height="185dp"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
@@ -62,6 +63,7 @@
                 android:layout_marginBottom="8dp"
                 android:text="@string/selectDateText"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.156"
                 app:layout_constraintStart_toStartOf="parent"
