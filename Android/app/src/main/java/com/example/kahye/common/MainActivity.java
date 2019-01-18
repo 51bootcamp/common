@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         setResult(RESULT_OK);
-                        Intent placeIntent = new Intent(MainActivity.this,
+                        Intent placeIntent = new Intent(
+                                MainActivity.this,
                                 PlaceActivity.class);
                         startActivity(placeIntent);
                         finish();

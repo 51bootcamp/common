@@ -27,7 +27,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signup);
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -48,7 +48,8 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         setResult(RESULT_OK);
-                        Intent placeIntent = new Intent(SignupActivity.this,
+                        Intent placeIntent = new Intent(
+                                SignupActivity.this,
                                 PlaceActivity.class);
                         startActivity(placeIntent);
                         finish();

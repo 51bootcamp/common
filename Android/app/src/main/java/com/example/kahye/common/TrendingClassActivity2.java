@@ -1,6 +1,6 @@
 package com.example.kahye.common;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,15 +9,9 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.example.kahye.common.api_interface.ApiInterface;
 import com.example.kahye.common.models.ClassList;
-import com.example.kahye.common.network.RetrofitInstance;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class TrendingClassActivity extends AppCompatActivity {
+public class TrendingClassActivity2 extends AppCompatActivity {
 
     Adapter adapter;
     ViewPager classViewPager;
@@ -29,9 +23,11 @@ public class TrendingClassActivity extends AppCompatActivity {
     String[] classes = {};
     String[] expertNameList = {};
 
+    @SuppressLint("UseValueOf")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_trending_class2);
 
         Bundle bundle = getIntent().getExtras();
         ClassList classList = bundle.getParcelable("_classList");
@@ -52,8 +48,6 @@ public class TrendingClassActivity extends AppCompatActivity {
                     .getExpertName();
         }
 
-        setContentView(R.layout.activity_trending_class);
-
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
@@ -66,6 +60,11 @@ public class TrendingClassActivity extends AppCompatActivity {
 
         //calendar
         datePicker = (DatePicker)findViewById(R.id.datepicker);
+        String[] dateTokens = selectedDate.split("-");
+
+        datePicker.updateDate(new Integer(dateTokens[0]), new Integer
+                        (dateTokens[1]) - 1, new Integer(dateTokens[2]));
+
         datePicker.init(datePicker.getYear(),
                 datePicker.getMonth(),
                 datePicker.getDayOfMonth(),
@@ -74,37 +73,12 @@ public class TrendingClassActivity extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth){
-                        final String msg = String.format("%d-%d-%d", year,
+                        String msg = String.format("%d-%d-%d", year,
                                 monthOfYear+1, dayOfMonth);
-                        Toast.makeText(TrendingClassActivity.this, msg,
+                        Toast.makeText(TrendingClassActivity2.this, msg,
                                 Toast.LENGTH_SHORT).show();
-                        final Intent trendingIntent2 = new Intent(
-                                TrendingClassActivity.this,
-                                TrendingClassActivity2.class);
-
-                        ApiInterface service = RetrofitInstance
-                                .getRetrofitInstance()
-                                .create(ApiInterface.class);
-                        Call<ClassList> request = service.getClassList(msg);
-                        request.enqueue(new Callback<ClassList>() {
-                            @Override
-                            public void onResponse(Call<ClassList> call,
-                                                   Response<ClassList>
-                                                           response){
-                                ClassList selectedClassList = response.body();
-                                trendingIntent2.putExtra("_classList",
-                                        selectedClassList);
-                                trendingIntent2.putExtra("_date", msg);
-                                startActivity(trendingIntent2);
-                            }
-
-                            @Override
-                            public void onFailure(Call<ClassList> call,
-                                                  Throwable t) {
-                                //TODO (woongjin) error handling
-                            }
-                        });
                     }
                 });
     }
+
 }
