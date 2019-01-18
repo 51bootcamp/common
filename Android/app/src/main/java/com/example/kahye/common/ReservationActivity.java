@@ -1,6 +1,7 @@
 package com.example.kahye.common;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -8,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +23,8 @@ import android.widget.Toast;
 import com.example.kahye.common.models.Class;
 import com.example.kahye.common.models.TimeTable;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -33,9 +38,14 @@ public class ReservationActivity extends AppCompatActivity {
     private int ticketCount;
     private ImageButton upButton;
     private ImageButton downButton;
+    private String className;
     private String selectedDate;
     private String selectedTime;
+    private TextView classNameView;
+    private TextView expertNameView;
+    private TextView numOfPeopleView;
     private TextView numTickets;
+    private TextView priceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +58,7 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         // class Img
-        //Todo(woongjin) change the hardcoded url to read config file
-        // and use it
+        // Todo(woongjin) change the hardcoded url to read config file
         String imageURL = "http://52.8.187.167:8000" + bundle.getString(
                 "classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
@@ -58,12 +67,22 @@ public class ReservationActivity extends AppCompatActivity {
                 .into(classImgView);
 
         // class Info
-        TextView classInfoView = (TextView)findViewById(R.id.classInfoView);
-        String className = bundle.getString("className");
-        classInfoView.setText("Class: " + selectedClass.getClassName() +
-                "\nExpert: " + selectedClass.getExpertName() + "\nMin: "
-                + selectedClass.getMinGuestCount().toString() +  "\nMax: "
-                + selectedClass.getMaxGuestCount().toString());
+        classNameView = (TextView)findViewById(R.id.classTextView);
+        expertNameView = (TextView)findViewById(R.id.expertTextView);
+        numOfPeopleView = (TextView) findViewById(R.id.numOfPeopleView);
+        priceView = (TextView) findViewById(R.id.priceView);
+
+        className = bundle.getString("className");
+        classNameView.setText(selectedClass.getClassName());
+        expertNameView.setText(selectedClass.getExpertName());
+        numOfPeopleView.setText(selectedClass.getMinGuestCount().toString()
+                + " - " + selectedClass.getMaxGuestCount().toString());
+        priceView.setText(selectedClass.getPrice().toString());
+
+        classNameView.setBackgroundColor(Color.parseColor(
+                "#9931343a"));
+        expertNameView.setBackgroundColor(Color.parseColor(
+                "#9931343a"));
 
         selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);
@@ -85,6 +104,7 @@ public class ReservationActivity extends AppCompatActivity {
         }
 
         timeListView.setAdapter(adapter);
+        //TODO (gayeon) : change time slot to size dynamically
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
             @Override
@@ -162,14 +182,14 @@ public class ReservationActivity extends AppCompatActivity {
                     builder.setPositiveButton("Yes", new DialogInterface
                             .OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which){
+                        public void onClick(DialogInterface dialog,int which){
                             //TODO(gayeon):send reservation data to server
                         }
                     });
                     builder.setNegativeButton("No", new DialogInterface
                             .OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which){
+                        public void onClick(DialogInterface dialog,int which){
                             dialog.dismiss(); // back to ReservationActivity
                         }
                     });
@@ -188,5 +208,28 @@ public class ReservationActivity extends AppCompatActivity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.AT_MOST);
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+
+            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+        params.height = totalHeight;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 }

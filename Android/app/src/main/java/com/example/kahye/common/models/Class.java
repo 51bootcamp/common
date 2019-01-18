@@ -13,6 +13,9 @@ public class Class implements Parcelable {
     @SerializedName("classID")
     @Expose
     private Integer classID;
+    @SerializedName("price")
+    @Expose
+    private float price;
     @SerializedName("className")
     @Expose
     private String className;
@@ -52,6 +55,8 @@ public class Class implements Parcelable {
         return maxGuestCount;
     }
 
+    public Float getPrice() { return price; }
+
     public List<TimeTable> getAvailableTimeTable() {
         return availableTimeTable;
     }
@@ -81,6 +86,7 @@ public class Class implements Parcelable {
         this.expertName = ((String) in.readValue((String.class.getClassLoader())));
         this.minGuestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.maxGuestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.price = ((float) in.readValue((float.class.getClassLoader())));
 
         in.readList(this.availableTimeTable,
                 (com.example.kahye.common.models.TimeTable.class.getClassLoader()));
@@ -97,6 +103,7 @@ public class Class implements Parcelable {
         dest.writeValue(expertName);
         dest.writeValue(minGuestCount);
         dest.writeValue(maxGuestCount);
+        dest.writeValue(price);
         dest.writeList(availableTimeTable);
         dest.writeList(coverImage);
 

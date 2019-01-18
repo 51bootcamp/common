@@ -31,28 +31,86 @@
                 tools:layout_editor_absoluteX="0dp" />
 
             <TextView
-                android:id="@+id/classInfoView"
-                android:layout_width="327dp"
-                android:layout_height="110dp"
+                android:id="@+id/classTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="210dp"
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/classImgView"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <TextView
+                android:id="@+id/expertTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="240dp"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/classTextView"/>
+
+            <ImageView
+                android:id="@+id/peopleImgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/classImgView"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
-                android:lineSpacingExtra="8dp"
-                android:textSize="18dp" />
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/people"/>
+
+            <TextView
+                android:id="@+id/numOfPeopleView"
+                android:layout_width="327dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/classImgView"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:id="@+id/priceImgView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/classImgView"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/coin"/>
+
+            <TextView
+                android:id="@+id/priceView"
+                android:layout_width="327dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/classImgView"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/dateView"
                 android:layout_width="327dp"
                 android:layout_height="31dp"
-                android:layout_below="@id/classInfoView"
+                android:layout_below="@id/priceView"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="12dp"
                 android:text="Date"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -91,7 +149,7 @@
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:adjustViewBounds="true"
-                android:background="@color/cardview_light_background"
+                android:background="@color/cardview_shadow_end_color"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/down" />
 
@@ -102,13 +160,14 @@
                 android:layout_below="@id/ticketTextView"
                 android:layout_alignBaseline="@id/downButton"
                 android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_marginStart="300dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="50dp"
                 android:layout_marginBottom="8dp"
                 android:adjustViewBounds="true"
-                android:background="@color/cardview_light_background"
+                android:background="@color/cardview_shadow_end_color"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/up" />
 
