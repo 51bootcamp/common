@@ -4,6 +4,7 @@ import com.example.kahye.common.models.Class;
 import com.example.kahye.common.models.ClassList;
 import com.example.kahye.common.models.Reservation;
 import com.example.kahye.common.models.User;
+import com.google.gson.JsonObject;
 
 import org.json.simple.JSONObject;
 
@@ -28,7 +29,7 @@ public interface ApiInterface {
     Call<Void> signup(@Body User user);
 
     @POST("reserve/")
-    Call<Reservation> makeReservation(@Body Reservation reservation);
+    Call<Reservation> makeReservation(@Body JSONObject reservation);
 
     @GET("reserve/{userEmail}/")
     Call<Reservation> getReservation(@Path("userEmail") String userEmail);
