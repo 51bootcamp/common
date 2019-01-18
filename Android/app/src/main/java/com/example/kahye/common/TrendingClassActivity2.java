@@ -1,6 +1,7 @@
 package com.example.kahye.common;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,13 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.kahye.common.api_interface.ApiInterface;
 import com.example.kahye.common.models.ClassList;
+import com.example.kahye.common.network.RetrofitInstance;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TrendingClassActivity2 extends AppCompatActivity {
 
@@ -18,14 +25,12 @@ public class TrendingClassActivity2 extends AppCompatActivity {
     DatePicker datePicker;
     ImageButton classButton;
     String selectedDate;
-
-    String[] imagesURL = {};
-    String[] classes = {};
-    String[] expertNameList = {};
+    Context context;
 
     @SuppressLint("UseValueOf")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trending_class2);
 
@@ -33,26 +38,10 @@ public class TrendingClassActivity2 extends AppCompatActivity {
         ClassList classList = bundle.getParcelable("_classList");
         selectedDate = bundle.getString("_date");
 
-        //set-up for adapter
-        Integer listSize = classList.getClassList().size();
-        classes = new String[listSize];
-        imagesURL = new String[listSize];
-        expertNameList = new String[listSize];
-
-        //set class name
-        for(int i = 0; i < listSize; i++){
-            classes[i] = classList.getClassList().get(i).getClassName();
-            imagesURL[i] = classList.getClassList().get(i).getCoverImage()
-                    .get(0);
-            expertNameList[i] = classList.getClassList().get(i)
-                    .getExpertName();
-        }
-
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
-        adapter = new Adapter(this, classList, imagesURL,
-                expertNameList, selectedDate);
+        adapter = new Adapter(this, classList, selectedDate);
         classViewPager.setAdapter((PagerAdapter) adapter);
 
         //for multiple images view
@@ -73,10 +62,32 @@ public class TrendingClassActivity2 extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth){
-                        String msg = String.format("%d-%d-%d", year,
+                        final String msg = String.format("%d-%d-%d", year,
                                 monthOfYear+1, dayOfMonth);
-                        Toast.makeText(TrendingClassActivity2.this, msg,
-                                Toast.LENGTH_SHORT).show();
+
+                        ApiInterface service = RetrofitInstance
+                                .getRetrofitInstance()
+                                .create(ApiInterface.class);
+
+                        Call<ClassList> request = service.getClassList(msg);
+                        request.enqueue(new Callback<ClassList>() {
+                            @Override
+                            public void onResponse(Call<ClassList> call,
+                                                   Response<ClassList> response)
+                            {
+                                ClassList selectedClassList = response.body();
+                                adapter = new Adapter
+                                        (context, selectedClassList, msg);
+                                classViewPager.setAdapter(
+                                        (PagerAdapter) adapter);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ClassList> call,
+                                                  Throwable t) {
+
+                            }
+                        });
                     }
                 });
     }

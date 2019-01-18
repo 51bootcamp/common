@@ -54,6 +54,8 @@ public class ReservationActivity extends AppCompatActivity {
     private TextView numOfPeopleView;
     private TextView numTickets;
     private TextView priceView;
+    private ArrayList<Integer> timeSlotIdxList = new ArrayList<Integer>();
+    private Integer selectedTimeSlotIdx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class ReservationActivity extends AppCompatActivity {
 
         // class Img
         //Todo(woongjin) change the hardcoded url to read config file and use it
-        String imageURL = "http:10.0.2.2:8000" + bundle.getString("classImgURL");
+        String imageURL = bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
         Picasso.get().load(imageURL).fit().into(classImgView);
 
@@ -105,8 +107,9 @@ public class ReservationActivity extends AppCompatActivity {
 
 
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
-            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ " +
-                    timeslot.get(timeListIdx).getEndTime().toString();
+            String timeString =
+                    timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
+                    + timeslot.get(timeListIdx).getEndTime().toString();
             timeList.add(timeString);
         }
 
@@ -167,7 +170,8 @@ public class ReservationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ReservationActivity.this);
-
+                //TODO (woongjin) need to refactor this block
+                //now its spaghetti code
                 if(selectedTime != null && ticketCount != 0){
                     // title
                     TextView title = new TextView(
@@ -201,21 +205,27 @@ public class ReservationActivity extends AppCompatActivity {
                             //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
-                            requestBody.put("timeTableIdx", timeSlotIdxList.get(selectedTimeSlotIdx));
+                            requestBody.put("timeTableIdx",
+                                    timeSlotIdxList.get(selectedTimeSlotIdx));
                             requestBody.put("guestCount", ticketCount);
 
-                            ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                            ApiInterface service = RetrofitInstance
+                                    .getRetrofitInstance()
                                     .create(ApiInterface.class);
-                            Call<Reservation> request = service.makeReservation(requestBody);
+                            Call<Reservation> request =
+                                    service.makeReservation(requestBody);
                             request.enqueue(new Callback<Reservation>() {
                                 @Override
-                                public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                                    Toast.makeText(ReservationActivity.this, "success",Toast
-                                            .LENGTH_LONG).show();
+                                public void onResponse(Call<Reservation> call,
+                                                       Response<Reservation>
+                                                               response) {
+                                    Toast.makeText(ReservationActivity.this,
+                                            "success",Toast.LENGTH_LONG).show();
                                 }
 
                                 @Override
-                                public void onFailure(Call<Reservation> call, Throwable t) {
+                                public void onFailure(Call<Reservation> call,
+                                                      Throwable t) {
 
                                 }
                             });

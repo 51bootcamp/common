@@ -25,10 +25,6 @@ public class TrendingClassActivity extends AppCompatActivity {
     ImageButton classButton;
     String selectedDate;
 
-    String[] imagesURL = {};
-    String[] classes = {};
-    String[] expertNameList = {};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,26 +35,13 @@ public class TrendingClassActivity extends AppCompatActivity {
 
         //set-up for adapter
         Integer listSize = classList.getClassList().size();
-        classes = new String[listSize];
-        imagesURL = new String[listSize];
-        expertNameList = new String[listSize];
-
-        //set class name
-        for(int i = 0; i < listSize; i++){
-            classes[i] = classList.getClassList().get(i).getClassName();
-            imagesURL[i] = classList.getClassList().get(i).getCoverImage()
-                    .get(0);
-            expertNameList[i] = classList.getClassList().get(i)
-                    .getExpertName();
-        }
 
         setContentView(R.layout.activity_trending_class);
 
         classViewPager = (ViewPager) findViewById(R.id.classViewPager);
 
         //initialize adapter
-        adapter = new Adapter(this, classList, imagesURL,
-                expertNameList, selectedDate);
+        adapter = new Adapter(this, classList, selectedDate);
         classViewPager.setAdapter((PagerAdapter) adapter);
 
         //for multiple images view
@@ -76,8 +59,6 @@ public class TrendingClassActivity extends AppCompatActivity {
                                               int monthOfYear, int dayOfMonth){
                         final String msg = String.format("%d-%d-%d", year,
                                 monthOfYear+1, dayOfMonth);
-                        Toast.makeText(TrendingClassActivity.this, msg,
-                                Toast.LENGTH_SHORT).show();
                         final Intent trendingIntent2 = new Intent(
                                 TrendingClassActivity.this,
                                 TrendingClassActivity2.class);
