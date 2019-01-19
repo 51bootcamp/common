@@ -1,4 +1,4 @@
-package uncommon.common;
+package uncommon.common.activity;
 
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
@@ -16,6 +16,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import uncommon.common.adapter.Adapter;
+import uncommon.common.R;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.ClassList;
 import uncommon.common.network.RetrofitInstance;

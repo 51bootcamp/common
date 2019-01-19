@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="uncommon.common.MainActivity">
+        <activity android:name="uncommon.common.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,11 +49,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name="uncommon.common.PlaceActivity" />
-        <activity android:name="uncommon.common.TrendingClassActivity" />
-        <activity android:name="uncommon.common.SignupActivity" />
-        <activity android:name="uncommon.common.ReservationActivity" />
-        <activity android:name="uncommon.common.TrendingClassActivity2"></activity>
+        <activity android:name="uncommon.common.activity.PlaceActivity" />
+        <activity android:name="uncommon.common.activity.TrendingClassActivity" />
+        <activity android:name="uncommon.common.activity.SignupActivity" />
+        <activity android:name="uncommon.common.activity.ReservationActivity" />
+        <activity android:name="uncommon.common.activity.TrendingClassActivity2"></activity>
     </application>
 
 </manifest>

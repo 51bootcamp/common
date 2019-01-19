@@ -1,4 +1,4 @@
-package uncommon.common;
+package uncommon.common.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +32,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import uncommon.common.R;
+import uncommon.common.Utils;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;

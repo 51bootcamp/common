@@ -1,4 +1,4 @@
-package uncommon.common;
+package uncommon.common.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
+
+import uncommon.common.R;
 
 public class SignupActivity extends AppCompatActivity {
 
