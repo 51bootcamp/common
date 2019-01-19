@@ -1,11 +1,11 @@
-package uncommon.common;
+package uncommon.common.utils;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-public class Utils {
+public class ListDynamicViewUtil {
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {

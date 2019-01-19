@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import uncommon.common.R;
-import uncommon.common.Utils;
+import uncommon.common.utils.ListDynamicViewUtil;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
@@ -110,7 +110,7 @@ public class ReservationActivity extends AppCompatActivity {
         }
 
         timeListView.setAdapter(adapter);
-        Utils.setListViewHeightBasedOnChildren(timeListView);
+        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
             @Override
