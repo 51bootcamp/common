@@ -102,6 +102,7 @@ def getClassInfo(request, classID, date):
     for i in timeslot:
         jsondict = {}
         jsondict["timeTableIdx"] = i.timeTableIdx
+        jsondict["epStartTime"] = i.startTime
         st, et = epochToLocalTime(i.startTime,
                                   i.endTime,
                                   i.timezone)
@@ -112,13 +113,17 @@ def getClassInfo(request, classID, date):
     availableTimeTable = sorted(availableTimeTable, key=lambda
         timeTableList : timeTableList["startTime"]);
 
+    for slot in availableTimeTable :
+        del slot["epStartTime"]
+
     return JsonResponse({
                             "classID"           : selectedClass.classID,
                             "className"         : selectedClass.className,
                             "expertName"        : expert.userName,
                             "minGuestCount"     : selectedClass.minGuestCount,
                             "maxGuestCount"     : selectedClass.maxGuestCount,
-                            "availableTimeTable": availableTimeTable
+                            "availableTimeTable": availableTimeTable,
+                            "price"             : selectedClass.price
                         })
 
 @csrf_exempt
