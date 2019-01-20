@@ -39,6 +39,7 @@ public class PlaceActivity extends AppCompatActivity {
         placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         placeTextView = (TextView)findViewById(R.id.placeTextView);
 
+        // (TODO) gayeon: image gradation
         placeTextView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         placeimgButton.setOnClickListener(new View.OnClickListener() {

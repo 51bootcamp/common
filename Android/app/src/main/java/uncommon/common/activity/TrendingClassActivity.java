@@ -62,8 +62,10 @@ public class TrendingClassActivity extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth){
-                        selectedDate = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth);
-                        final Intent trendingIntent2 = new Intent(TrendingClassActivity.this,
+                        selectedDate = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                dayOfMonth);
+                        final Intent trendingIntent2 = new Intent(
+                                TrendingClassActivity.this,
                                 TrendingClassActivity2.class);
 
                         ApiInterface service = RetrofitInstance.getRetrofitInstance()

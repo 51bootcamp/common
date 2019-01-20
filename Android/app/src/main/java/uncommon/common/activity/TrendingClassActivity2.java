@@ -58,7 +58,7 @@ public class TrendingClassActivity2 extends AppCompatActivity {
         String[] dateTokens = selectedDate.split("-");
 
         datePicker.updateDate(new Integer(dateTokens[0]), new Integer
-                (dateTokens[1]) - 1, new Integer(dateTokens[2]));
+                        (dateTokens[1]) - 1, new Integer(dateTokens[2]));
 
         datePicker.init(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(),
                 new DatePicker.OnDateChangedListener(){
@@ -115,4 +115,6 @@ public class TrendingClassActivity2 extends AppCompatActivity {
         }*/
         return true;
     }
+
+
 }

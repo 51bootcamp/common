@@ -101,6 +101,7 @@ public class Adapter extends PagerAdapter {
         });
 
         // put data on class Img
+        // (TODO) gayeon: image gradation
         classTextView = view.findViewById(R.id.classTextView);
         classTextView.setText(positionClass.getClassName());
         classTextView.setBackgroundColor(Color.parseColor("#9931343a"));

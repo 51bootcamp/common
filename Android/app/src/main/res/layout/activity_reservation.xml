@@ -121,7 +121,7 @@
                 android:layout_height="150dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/dateView"
-                android:listSelector="#d3d3d3"
+                android:listSelector="@color/colorPrimaryLight"
                 android:scrollbars="vertical" />
 
             <TextView
