@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kahye.common">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="uncommon.common"
+    tools:ignore="MissingLeanbackLauncher">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -19,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity">
+        <activity android:name="uncommon.common.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,11 +49,11 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlaceActivity" />
-        <activity android:name=".TrendingClassActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".ReservationActivity" />
-        <activity android:name=".TrendingClassActivity2"></activity>
+        <activity android:name="uncommon.common.activity.PlaceActivity" />
+        <activity android:name="uncommon.common.activity.TrendingClassActivity" />
+        <activity android:name="uncommon.common.activity.SignupActivity" />
+        <activity android:name="uncommon.common.activity.ReservationActivity" />
+        <activity android:name="uncommon.common.activity.TrendingClassActivity2"></activity>
     </application>
 
 </manifest>
