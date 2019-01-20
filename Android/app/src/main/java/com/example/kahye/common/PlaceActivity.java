@@ -40,6 +40,7 @@ public class PlaceActivity extends AppCompatActivity {
         placeTextView = (TextView)findViewById(R.id.placeTextView);
         LoginButton LoginButton = findViewById(R.id.facebook_login_button);
 
+        //TODO (gayeon): change text on Image gradation
         placeTextView.setBackgroundColor(Color.parseColor(
                 "#9931343a"));
 

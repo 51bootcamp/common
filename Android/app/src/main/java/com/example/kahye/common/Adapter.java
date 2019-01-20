@@ -28,24 +28,16 @@ public class Adapter extends PagerAdapter {
     private String selectedDate;
     private LayoutInflater inflater;
     private Class selectedClass;
-    //Todo(woongjin) change the hardcoded url to read config file and
-    // use it
+    //Todo(woongjin) change the hardcoded url to read config file and use it
     private String baseImgUrl= "http://52.8.187.167:8000";
 
     ImageButton classButton;
     TextView classTextView;
     TextView expertTextView;
 
-    private String [] imagesURL = {};
-    private String [] classes = {};
-    private String[] expertNameList = {};
-
-    public Adapter(Context context, ClassList classList, String[] imagesURL,
-                   String[] expertNameList, String selectedDate) {
+    public Adapter(Context context, ClassList classList, String selectedDate) {
         this.context = context;
         this.classList = classList;
-        this.imagesURL = imagesURL;
-        this.expertNameList = expertNameList;
         this.selectedDate = selectedDate;
     }
 
@@ -54,6 +46,7 @@ public class Adapter extends PagerAdapter {
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
+
         return view == object;
     }
 
@@ -65,13 +58,8 @@ public class Adapter extends PagerAdapter {
     @Override
     public Object instantiateItem(final ViewGroup container,
                                   final int position) {
-        Integer listSize = classList.getClassList().size();
-        classes = new String[listSize];
-
-        //set class name
-        for(int i = 0; i < listSize; i++){
-            classes[i] = classList.getClassList().get(i).getClassName();
-        }
+        Class positionClass = classList.getClassList().get(position);
+        final String ImgURL = baseImgUrl + positionClass.getCoverImage().get(0);
 
         inflater = (LayoutInflater) context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
@@ -79,7 +67,7 @@ public class Adapter extends PagerAdapter {
         classButton = (ImageButton) view.findViewById(R.id.classButton);
 
         Picasso.get()
-                .load(baseImgUrl + imagesURL[position])
+                .load(ImgURL)
                 .resize(2048, 1600)
                 .onlyScaleDown()
                 .into(classButton);
@@ -91,8 +79,7 @@ public class Adapter extends PagerAdapter {
                         context, ReservationActivity.class);
                 ApiInterface service = RetrofitInstance.getRetrofitInstance()
                         .create(ApiInterface.class);
-                //TODO(woonjin): get the today's date and change the
-                // arguments
+                //TODO(woonjin): get the today's date and change the arguments
                 Call<Class> request = service.getClassInfo(selectedDate,
                         classList.getClassList().get(position).getClassID());
                 request.enqueue(new Callback<Class>() {
@@ -103,7 +90,7 @@ public class Adapter extends PagerAdapter {
                         selectedClass = response.body();
 
                         Bundle bundle = new Bundle();
-                        bundle.putString("classImgURL", imagesURL[position]);
+                        bundle.putString("classImgURL", ImgURL);
                         reserveIntent.putExtra("_classInfo",
                                 selectedClass);
                         reserveIntent.putExtra("_date", selectedDate);
@@ -120,14 +107,15 @@ public class Adapter extends PagerAdapter {
             }
         });
 
+        //TODO (gayeon): change text on Image gradation
         // put data on class Img
         classTextView = view.findViewById(R.id.classTextView);
-        classTextView.setText(classes[position]);
+        classTextView.setText(positionClass.getClassName());
         classTextView.setBackgroundColor(Color.parseColor(
                 "#9931343a"));
 
         expertTextView = view.findViewById(R.id.expertTextView);
-        expertTextView.setText(expertNameList[position]);
+        expertTextView.setText(positionClass.getExpertName());
         expertTextView.setBackgroundColor(Color.parseColor(
                 "#9931343a"));
 

@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,17 +20,26 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kahye.common.api_interface.ApiInterface;
 import com.example.kahye.common.models.Class;
+import com.example.kahye.common.models.Reservation;
 import com.example.kahye.common.models.TimeTable;
+import com.example.kahye.common.network.RetrofitInstance;
 import com.squareup.picasso.Picasso;
+
+import org.json.simple.JSONObject;
 
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReservationActivity extends AppCompatActivity {
 
+    private boolean isBooked;
     private Button alertButton;
     private Class selectedClass;
     private int ticketCount;
@@ -45,6 +53,8 @@ public class ReservationActivity extends AppCompatActivity {
     private TextView numOfPeopleView;
     private TextView numTickets;
     private TextView priceView;
+    private ArrayList<Integer> timeSlotIdxList = new ArrayList<Integer>();
+    private Integer selectedTimeSlotIdx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +67,8 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         // class Img
-        // Todo(woongjin) change the hardcoded url to read config file
-        String imageURL = "http://52.8.187.167:8000" +
-                bundle.getString("classImgURL");
+        //Todo(woongjin) change the hardcoded url to read config file and use it
+        String imageURL = bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
         Picasso.get().load(imageURL).fit().into(classImgView);
 
@@ -77,6 +86,7 @@ public class ReservationActivity extends AppCompatActivity {
                         + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
 
+        //TODO (gayeon): change text on Image gradation
         classNameView.setBackgroundColor(Color.parseColor(
                 "#9931343a"));
         expertNameView.setBackgroundColor(Color.parseColor(
@@ -93,16 +103,26 @@ public class ReservationActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, timeList);
 
-        List<TimeTable>  timeslot = selectedClass.getAvailableTimeTable();
+        List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
+
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
             String timeString =
                     timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
                     + timeslot.get(timeListIdx).getEndTime().toString();
             timeList.add(timeString);
+            timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
+        }
+
+        for(int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++) {
+            isBooked = timeslot.get(timeListIdx).getIsBooked();
+            if (isBooked) {
+                timeListView.getChildAt(timeListIdx).setBackgroundColor(Color.GRAY);
+            }
         }
 
         timeListView.setAdapter(adapter);
-        //TODO (gayeon) : change time slot to size dynamically
+        Utils.setListViewHeightBasedOnChildren(timeListView);
+
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
             @Override
@@ -111,6 +131,7 @@ public class ReservationActivity extends AppCompatActivity {
                 view.setSelected(true);
                 Object o = timeListView.getItemAtPosition(position);
                 selectedTime = o.toString();
+                selectedTimeSlotIdx = position;
             }
         });
 
@@ -157,7 +178,8 @@ public class ReservationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(
                         ReservationActivity.this);
-
+                //TODO (woongjin) need to refactor this block
+                //now its spaghetti code
                 if(selectedTime != null && ticketCount != 0){
                     // title
                     TextView title = new TextView(
@@ -189,6 +211,32 @@ public class ReservationActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
                             //TODO(gayeon):send reservation data to server
+                            JSONObject requestBody = new JSONObject();
+                            requestBody.put("userEmail", "jmj@kookmin.ac.kr");
+                            requestBody.put("timeTableIdx",
+                                    timeSlotIdxList.get(selectedTimeSlotIdx));
+                            requestBody.put("guestCount", ticketCount);
+
+                            ApiInterface service = RetrofitInstance
+                                    .getRetrofitInstance()
+                                    .create(ApiInterface.class);
+                            Call<Reservation> request =
+                                    service.makeReservation(requestBody);
+                            request.enqueue(new Callback<Reservation>() {
+                                @Override
+                                public void onResponse(Call<Reservation> call,
+                                                       Response<Reservation>
+                                                               response) {
+                                    Toast.makeText(ReservationActivity.this,
+                                            "success",Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<Reservation> call,
+                                                      Throwable t) {
+
+                                }
+                            });
                         }
                     });
                     builder.setNegativeButton("No", new DialogInterface
