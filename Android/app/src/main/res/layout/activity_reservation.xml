@@ -24,11 +24,24 @@
                 android:layout_width="fill_parent"
                 android:layout_height="270dp"
                 android:layout_margin="0dp"
-                android:background="@drawable/com_facebook_auth_dialog_background"
                 android:padding="0dp"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="0dp" />
+
+            <RatingBar
+                android:id="@+id/classRating2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="250dp"
+                android:numStars="5"
+                android:rating="4"
+                android:stepSize="0.5"
+                app:layout_constraintTop_toBottomOf="@+id/classImgView"
+                style="@style/RatingBar"/>
 
             <TextView
                 android:id="@+id/classTextView"
@@ -103,7 +116,7 @@
 
             <TextView
                 android:id="@+id/dateView"
-                android:layout_width="327dp"
+                android:layout_width="250dp"
                 android:layout_height="31dp"
                 android:layout_below="@id/priceView"
                 android:layout_alignParentLeft="true"
@@ -111,9 +124,22 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
-                android:text="Date"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/changeTheDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/priceView"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/changeDate"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
 
             <ListView
                 android:id="@+id/timeListView"
@@ -134,9 +160,22 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
-                android:text="Tickets"
+                android:text="@string/tickets"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/numOfTickets"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/ticketTextView"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:textSize="24sp" />
 
             <ImageButton
                 android:id="@+id/downButton"
@@ -170,19 +209,6 @@
                 android:background="@color/cardview_shadow_end_color"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/up" />
-
-            <TextView
-                android:id="@+id/numOfTickets"
-                android:layout_width="150dp"
-                android:layout_height="30dp"
-                android:layout_below="@id/ticketTextView"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="12dp"
-                android:gravity="center"
-                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/getTickets"
