@@ -1,16 +1,24 @@
 package uncommon.common.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +43,7 @@ public class Adapter extends PagerAdapter {
     private String baseImgUrl= "http://52.8.187.167:8000";
 
     ImageButton classButton;
+    RatingBar classRating;
     TextView classTextView;
     TextView expertTextView;
 
@@ -58,6 +67,7 @@ public class Adapter extends PagerAdapter {
         return (0.7f);
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     public Object instantiateItem(final ViewGroup container, final int position) {
         Class positionClass = classList.getClassList().get(position);
@@ -66,6 +76,15 @@ public class Adapter extends PagerAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.class_viewpager, null);
         classButton = (ImageButton) view.findViewById(R.id.classButton);
+        classRating = (RatingBar) view.findViewById(R.id.classRating);
+
+        classRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
+                classRating.setRating(rating);
+            }
+        });
+
 
         Picasso.get().load(ImgURL).resize(2048, 1600).onlyScaleDown().into(classButton);
 
