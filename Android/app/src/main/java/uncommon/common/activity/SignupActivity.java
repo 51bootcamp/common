@@ -1,4 +1,4 @@
-package com.example.kahye.common;
+package uncommon.common.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +15,9 @@ import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
+import uncommon.common.R;
 
-public class MainActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
 
     private static final String EMAIL = "email";
     private static final String AUTH_TYPE = "rerequest";
@@ -28,12 +29,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_signup);
 
         callbackManager = CallbackManager.Factory.create();
 
         if (AccessToken.getCurrentAccessToken() != null) {
-            Intent loginIntent = new Intent(MainActivity.this,
+            Intent loginIntent = new Intent(SignupActivity.this,
                     PlaceActivity.class);
             startActivity(loginIntent);
         }
@@ -49,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         setResult(RESULT_OK);
-                        Intent placeIntent = new Intent(
-                                MainActivity.this,
-                                PlaceActivity.class);
+                        Intent placeIntent = new Intent(SignupActivity.this, PlaceActivity.class);
                         startActivity(placeIntent);
                         finish();
                     }
@@ -65,21 +64,18 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(FacebookException e) {
                         // TODO(kahye): Handle exception
-
                     }
                 });
     }
 
     @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     public void click(View view) {
-        Intent signupintent = new Intent(MainActivity.this,
-                SignupActivity.class);
-        startActivity(signupintent);
+        Intent loginintent = new Intent(SignupActivity.this, MainActivity.class);
+        startActivity(loginintent);
     }
 }

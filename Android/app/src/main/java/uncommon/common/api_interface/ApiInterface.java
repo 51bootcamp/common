@@ -1,10 +1,4 @@
-package com.example.kahye.common.api_interface;
-
-import com.example.kahye.common.models.Class;
-import com.example.kahye.common.models.ClassList;
-import com.example.kahye.common.models.Reservation;
-import com.example.kahye.common.models.User;
-import com.google.gson.JsonObject;
+package uncommon.common.api_interface;
 
 import org.json.simple.JSONObject;
 
@@ -13,6 +7,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+
+import uncommon.common.models.Class;
+import uncommon.common.models.ClassList;
+import uncommon.common.models.Reservation;
+import uncommon.common.models.User;
 
 public interface ApiInterface {
     @GET("class/{date}/")

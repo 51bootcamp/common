@@ -1,13 +1,15 @@
-package com.example.kahye.common;
+package uncommon.common.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,31 +17,31 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.kahye.common.api_interface.ApiInterface;
-import com.example.kahye.common.models.Class;
-import com.example.kahye.common.models.Reservation;
-import com.example.kahye.common.models.TimeTable;
-import com.example.kahye.common.network.RetrofitInstance;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.simple.JSONObject;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uncommon.common.R;
+import uncommon.common.api_interface.ApiInterface;
+import uncommon.common.models.Class;
+import uncommon.common.models.Reservation;
+import uncommon.common.models.TimeTable;
+import uncommon.common.network.RetrofitInstance;
+import uncommon.common.utils.ListDynamicViewUtil;
 
 public class ReservationActivity extends AppCompatActivity {
 
-    private boolean isBooked;
     private Button alertButton;
     private Class selectedClass;
     private int ticketCount;
@@ -67,7 +69,6 @@ public class ReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reservation);
 
         // class Img
-        //Todo(woongjin) change the hardcoded url to read config file and use it
         String imageURL = bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
         Picasso.get().load(imageURL).fit().into(classImgView);
@@ -81,48 +82,50 @@ public class ReservationActivity extends AppCompatActivity {
         className = bundle.getString("className");
         classNameView.setText(selectedClass.getClassName());
         expertNameView.setText(selectedClass.getExpertName());
-        numOfPeopleView.setText(
-                selectedClass.getMinGuestCount().toString() + " - "
+        numOfPeopleView.setText(selectedClass.getMinGuestCount().toString() + " - "
                         + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
 
-        //TODO (gayeon): change text on Image gradation
-        classNameView.setBackgroundColor(Color.parseColor(
-                "#9931343a"));
-        expertNameView.setBackgroundColor(Color.parseColor(
-                "#9931343a"));
+        classNameView.setBackgroundColor(Color.parseColor("#9931343a"));
+        expertNameView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);
         dateView.setText(selectedDate);
 
         // time list
-        final ListView timeListView = (ListView) findViewById(
-                R.id.timeListView);
+        final ListView timeListView = (ListView) findViewById(R.id.timeListView);
         final List<String> timeList = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, timeList);
 
-        List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
-
+        final List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
-            String timeString =
-                    timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
-                    + timeslot.get(timeListIdx).getEndTime().toString();
+            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
+                                + timeslot.get(timeListIdx).getEndTime().toString();
             timeList.add(timeString);
             timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
-        for(int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++) {
-            isBooked = timeslot.get(timeListIdx).getIsBooked();
-            if (isBooked) {
-                timeListView.getChildAt(timeListIdx).setBackgroundColor(Color.GRAY);
+        final ArrayAdapter<String> timeslotAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, timeList){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                // Get the current item from ListView
+                View view = super.getView(position, convertView, parent);
+
+                boolean isBooked = timeslot.get(position).getIsBooked();
+                if(isBooked) {
+                    view.setBackgroundColor(Color.LTGRAY);
+                    ((TextView)view).setTextColor(getResources()
+                            .getColor(R.color
+                            .white));
+                }
+                return view;
             }
-        }
+        };
 
-        timeListView.setAdapter(adapter);
-        Utils.setListViewHeightBasedOnChildren(timeListView);
+        timeListView.setAdapter(timeslotAdapter);
 
+        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
             @Override
@@ -131,7 +134,6 @@ public class ReservationActivity extends AppCompatActivity {
                 view.setSelected(true);
                 Object o = timeListView.getItemAtPosition(position);
                 selectedTime = o.toString();
-                selectedTimeSlotIdx = position;
             }
         });
 
@@ -140,7 +142,7 @@ public class ReservationActivity extends AppCompatActivity {
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
 
-        //Set ticketcnt default value as minGuestCount
+        //Set ticket count default value as minGuestCount
         ticketCount = selectedClass.getMinGuestCount();
         numTickets.setText(Integer.toString(ticketCount));
 
@@ -148,10 +150,8 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(ticketCount >= selectedClass.getMaxGuestCount()){
-                    numTickets.setText(Integer.toString(selectedClass.
-                            getMaxGuestCount()));
-                    Toast.makeText(ReservationActivity.this,
-                            "Too many Tickets!",
+                    numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
+                    Toast.makeText(ReservationActivity.this, "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
@@ -164,8 +164,7 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (ticketCount <= selectedClass.getMinGuestCount())
-                    numTickets.setText(Integer.toString(selectedClass.
-                            getMinGuestCount()));
+                    numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
                 else
                     numTickets.setText(Integer.toString(--ticketCount));
             }
@@ -176,14 +175,12 @@ public class ReservationActivity extends AppCompatActivity {
         alertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        ReservationActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(ReservationActivity.this);
                 //TODO (woongjin) need to refactor this block
                 //now its spaghetti code
                 if(selectedTime != null && ticketCount != 0){
                     // title
-                    TextView title = new TextView(
-                            ReservationActivity.this);
+                    TextView title = new TextView(ReservationActivity.this);
                     title.setGravity(Gravity.CENTER);
                     title.setText("Reservation");
                     title.setTextSize(30);
@@ -194,10 +191,8 @@ public class ReservationActivity extends AppCompatActivity {
                     // msg
                     TextView msg = new TextView(
                             ReservationActivity.this);
-                    msg.setText(selectedClass.getClassName() + "\n"
-                            + selectedDate + "\n" +
-                            selectedTime + "\n" + " " +
-                            ticketCount + " " + "tickets");
+                    msg.setText(selectedClass.getClassName() + "\n" + selectedDate + "\n"
+                                + selectedTime + "\n" + " " + ticketCount + " " + "tickets");
                     msg.setGravity(Gravity.LEFT);
                     Typeface tf = getResources().getFont(R.font.rockb);
                     msg.setTypeface(tf);
@@ -210,23 +205,19 @@ public class ReservationActivity extends AppCompatActivity {
                             .OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
-                            //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
                             requestBody.put("timeTableIdx",
                                     timeSlotIdxList.get(selectedTimeSlotIdx));
                             requestBody.put("guestCount", ticketCount);
 
-                            ApiInterface service = RetrofitInstance
-                                    .getRetrofitInstance()
+                            ApiInterface service = RetrofitInstance.getRetrofitInstance()
                                     .create(ApiInterface.class);
-                            Call<Reservation> request =
-                                    service.makeReservation(requestBody);
+                            Call<Reservation> request = service.makeReservation(requestBody);
                             request.enqueue(new Callback<Reservation>() {
                                 @Override
                                 public void onResponse(Call<Reservation> call,
-                                                       Response<Reservation>
-                                                               response) {
+                                                       Response<Reservation> response) {
                                     Toast.makeText(ReservationActivity.this,
                                             "success",Toast.LENGTH_LONG).show();
                                 }
@@ -253,34 +244,30 @@ public class ReservationActivity extends AppCompatActivity {
         });
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
+
+        return true ;
     }
 
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
-        ListAdapter listAdapter = listView.getAdapter();
-        if (listAdapter == null) {
-            return;
-        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        LoginManager.getInstance().logOut();
 
-        int totalHeight = 0;
-        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
-                View.MeasureSpec.AT_MOST);
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-
-        params.height = totalHeight;
-        listView.setLayoutParams(params);
-        listView.requestLayout();
+        Intent mainIntent = new Intent(ReservationActivity.this,
+                MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+        /*
+        switch (item.getItemId()) {
+            case R.id.action_settings :
+                // TODO (kahye) : process the click event for action_search item.
+                //when we need another actionbar item
+                return true ;
+            default :
+                return super.onOptionsItemSelected(MenuItem ) ;
+        }*/
+        return true;
     }
 }

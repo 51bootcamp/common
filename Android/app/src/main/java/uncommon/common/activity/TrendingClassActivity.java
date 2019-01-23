@@ -1,21 +1,26 @@
-package com.example.kahye.common;
+package uncommon.common.activity;
 
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.example.kahye.common.api_interface.ApiInterface;
-import com.example.kahye.common.models.ClassList;
-import com.example.kahye.common.network.RetrofitInstance;
+import com.facebook.login.LoginManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import uncommon.common.adapter.Adapter;
+import uncommon.common.R;
+import uncommon.common.api_interface.ApiInterface;
+import uncommon.common.models.ClassList;
+import uncommon.common.network.RetrofitInstance;
 
 public class TrendingClassActivity extends AppCompatActivity {
 
@@ -24,6 +29,10 @@ public class TrendingClassActivity extends AppCompatActivity {
     DatePicker datePicker;
     ImageButton classButton;
     String selectedDate;
+
+    String[] imagesURL = {};
+    String[] classes = {};
+    String[] expertNameList = {};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,18 @@ public class TrendingClassActivity extends AppCompatActivity {
 
         //set-up for adapter
         Integer listSize = classList.getClassList().size();
+        classes = new String[listSize];
+        imagesURL = new String[listSize];
+        expertNameList = new String[listSize];
+
+        //set class name
+        for(int i = 0; i < listSize; i++){
+            classes[i] = classList.getClassList().get(i).getClassName();
+            imagesURL[i] = classList.getClassList().get(i).getCoverImage()
+                    .get(0);
+            expertNameList[i] = classList.getClassList().get(i)
+                    .getExpertName();
+        }
 
         setContentView(R.layout.activity_trending_class);
 
@@ -57,35 +78,58 @@ public class TrendingClassActivity extends AppCompatActivity {
                     @Override
                     public void onDateChanged(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth){
-                        final String msg = String.format("%d-%d-%d", year,
-                                monthOfYear+1, dayOfMonth);
+                        selectedDate = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                dayOfMonth);
                         final Intent trendingIntent2 = new Intent(
                                 TrendingClassActivity.this,
                                 TrendingClassActivity2.class);
 
-                        ApiInterface service = RetrofitInstance
-                                .getRetrofitInstance()
+                        ApiInterface service = RetrofitInstance.getRetrofitInstance()
                                 .create(ApiInterface.class);
-                        Call<ClassList> request = service.getClassList(msg);
+                        Call<ClassList> request = service.getClassList(selectedDate);
                         request.enqueue(new Callback<ClassList>() {
                             @Override
                             public void onResponse(Call<ClassList> call,
-                                                   Response<ClassList>
-                                                           response){
+                                                   Response<ClassList> response){
                                 ClassList selectedClassList = response.body();
-                                trendingIntent2.putExtra("_classList",
-                                        selectedClassList);
-                                trendingIntent2.putExtra("_date", msg);
+                                trendingIntent2.putExtra("_classList", selectedClassList);
+                                trendingIntent2.putExtra("_date", selectedDate);
                                 startActivity(trendingIntent2);
                             }
 
                             @Override
-                            public void onFailure(Call<ClassList> call,
-                                                  Throwable t) {
+                            public void onFailure(Call<ClassList> call, Throwable t) {
                                 //TODO (woongjin) error handling
                             }
                         });
                     }
                 });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
+
+        return true ;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        LoginManager.getInstance().logOut();
+
+        Intent mainIntent = new Intent(TrendingClassActivity.this,
+                MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+        /*
+        switch (item.getItemId()) {
+            case R.id.action_settings :
+                // TODO (kahye) : process the click event for action_search item.
+                //when we need another actionbar item
+                return true ;
+            default :
+                return super.onOptionsItemSelected(MenuItem ) ;
+        }*/
+        return true;
+    }
+
 }

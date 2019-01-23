@@ -83,14 +83,16 @@ def getClassList(request, date):
             jsondict["classID"] = availableClass.classID
             jsondict["className"] = availableClass.className
 
-            classImageList = Image.objects.filter(classID = availableClass.classID)
+            classImageList = Image.objects.filter(classID =
+                                                  availableClass.classID)
             for img in classImageList :
                 imageList.append(img.coverImage.url)
             jsondict["coverImage"] = imageList
             jsondict["classRating"] = availableClass.classRating
             li.append(jsondict) #append: O(1)
 
-        li = sorted(li, key=lambda classList : classList["classRating"] , reverse = True)
+        li = sorted(li, key=lambda classList : classList["classRating"] ,
+                    reverse = True)
         return JsonResponse({"classList" : li}, status = 200)
 
 def getClassInfo(request, classID, date):
@@ -109,6 +111,8 @@ def getClassInfo(request, classID, date):
         jsondict["endTime"] = et
         jsondict["isBooked"] = i.isBooked
         availableTimeTable.append(jsondict)
+    availableTimeTable = sorted(availableTimeTable, key=lambda
+        timeTableList : timeTableList["startTime"]);
 
     return JsonResponse({
                             "classID"           : selectedClass.classID,
@@ -175,5 +179,3 @@ def getReservation(request, userEmail):
                             "startTime"     : startTime,
                             "endTime"       : endTime
                         })
-
-

@@ -29,6 +29,21 @@
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="16dp" />
 
+        <RatingBar
+            android:id="@+id/classRating"
+            android:adjustViewBounds="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="10dp"
+            android:numStars="5"
+            android:rating="4"
+            android:stepSize="0.5"
+            app:layout_constraintTop_toBottomOf="@+id/classButton"
+            style="@style/RatingBar"/>
+
         <TextView
             android:id="@+id/classTextView"
             android:layout_width="wrap_content"

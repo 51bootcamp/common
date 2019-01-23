@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlaceActivity">
+    tools:context=".activity.PlaceActivity">
 
     <TextView
         android:id="@+id/LocationsTextView"
@@ -55,28 +55,11 @@
             android:layout_marginTop="210dp"
             android:text="San Francisco"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="24dp"
             android:textStyle="bold"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="18dp" />
 
     </RelativeLayout>
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login_button"
-        android:layout_width="176dp"
-        android:layout_height="23dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/com_facebook_button_icon_blue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.697" />
 
 </android.support.constraint.ConstraintLayout>

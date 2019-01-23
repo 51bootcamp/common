@@ -1,4 +1,4 @@
-package com.example.kahye.common;
+package uncommon.common;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

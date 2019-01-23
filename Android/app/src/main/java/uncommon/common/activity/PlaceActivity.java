@@ -1,22 +1,17 @@
-package com.example.kahye.common;
+package uncommon.common.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.kahye.common.api_interface.ApiInterface;
-import com.example.kahye.common.models.ClassList;
-import com.example.kahye.common.network.RetrofitInstance;
 import com.facebook.login.LoginManager;
-import com.facebook.login.widget.LoginButton;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -24,12 +19,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import uncommon.common.R;
+import uncommon.common.api_interface.ApiInterface;
+import uncommon.common.models.ClassList;
+import uncommon.common.network.RetrofitInstance;
+
 public class PlaceActivity extends AppCompatActivity {
 
     ImageButton placeimgButton;
     TextView placeTextView;
     String selectedDate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +37,8 @@ public class PlaceActivity extends AppCompatActivity {
 
         placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         placeTextView = (TextView)findViewById(R.id.placeTextView);
-        LoginButton LoginButton = findViewById(R.id.facebook_login_button);
 
-        //TODO (gayeon): change text on Image gradation
-        placeTextView.setBackgroundColor(Color.parseColor(
-                "#9931343a"));
+        placeTextView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         placeimgButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -53,26 +49,21 @@ public class PlaceActivity extends AppCompatActivity {
                 //get current date
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
-                SimpleDateFormat sdf = new SimpleDateFormat(
-                        "yyyy-MM-dd");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 selectedDate = sdf.format(date);
 
                 Call<ClassList> request = service.getClassList(selectedDate);
 
                 request.enqueue(new Callback<ClassList>() {
                     @Override
-                    public void onResponse(Call<ClassList> call,
-                                           Response<ClassList> response) {
+                    public void onResponse(Call<ClassList> call, Response<ClassList> response) {
                         ClassList classList = response.body();
 
-                        Intent trendingClassActivity = new Intent(
-                                PlaceActivity.this,
+                        Intent trendingClassActivity = new Intent(PlaceActivity.this,
                                 TrendingClassActivity.class);
 
-                        trendingClassActivity.putExtra("_classList",
-                                classList);
-                        trendingClassActivity.putExtra("_date",
-                                selectedDate);
+                        trendingClassActivity.putExtra("_classList", classList);
+                        trendingClassActivity.putExtra("_date", selectedDate);
 
                         startActivity(trendingClassActivity);
                     }
@@ -84,18 +75,31 @@ public class PlaceActivity extends AppCompatActivity {
                 });
             }
         });
-
-        LoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginManager.getInstance().logOut();
-
-                Intent mainIntent = new Intent(
-                        PlaceActivity.this,
-                        MainActivity.class);
-                startActivity(mainIntent);
-                finish();
-            }
-        });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.actionbar_actions, menu);
+
+        return true ;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        LoginManager.getInstance().logOut();
+
+        Intent mainIntent = new Intent(PlaceActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+        finish();
+        /*
+        switch (item.getItemId()) {
+            case R.id.action_settings :
+                // TODO (kahye) : process the click event for action_search item.
+                //when we need another actionbar item
+                return true ;
+            default :
+                return super.onOptionsItemSelected(MenuItem ) ;
+        }*/
+        return true;
+    }
+
 }

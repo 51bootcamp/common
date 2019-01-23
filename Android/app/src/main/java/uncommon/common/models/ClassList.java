@@ -1,4 +1,4 @@
-package com.example.kahye.common.models;
+package uncommon.common.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

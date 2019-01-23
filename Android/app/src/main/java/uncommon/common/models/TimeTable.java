@@ -1,4 +1,4 @@
-package com.example.kahye.common.models;
+package uncommon.common.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -54,7 +54,6 @@ public class TimeTable implements Parcelable {
         this.timeTableIdx = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.startTime = ((String) in.readValue((String.class.getClassLoader())));
         this.endTime = ((String) in.readValue((String.class.getClassLoader())));
-        this.isBooked = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
     public TimeTable() {
@@ -64,7 +63,6 @@ public class TimeTable implements Parcelable {
         dest.writeValue(timeTableIdx);
         dest.writeValue(startTime);
         dest.writeValue(endTime);
-        dest.writeValue(isBooked);
     }
 
     public int describeContents() {

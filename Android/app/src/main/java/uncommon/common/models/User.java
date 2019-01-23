@@ -1,4 +1,4 @@
-package com.example.kahye.common.models;
+package uncommon.common.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

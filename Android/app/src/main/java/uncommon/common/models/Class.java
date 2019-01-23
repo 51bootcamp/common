@@ -1,4 +1,4 @@
-package com.example.kahye.common.models;
+package uncommon.common.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -89,7 +89,7 @@ public class Class implements Parcelable {
         this.price = ((float) in.readValue((float.class.getClassLoader())));
 
         in.readList(this.availableTimeTable,
-                (com.example.kahye.common.models.TimeTable.class.getClassLoader()));
+                (uncommon.common.models.TimeTable.class.getClassLoader()));
         in.readList(this.coverImage, (java.lang.String.class.getClassLoader()));
 
     }

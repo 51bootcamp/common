@@ -1,4 +1,4 @@
-package com.example.kahye.common.network;
+package uncommon.common.network;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

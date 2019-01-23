@@ -1,4 +1,4 @@
-package com.example.kahye.common;
+package uncommon.common;
 
 import org.junit.Test;
 
