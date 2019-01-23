@@ -70,11 +70,11 @@ public class Adapter extends PagerAdapter {
     public Object instantiateItem(final ViewGroup container, final int position) {
         Class positionClass = classList.getClassList().get(position);
         final String ImgURL = baseImgUrl + positionClass.getCoverImage().get(0);
+
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.class_viewpager, null);
         classButton = (ImageButton) view.findViewById(R.id.classButton);
         classRating = (RatingBar) view.findViewById(R.id.classRating);
-
         classRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {

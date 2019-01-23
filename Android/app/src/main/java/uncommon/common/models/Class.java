@@ -106,7 +106,6 @@ public class Class implements Parcelable {
         dest.writeValue(price);
         dest.writeList(availableTimeTable);
         dest.writeList(coverImage);
-
     }
 
     public int describeContents() {
