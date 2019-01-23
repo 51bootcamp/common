@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -105,6 +106,7 @@ public class ReservationActivity extends AppCompatActivity {
             timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
+
         final ArrayAdapter<String> timeslotAdapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_list_item_1, timeList){
             @Override
@@ -112,19 +114,18 @@ public class ReservationActivity extends AppCompatActivity {
                 // Get the current item from ListView
                 View view = super.getView(position, convertView, parent);
 
-                boolean isBooked = timeslot.get(position).getIsBooked();
+                String test = timeslot.get(position).getStartTime();
+                Log.e("test",test);
+                Boolean isBooked = timeslot.get(position).getIsBooked();
                 if(isBooked) {
                     view.setBackgroundColor(Color.LTGRAY);
-                    ((TextView)view).setTextColor(getResources()
-                            .getColor(R.color
-                            .white));
+                    ((TextView) view).setTextColor(getResources().getColor(R.color.white));
                 }
                 return view;
             }
         };
 
         timeListView.setAdapter(timeslotAdapter);
-
         ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
@@ -134,6 +135,7 @@ public class ReservationActivity extends AppCompatActivity {
                 view.setSelected(true);
                 Object o = timeListView.getItemAtPosition(position);
                 selectedTime = o.toString();
+                selectedTimeSlotIdx = position;
             }
         });
 
