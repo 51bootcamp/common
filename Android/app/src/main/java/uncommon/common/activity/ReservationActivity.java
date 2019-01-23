@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,14 +32,13 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import uncommon.common.R;
-import uncommon.common.utils.ListDynamicViewUtil;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
+import uncommon.common.utils.ListDynamicViewUtil;
 
 public class ReservationActivity extends AppCompatActivity {
 
@@ -96,11 +96,7 @@ public class ReservationActivity extends AppCompatActivity {
         // time list
         final ListView timeListView = (ListView) findViewById(R.id.timeListView);
         final List<String> timeList = new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, timeList);
-
-        List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
-
+        final List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
 
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
             String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
@@ -109,7 +105,25 @@ public class ReservationActivity extends AppCompatActivity {
             timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
-        timeListView.setAdapter(adapter);
+        final ArrayAdapter<String> timeslotAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, timeList){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                // Get the current item from ListView
+                View view = super.getView(position, convertView, parent);
+
+                boolean isBooked = timeslot.get(position).getIsBooked();
+                if(isBooked) {
+                    view.setBackgroundColor(Color.LTGRAY);
+                    ((TextView)view).setTextColor(getResources()
+                            .getColor(R.color
+                                    .white));
+                }
+                return view;
+            }
+        };
+
+        timeListView.setAdapter(timeslotAdapter);
         ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
