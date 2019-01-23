@@ -115,9 +115,7 @@ public class ReservationActivity extends AppCompatActivity {
                 boolean isBooked = timeslot.get(position).getIsBooked();
                 if(isBooked) {
                     view.setBackgroundColor(Color.LTGRAY);
-                    ((TextView)view).setTextColor(getResources()
-                            .getColor(R.color
-                                    .white));
+                    ((TextView)view).setTextColor(getResources().getColor(R.color.white));
                 }
                 return view;
             }
