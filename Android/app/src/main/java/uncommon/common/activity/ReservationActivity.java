@@ -1,5 +1,6 @@
 package uncommon.common.activity;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,11 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -44,12 +47,14 @@ public class ReservationActivity extends AppCompatActivity {
 
     private Button alertButton;
     private Class selectedClass;
+    private DatePickerDialog datePickerDialog;
     private int ticketCount;
     private ImageButton upButton;
     private ImageButton downButton;
     private String className;
     private String selectedDate;
     private String selectedTime;
+    private TextView changeTheDateView;
     private TextView classNameView;
     private TextView expertNameView;
     private TextView numOfPeopleView;
@@ -93,6 +98,25 @@ public class ReservationActivity extends AppCompatActivity {
         TextView dateView = (TextView) findViewById(R.id.dateView);
         dateView.setText(selectedDate);
 
+        //(TODO) gayeon : change the date
+        changeTheDateView = (TextView) findViewById(R.id.changeTheDateView);
+        changeTheDateView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                datePickerDialog = new DatePickerDialog(ReservationActivity.this,
+                        new DatePickerDialog.OnDateSetListener(){
+
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+                            }
+                        }, 0,0,0);
+
+                datePickerDialog.show();
+            }
+        });
+
         // time list
         final ListView timeListView = (ListView) findViewById(R.id.timeListView);
         final List<String> timeList = new ArrayList<>();
@@ -105,6 +129,7 @@ public class ReservationActivity extends AppCompatActivity {
             timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
+        // grey out on time slot
         final ArrayAdapter<String> timeslotAdapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_list_item_1, timeList){
             @Override
@@ -114,8 +139,12 @@ public class ReservationActivity extends AppCompatActivity {
 
                 boolean isBooked = timeslot.get(position).getIsBooked();
                 if(isBooked) {
-                    view.setBackgroundColor(Color.LTGRAY);
-                    ((TextView)view).setTextColor(getResources().getColor(R.color.white));
+                    ((TextView)view).setTextColor(getResources().getColor(R.color.reserved));
+                    view.setOnTouchListener(new View.OnTouchListener() {
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return true;
+                        }
+                    });
                 }
                 return view;
             }
@@ -140,7 +169,7 @@ public class ReservationActivity extends AppCompatActivity {
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
 
-        //Set ticketcnt default value as minGuestCount
+        //Set ticket count default value as minGuestCount
         ticketCount = selectedClass.getMinGuestCount();
         numTickets.setText(Integer.toString(ticketCount));
 
@@ -176,7 +205,8 @@ public class ReservationActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ReservationActivity.this);
                 //TODO (woongjin) need to refactor this block
                 //now its spaghetti code
-                if(selectedTime != null && ticketCount != 0){
+                if(selectedTime != null && ticketCount != 0
+                        && !timeslot.get(selectedTimeSlotIdx).getIsBooked()){
                     // title
                     TextView title = new TextView(ReservationActivity.this);
                     title.setGravity(Gravity.CENTER);
@@ -203,7 +233,6 @@ public class ReservationActivity extends AppCompatActivity {
                             .OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
-                            //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
                             requestBody.put("timeTableIdx",

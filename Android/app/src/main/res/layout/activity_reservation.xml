@@ -31,12 +31,13 @@
                 tools:layout_editor_absoluteX="0dp" />
 
             <RatingBar
-                android:id="@+id/classRating2"
+                android:id="@+id/classRating"
+                android:clickable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginBottom="30dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="250dp"
                 android:numStars="5"
                 android:rating="4"
@@ -96,8 +97,8 @@
                 android:id="@+id/priceImgView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/classImgView"
                 android:layout_alignParentLeft="true"
+                android:layout_below="@id/classImgView"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="12dp"
@@ -117,17 +118,28 @@
 
             <TextView
                 android:id="@+id/dateView"
-                android:layout_width="327dp"
+                android:layout_width="200dp"
                 android:layout_height="31dp"
-                android:layout_below="@id/priceView"
                 android:layout_alignParentLeft="true"
+                android:layout_below="@id/priceView"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
                 android:text="Date"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/changeTheDateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/priceView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/changeDate"
+                android:textSize="15dp"/>
 
             <ListView
                 android:id="@+id/timeListView"
@@ -135,7 +147,7 @@
                 android:layout_height="150dp"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/dateView"
-                android:listSelector="#d3d3d3"
+                android:listSelector="@color/background_gradient_end"
                 android:scrollbars="vertical" />
 
             <TextView
