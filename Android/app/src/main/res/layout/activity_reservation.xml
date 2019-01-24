@@ -124,7 +124,7 @@
                 android:layout_below="@id/priceView"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="20dp"
                 android:text="Date"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -141,13 +141,27 @@
                 android:text="@string/changeDate"
                 android:textSize="15dp"/>
 
+            <DatePicker
+                android:id="@+id/datepicker"
+                android:layout_width="337dp"
+                android:layout_height="432dp"
+                android:layout_below="@id/changeTheDateView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"/>
+
             <ListView
                 android:id="@+id/timeListView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/dateView"
+                android:layout_below="@id/datepicker"
                 android:listSelector="@color/background_gradient_end"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:scrollbars="vertical" />
 
             <TextView

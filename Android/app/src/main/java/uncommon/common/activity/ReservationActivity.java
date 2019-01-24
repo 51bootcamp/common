@@ -1,6 +1,5 @@
 package uncommon.common.activity;
 
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -47,7 +46,7 @@ public class ReservationActivity extends AppCompatActivity {
 
     private Button alertButton;
     private Class selectedClass;
-    private DatePickerDialog datePickerDialog;
+    private DatePicker datePicker;
     private int ticketCount;
     private ImageButton upButton;
     private ImageButton downButton;
@@ -95,27 +94,8 @@ public class ReservationActivity extends AppCompatActivity {
         expertNameView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         selectedDate = bundle.getString("_date");
-        TextView dateView = (TextView) findViewById(R.id.dateView);
+        final TextView dateView = (TextView) findViewById(R.id.dateView);
         dateView.setText(selectedDate);
-
-        //(TODO) gayeon : change the date
-        changeTheDateView = (TextView) findViewById(R.id.changeTheDateView);
-        changeTheDateView.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                datePickerDialog = new DatePickerDialog(ReservationActivity.this,
-                        new DatePickerDialog.OnDateSetListener(){
-
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-
-                            }
-                        }, 0,0,0);
-
-                datePickerDialog.show();
-            }
-        });
 
         // time list
         final ListView timeListView = (ListView) findViewById(R.id.timeListView);
@@ -138,7 +118,7 @@ public class ReservationActivity extends AppCompatActivity {
                 View view = super.getView(position, convertView, parent);
 
                 boolean isBooked = timeslot.get(position).getIsBooked();
-                if(isBooked) {
+                if (isBooked) {
                     ((TextView)view).setTextColor(getResources().getColor(R.color.reserved));
                     view.setOnTouchListener(new View.OnTouchListener() {
                         public boolean onTouch(View v, MotionEvent event) {
@@ -149,6 +129,31 @@ public class ReservationActivity extends AppCompatActivity {
                 return view;
             }
         };
+
+        //TODO (gayeon) : change timeslot if user click change the date
+        changeTheDateView = (TextView) findViewById(R.id.changeTheDateView);
+        datePicker = (DatePicker) findViewById(R.id.datepicker);
+
+        changeTheDateView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                datePicker.setVisibility(View.VISIBLE);
+
+                datePicker.init(datePicker.getYear(), datePicker.getMonth(),
+                        datePicker.getDayOfMonth(),
+                        new DatePicker.OnDateChangedListener(){
+
+                            @Override
+                            public void onDateChanged(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth){
+                                selectedDate = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                        dayOfMonth);
+                                dateView.setText(selectedDate);
+                            }
+                        });
+            }
+        });
 
         timeListView.setAdapter(timeslotAdapter);
         ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
@@ -203,10 +208,10 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ReservationActivity.this);
-                //TODO (woongjin) need to refactor this block
+                // TODO (woongjin) need to refactor this block
                 //now its spaghetti code
-                if(selectedTime != null && ticketCount != 0
-                        && !timeslot.get(selectedTimeSlotIdx).getIsBooked()){
+                if(!(selectedTime == null || ticketCount == 0 ||
+                        timeslot.get(selectedTimeSlotIdx).getIsBooked())){
                     // title
                     TextView title = new TextView(ReservationActivity.this);
                     title.setGravity(Gravity.CENTER);
