@@ -30,6 +30,21 @@
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="0dp" />
 
+            <RatingBar
+                android:id="@+id/classRating"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="250dp"
+                android:numStars="5"
+                android:rating="4"
+                android:stepSize="0.5"
+                app:layout_constraintTop_toBottomOf="@+id/classImgView"
+                style="@style/RatingBar"/>
+
             <TextView
                 android:id="@+id/classTextView"
                 android:layout_width="wrap_content"
@@ -82,8 +97,8 @@
                 android:id="@+id/priceImgView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/classImgView"
                 android:layout_alignParentLeft="true"
+                android:layout_below="@id/classImgView"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="12dp"
@@ -103,25 +118,50 @@
 
             <TextView
                 android:id="@+id/dateView"
-                android:layout_width="327dp"
+                android:layout_width="200dp"
                 android:layout_height="31dp"
-                android:layout_below="@id/priceView"
                 android:layout_alignParentLeft="true"
+                android:layout_below="@id/priceView"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="20dp"
                 android:text="Date"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/changeTheDateView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/priceView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/changeDate"
+                android:textSize="15dp"/>
+
+            <DatePicker
+                android:id="@+id/datepicker"
+                android:layout_width="337dp"
+                android:layout_height="432dp"
+                android:layout_below="@id/changeTheDateView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:visibility="gone"/>
 
             <ListView
                 android:id="@+id/timeListView"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/dateView"
-                android:listSelector="#d3d3d3"
+                android:layout_below="@id/datepicker"
+                android:listSelector="@color/background_gradient_end"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:scrollbars="vertical" />
 
             <TextView
