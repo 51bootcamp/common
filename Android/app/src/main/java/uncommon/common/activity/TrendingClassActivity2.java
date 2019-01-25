@@ -115,6 +115,4 @@ public class TrendingClassActivity2 extends AppCompatActivity {
         }*/
         return true;
     }
-
-
 }

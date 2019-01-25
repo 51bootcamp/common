@@ -92,7 +92,7 @@ public class PlaceActivity extends AppCompatActivity {
                 else{
                     Reservation res = response.body();
                     resNotificationTextView.setText(res.getDate() + " " + res.getClassName() +" "
-                            + res.getStartTime() +" "+res.getEndTime() +" "+ res.getExpertName());
+                            + res.getStartTime() +" ~ "+res.getEndTime() +" "+ res.getExpertName());
                     resNotificationTextView.setSelected(true);
                 }
             }
@@ -128,7 +128,4 @@ public class PlaceActivity extends AppCompatActivity {
         }*/
         return true;
     }
-
-
-
 }

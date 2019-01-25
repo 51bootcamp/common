@@ -86,7 +86,6 @@ public class ReservationActivity extends AppCompatActivity {
                         + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
 
-
         selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);
         dateView.setText(selectedDate);
@@ -98,7 +97,6 @@ public class ReservationActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, timeList);
 
         List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
-
 
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
             String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "

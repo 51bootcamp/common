@@ -9,7 +9,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,7 +37,6 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="29dp">
             </DatePicker>
-
 
             <TextView
                 android:id="@+id/classesText"

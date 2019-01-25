@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(FacebookException e) {
                         // TODO(kahye): Handle exception
-
                     }
                 });
     }
