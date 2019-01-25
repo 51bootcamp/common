@@ -2,7 +2,6 @@ package uncommon.common.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -103,11 +102,9 @@ public class Adapter extends PagerAdapter {
         // put data on class Img
         classTextView = view.findViewById(R.id.classTextView);
         classTextView.setText(positionClass.getClassName());
-        classTextView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         expertTextView = view.findViewById(R.id.expertTextView);
         expertTextView.setText(positionClass.getExpertName());
-        expertTextView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);

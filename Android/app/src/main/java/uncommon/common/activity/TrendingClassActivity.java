@@ -27,7 +27,6 @@ public class TrendingClassActivity extends AppCompatActivity {
     Adapter adapter;
     ViewPager classViewPager;
     DatePicker datePicker;
-    ImageButton classButton;
     String selectedDate;
 
     @Override

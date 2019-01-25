@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
+
     //retrofit2.5
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     //for manage json file

@@ -1,9 +1,9 @@
 package uncommon.common.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,28 +22,29 @@ import retrofit2.Response;
 import uncommon.common.R;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.ClassList;
+import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
 
 public class PlaceActivity extends AppCompatActivity {
 
     ImageButton placeimgButton;
+    TextView resNotificationTextView;
     TextView placeTextView;
     String selectedDate;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_place);
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_place);
+
+        //Reservation Notification
+        resNotificationTextView = (TextView) this.findViewById(R.id.resNotificationText);
 
         placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         placeTextView = (TextView)findViewById(R.id.placeTextView);
 
-        placeTextView.setBackgroundColor(Color.parseColor("#9931343a"));
-
         placeimgButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 ApiInterface service = RetrofitInstance.getRetrofitInstance()
                         .create(ApiInterface.class);
 
@@ -76,11 +77,36 @@ public class PlaceActivity extends AppCompatActivity {
                 });
             }
         });
+
+        ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
+        Call<Reservation> request = service.getReservation("kahye5232@naver.com");
+        request.enqueue(new Callback<Reservation>() {
+            @Override
+            public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+
+                //no reservation
+                if (response.code() == 203){
+                    //TODO(kahye) : use setVisibility(resN-.GONE)
+                    resNotificationTextView.setVisibility(View.GONE);
+                }
+                else{
+                    Reservation res = response.body();
+                    resNotificationTextView.setText(res.getDate() + " " + res.getClassName() +" "
+                            + res.getStartTime() +" "+res.getEndTime() +" "+ res.getExpertName());
+                    resNotificationTextView.setSelected(true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reservation> call, Throwable t) {
+                //TODO (kahye) : error handling
+
+            }
+        });
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_actions, menu);
-
         return true ;
     }
 
@@ -102,5 +128,7 @@ public class PlaceActivity extends AppCompatActivity {
         }*/
         return true;
     }
+
+
 
 }

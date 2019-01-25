@@ -86,8 +86,6 @@ public class ReservationActivity extends AppCompatActivity {
                         + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
 
-        classNameView.setBackgroundColor(Color.parseColor("#9931343a"));
-        expertNameView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         selectedDate = bundle.getString("_date");
         TextView dateView = (TextView) findViewById(R.id.dateView);

@@ -11,7 +11,8 @@
         android:layout_height="238dp"
         android:background=
             "@drawable/com_facebook_auth_dialog_background"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
 
         <ImageButton
             android:id="@+id/classButton"

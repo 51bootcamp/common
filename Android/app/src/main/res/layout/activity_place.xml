@@ -7,41 +7,67 @@
     android:layout_height="match_parent"
     tools:context=".activity.PlaceActivity">
 
+
+    <TextView
+        android:id="@+id/resNotificationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="436dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:freezesText="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="EllipsizeMaxLines,MissingConstraints" />
+
     <TextView
         android:id="@+id/LocationsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/locations"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.017" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
         android:id="@+id/place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/LocationsTextView">
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/LocationsTextView"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
+
 
         <ImageButton
             android:id="@+id/cafeImgButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="12dp"
             android:adjustViewBounds="true"
-            android:background=
-                "@drawable/com_facebook_auth_dialog_background"
-            android:scaleType="fitCenter"
+            android:background="@drawable/com_facebook_auth_dialog_background"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/cafe"
             tools:ignore="MissingConstraints" />
@@ -61,5 +87,7 @@
             tools:layout_editor_absoluteX="18dp" />
 
     </RelativeLayout>
+
+
 
 </android.support.constraint.ConstraintLayout>
