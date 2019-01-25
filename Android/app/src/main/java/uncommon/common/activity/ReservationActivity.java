@@ -2,7 +2,6 @@ package uncommon.common.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +34,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uncommon.common.R;
+import uncommon.common.utils.GradientTransformation;
+import uncommon.common.utils.ListDynamicViewUtil;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
@@ -75,7 +76,8 @@ public class ReservationActivity extends AppCompatActivity {
         // class Img
         String imageURL = bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
-        Picasso.get().load(imageURL).fit().into(classImgView);
+        Picasso.get().load(imageURL).fit().transform(new GradientTransformation()).into
+                (classImgView);
 
         // class Info
         classNameView = (TextView)findViewById(R.id.classTextView);
@@ -89,9 +91,6 @@ public class ReservationActivity extends AppCompatActivity {
         numOfPeopleView.setText(selectedClass.getMinGuestCount().toString() + " - "
                         + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
-
-        classNameView.setBackgroundColor(Color.parseColor("#9931343a"));
-        expertNameView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         selectedDate = bundle.getString("_date");
         final TextView dateView = (TextView) findViewById(R.id.dateView);
@@ -238,7 +237,7 @@ public class ReservationActivity extends AppCompatActivity {
                             .OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
-                            JSONObject requestBody = new JSONObject();
+                            org.json.simple.JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
                             requestBody.put("timeTableIdx",
                                     timeSlotIdxList.get(selectedTimeSlotIdx));

@@ -1,7 +1,6 @@
 package uncommon.common.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -30,7 +29,6 @@ public class PlaceActivity extends AppCompatActivity {
     TextView placeTextView;
     String selectedDate;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,41 +37,39 @@ public class PlaceActivity extends AppCompatActivity {
         placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         placeTextView = (TextView)findViewById(R.id.placeTextView);
 
-        placeTextView.setBackgroundColor(Color.parseColor("#9931343a"));
-
         placeimgButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                ApiInterface service = RetrofitInstance.getRetrofitInstance()
-                        .create(ApiInterface.class);
+            ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                    .create(ApiInterface.class);
 
-                //get current date
-                long now = System.currentTimeMillis();
-                Date date = new Date(now);
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                selectedDate = sdf.format(date);
+            //get current date
+            long now = System.currentTimeMillis();
+            Date date = new Date(now);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            selectedDate = sdf.format(date);
 
-                Call<ClassList> request = service.getClassList(selectedDate);
+            Call<ClassList> request = service.getClassList(selectedDate);
 
-                request.enqueue(new Callback<ClassList>() {
-                    @Override
-                    public void onResponse(Call<ClassList> call, Response<ClassList> response) {
-                        ClassList classList = response.body();
+            request.enqueue(new Callback<ClassList>() {
+                @Override
+                public void onResponse(Call<ClassList> call, Response<ClassList> response) {
+                    ClassList classList = response.body();
 
-                        Intent trendingClassActivity = new Intent(PlaceActivity.this,
-                                TrendingClassActivity.class);
+                    Intent trendingClassActivity = new Intent(PlaceActivity.this,
+                            TrendingClassActivity.class);
 
-                        trendingClassActivity.putExtra("_classList", classList);
-                        trendingClassActivity.putExtra("_date", selectedDate);
+                    trendingClassActivity.putExtra("_classList", classList);
+                    trendingClassActivity.putExtra("_date", selectedDate);
 
-                        startActivity(trendingClassActivity);
-                    }
+                    startActivity(trendingClassActivity);
+                }
 
-                    @Override
-                    public void onFailure(Call<ClassList> call, Throwable t) {
-                        //TODO (woongjin) : how to deal with failure
-                    }
-                });
+                @Override
+                public void onFailure(Call<ClassList> call, Throwable t) {
+                    //TODO (woongjin) : how to deal with failure
+                }
+            });
             }
         });
     }

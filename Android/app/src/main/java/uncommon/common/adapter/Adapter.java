@@ -2,7 +2,6 @@ package uncommon.common.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -24,6 +23,7 @@ import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.ClassList;
 import uncommon.common.network.RetrofitInstance;
+import uncommon.common.utils.GradientTransformation;
 
 public class Adapter extends PagerAdapter {
     private ClassList classList;
@@ -76,7 +76,8 @@ public class Adapter extends PagerAdapter {
             }
         });
 
-        Picasso.get().load(ImgURL).resize(2048, 1600).onlyScaleDown().into(classButton);
+        Picasso.get().load(ImgURL).resize(2048, 1600).onlyScaleDown().transform(new GradientTransformation())
+                .into(classButton);
 
         classButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,11 +113,9 @@ public class Adapter extends PagerAdapter {
         // put data on class Img
         classTextView = view.findViewById(R.id.classTextView);
         classTextView.setText(positionClass.getClassName());
-        classTextView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         expertTextView = view.findViewById(R.id.expertTextView);
         expertTextView.setText(positionClass.getExpertName());
-        expertTextView.setBackgroundColor(Color.parseColor("#9931343a"));
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);
