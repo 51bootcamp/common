@@ -11,4 +11,13 @@ public class User {
     public String userName;
     public String accountType;
     public boolean isLecturer;
+
+    public String getUserEmail(){ return this.userEmail; }
+    public String getUserName() { return this.userName; }
+
+    public User(String userEmail, String userName){
+        this.userEmail = userEmail;
+        this.userName = userName;
+        this.accountType = "FACEBOOK";
+    }
 }
