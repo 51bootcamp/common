@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -16,7 +17,6 @@ import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import uncommon.common.R;
 import uncommon.common.activity.ReservationActivity;
 import uncommon.common.api_interface.ApiInterface;
@@ -34,6 +34,7 @@ public class Adapter extends PagerAdapter {
     private String baseImgUrl= "http://52.8.187.167:8000";
 
     ImageButton classButton;
+    RatingBar classRating;
     TextView classTextView;
     TextView expertTextView;
 
@@ -65,6 +66,14 @@ public class Adapter extends PagerAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.class_viewpager, null);
         classButton = (ImageButton) view.findViewById(R.id.classButton);
+        classRating = (RatingBar) view.findViewById(R.id.classRating);
+
+        classRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
+                classRating.setRating(rating);
+            }
+        });
 
         Picasso.get().load(ImgURL).resize(2048, 1600).onlyScaleDown().into(classButton);
 
