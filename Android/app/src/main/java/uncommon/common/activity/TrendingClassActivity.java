@@ -113,5 +113,4 @@ public class TrendingClassActivity extends AppCompatActivity {
         }*/
         return true;
     }
-
 }

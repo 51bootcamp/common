@@ -10,11 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -35,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uncommon.common.R;
+import uncommon.common.adapter.TimeSlotAdapter;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
@@ -44,13 +42,16 @@ import uncommon.common.utils.ListDynamicViewUtil;
 
 public class ReservationActivity extends AppCompatActivity {
 
+    private TimeSlotAdapter timeslotAdapter;
+    private ArrayList<Integer> timeSlotIdxList = new ArrayList<Integer>();
     private Button alertButton;
     private Class selectedClass;
     private DatePicker datePicker;
     private int ticketCount;
+    private Integer selectedClassID;
+    private Integer selectedTimeSlotIdx;
     private ImageButton upButton;
     private ImageButton downButton;
-    private String className;
     private String selectedDate;
     private String selectedTime;
     private TextView changeTheDateView;
@@ -59,8 +60,9 @@ public class ReservationActivity extends AppCompatActivity {
     private TextView numOfPeopleView;
     private TextView numTickets;
     private TextView priceView;
-    private ArrayList<Integer> timeSlotIdxList = new ArrayList<Integer>();
-    private Integer selectedTimeSlotIdx;
+    private List<TimeTable> timeslot;
+    private ApiInterface service = RetrofitInstance.getRetrofitInstance()
+            .create(ApiInterface.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class ReservationActivity extends AppCompatActivity {
         numOfPeopleView = (TextView) findViewById(R.id.numOfPeopleView);
         priceView = (TextView) findViewById(R.id.priceView);
 
-        className = bundle.getString("className");
+        selectedClassID = selectedClass.getClassID();
         classNameView.setText(selectedClass.getClassName());
         expertNameView.setText(selectedClass.getExpertName());
         numOfPeopleView.setText(selectedClass.getMinGuestCount().toString() + " - "
@@ -99,8 +101,9 @@ public class ReservationActivity extends AppCompatActivity {
 
         // time list
         final ListView timeListView = (ListView) findViewById(R.id.timeListView);
+
         final List<String> timeList = new ArrayList<>();
-        final List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
+        timeslot = selectedClass.getAvailableTimeTable();
 
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
             String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
@@ -109,28 +112,20 @@ public class ReservationActivity extends AppCompatActivity {
             timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
-        // grey out on time slot
-        final ArrayAdapter<String> timeslotAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, timeList){
+        timeslotAdapter = new TimeSlotAdapter(this, timeList, timeslot);
+        timeListView.setAdapter(timeslotAdapter);
+        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
+        timeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                // Get the current item from ListView
-                View view = super.getView(position, convertView, parent);
-
-                boolean isBooked = timeslot.get(position).getIsBooked();
-                if (isBooked) {
-                    ((TextView)view).setTextColor(getResources().getColor(R.color.reserved));
-                    view.setOnTouchListener(new View.OnTouchListener() {
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return true;
-                        }
-                    });
-                }
-                return view;
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                view.setSelected(true);
+                Object o = timeListView.getItemAtPosition(position);
+                selectedTime = o.toString();
+                selectedTimeSlotIdx = position;
             }
-        };
+        });
 
-        //TODO (gayeon) : change timeslot if user click change the date
+        // change the date
         changeTheDateView = (TextView) findViewById(R.id.changeTheDateView);
         datePicker = (DatePicker) findViewById(R.id.datepicker);
 
@@ -140,32 +135,46 @@ public class ReservationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 datePicker.setVisibility(View.VISIBLE);
 
+                String[] dateTokens = selectedDate.split("-");
+                datePicker.updateDate(new Integer(dateTokens[0]), new Integer
+                        (dateTokens[1]) - 1, new Integer(dateTokens[2]));
+
                 datePicker.init(datePicker.getYear(), datePicker.getMonth(),
-                        datePicker.getDayOfMonth(),
-                        new DatePicker.OnDateChangedListener(){
+                        datePicker.getDayOfMonth(), new DatePicker.OnDateChangedListener(){
 
                             @Override
                             public void onDateChanged(DatePicker view, int year,
-                                                      int monthOfYear, int dayOfMonth){
+                                                      int monthOfYear, int dayOfMonth) {
+                                // setting date
                                 selectedDate = String.format("%d-%d-%d", year, monthOfYear + 1,
                                         dayOfMonth);
                                 dateView.setText(selectedDate);
+
+                                Call<Class> request = service.getClassInfo(selectedDate, selectedClassID);
+                                request.enqueue(new Callback<Class>() {
+                                    @Override
+                                    public void onResponse(Call<Class> call, Response<Class> response) {
+                                        selectedClass = response.body();
+                                        timeslot = selectedClass.getAvailableTimeTable();
+                                        timeSlotIdxList.clear();
+                                        timeList.clear();
+
+                                        for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
+                                            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
+                                                    + timeslot.get(timeListIdx).getEndTime().toString();
+                                            timeList.add(timeString);
+                                            timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
+                                        }
+                                        timeslotAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Class> call, Throwable t) {
+                                        //TODO (woongjin) : how to deal with failure
+                                    }
+                                });
                             }
                         });
-            }
-        });
-
-        timeListView.setAdapter(timeslotAdapter);
-        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
-        timeListView.setOnItemClickListener(new AdapterView
-                .OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view,
-                                    int position, long l) {
-                view.setSelected(true);
-                Object o = timeListView.getItemAtPosition(position);
-                selectedTime = o.toString();
-                selectedTimeSlotIdx = position;
             }
         });
 
