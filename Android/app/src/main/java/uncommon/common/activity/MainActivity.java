@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 import uncommon.common.R;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String EMAIL = "email";

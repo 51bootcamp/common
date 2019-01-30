@@ -11,6 +11,9 @@ public class Reservation implements Parcelable
     @SerializedName("expertName")
     @Expose
     private String expertName;
+    @SerializedName("classID")
+    @Expose
+    private Integer classID;
     @SerializedName("className")
     @Expose
     private String className;
@@ -23,6 +26,13 @@ public class Reservation implements Parcelable
     @SerializedName("endTime")
     @Expose
     private String endTime;
+    @SerializedName("guestCount")
+    @Expose
+    private Integer guestCount;
+    @SerializedName("price")
+    @Expose
+    private Float totalResPrice;
+
     public final static Parcelable.Creator<Reservation> CREATOR = new Creator<Reservation>() {
 
         @SuppressWarnings({
@@ -38,10 +48,13 @@ public class Reservation implements Parcelable
 
     protected Reservation(Parcel in) {
         this.expertName = ((String) in.readValue((String.class.getClassLoader())));
+        this.classID = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.className = ((String) in.readValue((String.class.getClassLoader())));
         this.date = ((String) in.readValue((String.class.getClassLoader())));
         this.startTime = ((String) in.readValue((String.class.getClassLoader())));
         this.endTime = ((String) in.readValue((String.class.getClassLoader())));
+        this.guestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.totalResPrice = ((Float) in.readValue((Float.class.getClassLoader())));
     }
 
     public Reservation() {
@@ -51,9 +64,7 @@ public class Reservation implements Parcelable
         return expertName;
     }
 
-    public void setExpertName(String expertName) {
-        this.expertName = expertName;
-    }
+    public Integer getClassId() { return classID; }
 
     public String getClassName() {
         return className;
@@ -87,12 +98,22 @@ public class Reservation implements Parcelable
         this.endTime = endTime;
     }
 
+    public Integer getGuestCount(){
+        return guestCount;
+    }
+    public Float getTotalResPrice() {
+        return totalResPrice;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(expertName);
+        dest.writeValue(classID);
         dest.writeValue(className);
         dest.writeValue(date);
         dest.writeValue(startTime);
         dest.writeValue(endTime);
+        dest.writeValue(guestCount);
+        dest.writeValue(totalResPrice);
     }
 
     public int describeContents() {
