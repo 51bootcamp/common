@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
-import android.widget.ImageButton;
 
 import com.facebook.login.LoginManager;
 
@@ -27,7 +26,6 @@ public class TrendingClassActivity extends AppCompatActivity {
     Adapter adapter;
     ViewPager classViewPager;
     DatePicker datePicker;
-    ImageButton classButton;
     String selectedDate;
 
     @Override
@@ -90,7 +88,6 @@ public class TrendingClassActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
-
         return true ;
     }
 

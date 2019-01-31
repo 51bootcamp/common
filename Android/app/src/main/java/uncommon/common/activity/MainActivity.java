@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 import uncommon.common.R;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String EMAIL = "email";
@@ -65,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onError(FacebookException e) {
                         // TODO(kahye): Handle exception
-
                     }
                 });
     }

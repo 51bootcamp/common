@@ -1,7 +1,6 @@
 package uncommon.common.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +11,8 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -22,28 +23,32 @@ import retrofit2.Response;
 import uncommon.common.R;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.ClassList;
+import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
 
 public class PlaceActivity extends AppCompatActivity {
 
     ImageButton placeimgButton;
+    TextView resNotificationTextView;
     TextView placeTextView;
+    String selectedClass;
     String selectedDate;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
 
-        placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
-        placeTextView = (TextView)findViewById(R.id.placeTextView);
+        Bundle bundle = new Bundle();
 
-        placeTextView.setBackgroundColor(Color.parseColor("#9931343a"));
+        //Reservation Notification
+        resNotificationTextView = (TextView) this.findViewById(R.id.resNotificationText);
+
+        placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
+        placeTextView = (TextView) findViewById(R.id.placeTextView);
 
         placeimgButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 ApiInterface service = RetrofitInstance.getRetrofitInstance()
                         .create(ApiInterface.class);
 
@@ -76,12 +81,61 @@ public class PlaceActivity extends AppCompatActivity {
                 });
             }
         });
+
+        ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
+        Call<Reservation> request = service.getReservation("kahye5232@naver.com");
+        request.enqueue(new Callback<Reservation>() {
+            @Override
+            public void onResponse(Call<Reservation> call, Response<Reservation> response) {
+                //upcoming notification
+                if (response.body().isValid()) {
+                    Reservation res = response.body();
+
+                    //convert date format yyyy-MM-dd into dd-MMM-yyyy
+                    DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
+                    String inputDateStr= res.getDate();
+                    Date date = null;
+                    try {
+                        date = inputFormat.parse(inputDateStr);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String outputDateStr = outputFormat.format(date);
+
+                    resNotificationTextView.setText(outputDateStr + " · " + res.getClassName() +
+                            " · " + res.getExpertName());
+                    resNotificationTextView.setSelected(true);
+                }
+                //no reservation
+                else {
+                    resNotificationTextView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Reservation> call, Throwable t) {
+                //TODO (kahye) : error handling
+            }
+        });
     }
+
+    public void click(View view) {
+        Intent confirmResIntent = new Intent(PlaceActivity.this,
+                ConfirmReservationActivity.class);
+
+        Bundle bundle = new Bundle();
+        confirmResIntent.putExtra("_classInfo", selectedClass);
+        confirmResIntent.putExtra("_date", selectedDate);
+        confirmResIntent.putExtras(bundle);
+
+        startActivity(confirmResIntent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actionbar_actions, menu);
-
-        return true ;
+        return true;
     }
 
     @Override
@@ -102,5 +156,4 @@ public class PlaceActivity extends AppCompatActivity {
         }*/
         return true;
     }
-
 }

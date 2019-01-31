@@ -30,6 +30,6 @@ public interface ApiInterface {
     @POST("reserve/")
     Call<Reservation> makeReservation(@Body JSONObject reservation);
 
-    @GET("reserve/{userEmail}/")
+    @GET("reserve/{userEmail}")
     Call<Reservation> getReservation(@Path("userEmail") String userEmail);
 }
