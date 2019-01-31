@@ -2,7 +2,6 @@ package uncommon.common.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -10,13 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -34,26 +30,25 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import uncommon.common.R;
+import uncommon.common.utils.ListDynamicViewUtil;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
-import uncommon.common.utils.ListDynamicViewUtil;
 
 public class ReservationActivity extends AppCompatActivity {
 
     private Button alertButton;
     private Class selectedClass;
-    private DatePicker datePicker;
     private int ticketCount;
     private ImageButton upButton;
     private ImageButton downButton;
     private String className;
     private String selectedDate;
     private String selectedTime;
-    private TextView changeTheDateView;
     private TextView classNameView;
     private TextView expertNameView;
     private TextView numOfPeopleView;
@@ -90,17 +85,17 @@ public class ReservationActivity extends AppCompatActivity {
                         + selectedClass.getMaxGuestCount().toString());
         priceView.setText(selectedClass.getPrice().toString());
 
-        classNameView.setBackgroundColor(Color.parseColor("#9931343a"));
-        expertNameView.setBackgroundColor(Color.parseColor("#9931343a"));
-
         selectedDate = bundle.getString("_date");
-        final TextView dateView = (TextView) findViewById(R.id.dateView);
+        TextView dateView = (TextView) findViewById(R.id.dateView);
         dateView.setText(selectedDate);
 
         // time list
         final ListView timeListView = (ListView) findViewById(R.id.timeListView);
         final List<String> timeList = new ArrayList<>();
-        final List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, timeList);
+
+        List<TimeTable> timeslot = selectedClass.getAvailableTimeTable();
 
         for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
             String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
@@ -109,53 +104,7 @@ public class ReservationActivity extends AppCompatActivity {
             timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
         }
 
-        // grey out on time slot
-        final ArrayAdapter<String> timeslotAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, timeList){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                // Get the current item from ListView
-                View view = super.getView(position, convertView, parent);
-
-                boolean isBooked = timeslot.get(position).getIsBooked();
-                if (isBooked) {
-                    ((TextView)view).setTextColor(getResources().getColor(R.color.reserved));
-                    view.setOnTouchListener(new View.OnTouchListener() {
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return true;
-                        }
-                    });
-                }
-                return view;
-            }
-        };
-
-        //TODO (gayeon) : change timeslot if user click change the date
-        changeTheDateView = (TextView) findViewById(R.id.changeTheDateView);
-        datePicker = (DatePicker) findViewById(R.id.datepicker);
-
-        changeTheDateView.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                datePicker.setVisibility(View.VISIBLE);
-
-                datePicker.init(datePicker.getYear(), datePicker.getMonth(),
-                        datePicker.getDayOfMonth(),
-                        new DatePicker.OnDateChangedListener(){
-
-                            @Override
-                            public void onDateChanged(DatePicker view, int year,
-                                                      int monthOfYear, int dayOfMonth){
-                                selectedDate = String.format("%d-%d-%d", year, monthOfYear + 1,
-                                        dayOfMonth);
-                                dateView.setText(selectedDate);
-                            }
-                        });
-            }
-        });
-
-        timeListView.setAdapter(timeslotAdapter);
+        timeListView.setAdapter(adapter);
         ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
@@ -174,7 +123,7 @@ public class ReservationActivity extends AppCompatActivity {
         upButton = (ImageButton) findViewById(R.id.upButton);
         downButton = (ImageButton) findViewById(R.id.downButton);
 
-        //Set ticket count default value as minGuestCount
+        //Set ticketcnt default value as minGuestCount
         ticketCount = selectedClass.getMinGuestCount();
         numTickets.setText(Integer.toString(ticketCount));
 
@@ -208,10 +157,9 @@ public class ReservationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ReservationActivity.this);
-                // TODO (woongjin) need to refactor this block
+                //TODO (woongjin) need to refactor this block
                 //now its spaghetti code
-                if(!(selectedTime == null || ticketCount == 0 ||
-                        timeslot.get(selectedTimeSlotIdx).getIsBooked())){
+                if(selectedTime != null && ticketCount != 0){
                     // title
                     TextView title = new TextView(ReservationActivity.this);
                     title.setGravity(Gravity.CENTER);
@@ -238,6 +186,7 @@ public class ReservationActivity extends AppCompatActivity {
                             .OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
+                            //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
                             requestBody.put("timeTableIdx",

@@ -85,7 +85,7 @@
             <TextView
                 android:id="@+id/numOfPeopleView"
                 android:layout_width="327dp"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
                 android:layout_below="@id/classImgView"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="12dp"
@@ -108,7 +108,7 @@
             <TextView
                 android:id="@+id/priceView"
                 android:layout_width="327dp"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
                 android:layout_below="@id/classImgView"
                 android:layout_marginStart="60dp"
                 android:layout_marginTop="50dp"
