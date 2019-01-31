@@ -120,4 +120,8 @@ public class Reservation implements Parcelable
         return 0;
     }
 
+    public boolean isValid(){
+        if (expertName == null) return false;
+        else return true;
+    }
 }

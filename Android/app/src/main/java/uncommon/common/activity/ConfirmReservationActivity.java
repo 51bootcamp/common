@@ -22,6 +22,7 @@ import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
 
+
 public class ConfirmReservationActivity extends AppCompatActivity {
 
     TextView classTextView;
@@ -60,12 +61,12 @@ public class ConfirmReservationActivity extends AppCompatActivity {
 
                 classTextView.setText(res.getClassName());
                 expertTextView.setText(res.getExpertName());
-                numOfPeopleView.setText(res.getGuestCount().toString());
+                //numOfPeopleView.setText(res.getGuestCount().toString());
                 totalResPriceView.setText(res.getTotalResPrice().toString());
 
-                //convert date format yyyy-MM-dd into dd-MMM-yyyy
+                //convert date format yyyy-MM-dd into E, MMM dd,  yyyy
                 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                DateFormat outputFormat = new SimpleDateFormat("E dd MMM yyyy");
+                DateFormat outputFormat = new SimpleDateFormat("E, MMM dd, yyyy");
                 String inputDateStr= res.getDate();
 
                 Call<ClassList> request = service.getClassList(inputDateStr);

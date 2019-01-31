@@ -39,13 +39,10 @@ public class PlaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
 
-
         Bundle bundle = new Bundle();
-
 
         //Reservation Notification
         resNotificationTextView = (TextView) this.findViewById(R.id.resNotificationText);
-
 
         placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         placeTextView = (TextView) findViewById(R.id.placeTextView);
@@ -90,17 +87,13 @@ public class PlaceActivity extends AppCompatActivity {
         request.enqueue(new Callback<Reservation>() {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-                //no reservation
-                if (response.code() == 203) {
-                    resNotificationTextView.setVisibility(View.GONE);
-                }
                 //upcoming notification
-                else {
+                if (response.body().isValid()) {
                     Reservation res = response.body();
 
                     //convert date format yyyy-MM-dd into dd-MMM-yyyy
                     DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    DateFormat outputFormat = new SimpleDateFormat("E dd MMM yyyy");
+                    DateFormat outputFormat = new SimpleDateFormat("dd MMM yyyy");
                     String inputDateStr= res.getDate();
                     Date date = null;
                     try {
@@ -113,6 +106,10 @@ public class PlaceActivity extends AppCompatActivity {
                     resNotificationTextView.setText(outputDateStr + " · " + res.getClassName() +
                             " · " + res.getExpertName());
                     resNotificationTextView.setSelected(true);
+                }
+                //no reservation
+                else {
+                    resNotificationTextView.setVisibility(View.GONE);
                 }
             }
 
