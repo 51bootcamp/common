@@ -150,20 +150,25 @@ public class ReservationActivity extends AppCompatActivity {
                                         dayOfMonth);
                                 dateView.setText(selectedDate);
 
-                                Call<Class> request = service.getClassInfo(selectedDate, selectedClassID);
+                                Call<Class> request = service.getClassInfo(selectedDate,
+                                        selectedClassID);
                                 request.enqueue(new Callback<Class>() {
                                     @Override
-                                    public void onResponse(Call<Class> call, Response<Class> response) {
+                                    public void onResponse(Call<Class> call,
+                                                           Response<Class> response) {
                                         selectedClass = response.body();
                                         timeslot = selectedClass.getAvailableTimeTable();
                                         timeSlotIdxList.clear();
                                         timeList.clear();
 
-                                        for (int timeListIdx = 0; timeListIdx < timeslot.size(); timeListIdx++){
-                                            String timeString = timeslot.get(timeListIdx).getStartTime().toString() + " ~ "
-                                                    + timeslot.get(timeListIdx).getEndTime().toString();
+                                        for (int idx = 0; idx < timeslot.size(); idx++){
+                                            String timeString =
+                                                    timeslot.get(idx).getStartTime().toString()
+                                                            + " ~ "
+                                                    + timeslot.get(idx).getEndTime().toString();
                                             timeList.add(timeString);
-                                            timeSlotIdxList.add(timeslot.get(timeListIdx).getTimeTableIdx());
+                                            timeSlotIdxList.add(timeslot.get(idx)
+                                                    .getTimeTableIdx());
                                         }
                                         timeslotAdapter.notifyDataSetChanged();
                                     }
