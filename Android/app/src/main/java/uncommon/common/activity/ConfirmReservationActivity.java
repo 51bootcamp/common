@@ -81,7 +81,8 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                         }
                         String imageURL =
                                 "http://52.8.187.167:8000" + reservationClass.getCoverImage().get(0);
-                        Picasso.get().load(imageURL).resize(2430, 1600).onlyScaleDown().into(classImgView);
+                        Picasso.get().load(imageURL).resize(2438, 1600)
+                                .onlyScaleDown().into(classImgView);
 
                         Date date = null;
                         try {
@@ -95,14 +96,14 @@ public class ConfirmReservationActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ClassList> call, Throwable t) {
-
+                        //TODO (kahye)
                     }
                 });
             }
 
             @Override
             public void onFailure(Call<Reservation> call, Throwable t) {
-
+                //TODO (kahye)
             }
         });
     }

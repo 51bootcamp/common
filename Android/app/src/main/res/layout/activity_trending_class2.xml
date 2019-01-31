@@ -33,6 +33,7 @@
                 android:id="@+id/datepicker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
                 android:layout_gravity="center"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="29dp">
@@ -55,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="11dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:orientation="horizontal"

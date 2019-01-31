@@ -1,6 +1,5 @@
 package uncommon.common.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,7 +31,6 @@ public class PlaceActivity extends AppCompatActivity {
     ImageButton placeimgButton;
     TextView resNotificationTextView;
     TextView placeTextView;
-    TextView confirmResTextView;
     String selectedClass;
     String selectedDate;
 
@@ -85,8 +83,6 @@ public class PlaceActivity extends AppCompatActivity {
                     }
                 });
             }
-
-
         });
 
         ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
@@ -94,7 +90,6 @@ public class PlaceActivity extends AppCompatActivity {
         request.enqueue(new Callback<Reservation>() {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
-
                 //no reservation
                 if (response.code() == 203) {
                     resNotificationTextView.setVisibility(View.GONE);
@@ -124,7 +119,6 @@ public class PlaceActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Reservation> call, Throwable t) {
                 //TODO (kahye) : error handling
-
             }
         });
     }
@@ -134,13 +128,11 @@ public class PlaceActivity extends AppCompatActivity {
                 ConfirmReservationActivity.class);
 
         Bundle bundle = new Bundle();
-        //bundle.putString("classImgURL", ImgURL);
         confirmResIntent.putExtra("_classInfo", selectedClass);
         confirmResIntent.putExtra("_date", selectedDate);
         confirmResIntent.putExtras(bundle);
 
         startActivity(confirmResIntent);
-
     }
 
     @Override

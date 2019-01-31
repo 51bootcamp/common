@@ -69,7 +69,7 @@
             <TextView
                 android:id="@+id/resDateTextView"
                 android:layout_width="300dp"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
                 android:layout_below="@id/classImgView"
                 android:layout_marginStart="85dp"
                 android:layout_marginTop="17dp"
@@ -92,7 +92,7 @@
             <TextView
                 android:id="@+id/numOfPeopleView"
                 android:layout_width="327dp"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
                 android:layout_below="@id/classImgView"
                 android:layout_marginStart="85dp"
                 android:layout_marginTop="50dp"
@@ -115,7 +115,7 @@
             <TextView
                 android:id="@+id/totalResPriceView"
                 android:layout_width="327dp"
-                android:layout_height="20dp"
+                android:layout_height="22dp"
                 android:layout_below="@id/classImgView"
                 android:layout_marginStart="85dp"
                 android:layout_marginTop="80dp"
