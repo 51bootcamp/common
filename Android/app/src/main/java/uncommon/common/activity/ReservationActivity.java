@@ -37,6 +37,7 @@ import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
+import uncommon.common.utils.GradientTransformation;
 import uncommon.common.utils.ListDynamicViewUtil;
 
 public class ReservationActivity extends AppCompatActivity {

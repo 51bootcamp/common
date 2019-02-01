@@ -76,7 +76,10 @@ public class Adapter extends PagerAdapter {
             }
         });
 
-        Picasso.get().load(ImgURL).resize(2048, 1600).onlyScaleDown().transform(new GradientTransformation())
+        Picasso.get().load(ImgURL)
+                .resize(2048, 1600)
+                .onlyScaleDown()
+                .transform(new GradientTransformation())
                 .into(classButton);
 
         classButton.setOnClickListener(new View.OnClickListener() {
