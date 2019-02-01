@@ -21,6 +21,6 @@ urlpatterns = [
     	name = 'getReservation'),
     path('upload/', views.imageUpload, name = 'imageUpload'),
     url(r'^api-auth/', include('rest_framework.urls')),
-    url(r'^docs/', schema_view),
+    url(r'^docs/', schema_view)
 
 ]
