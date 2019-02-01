@@ -85,6 +85,12 @@
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="18dp" />
 
-        </RelativeLayout>
+        <Button
+            android:id="@+id/reviewbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/placeTextView"
+            android:text="review"/>
 
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

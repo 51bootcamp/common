@@ -179,3 +179,23 @@ def getReservation(request, userEmail):
                             "startTime"     : startTime,
                             "endTime"       : endTime
                         })
+
+@csrf_exempt
+def writeReview(request):
+    jsonBody = json.loads(request.body)
+
+    bookingUser = User.objects.get(pk = jsonBody['userEmail'])
+    classID = Class.objects.get(pk = jsonBody['classID'])
+
+    newReview = Review(title = jsonBody['title'],
+    content = jsonBody['content'],
+
+    rating = jsonBody['rating'],
+    classID = classID,
+    userID = bookingUser)
+
+    newReview.save()
+
+    return JsonResponse({
+                             "reviewIdx"     : newReview.reviewIdx
+    })
