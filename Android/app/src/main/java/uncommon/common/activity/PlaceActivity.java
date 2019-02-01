@@ -120,6 +120,7 @@ public class PlaceActivity extends AppCompatActivity {
             }
         });
 
+        //TODO(gayeon) : change button position to navigation bar
         Button reviewButton = (Button) findViewById(R.id.reviewbutton);
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
