@@ -188,7 +188,7 @@ public class ReservationActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which){
                             //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
-                            requestBody.put("userEmail", "jmj@kookmin.ac.kr");
+                            requestBody.put("userEmail", "kahye5232@naver.com");
                             requestBody.put("timeTableIdx",
                                     timeSlotIdxList.get(selectedTimeSlotIdx));
                             requestBody.put("guestCount", ticketCount);
