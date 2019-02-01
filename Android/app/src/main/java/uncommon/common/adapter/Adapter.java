@@ -23,6 +23,7 @@ import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.ClassList;
 import uncommon.common.network.RetrofitInstance;
+import uncommon.common.utils.GradientTransformation;
 
 public class Adapter extends PagerAdapter {
     private ClassList classList;
@@ -75,7 +76,11 @@ public class Adapter extends PagerAdapter {
             }
         });
 
-        Picasso.get().load(ImgURL).resize(2048, 1600).onlyScaleDown().into(classButton);
+        Picasso.get().load(ImgURL)
+                .resize(2048, 1600)
+                .onlyScaleDown()
+                .transform(new GradientTransformation())
+                .into(classButton);
 
         classButton.setOnClickListener(new View.OnClickListener() {
             @Override

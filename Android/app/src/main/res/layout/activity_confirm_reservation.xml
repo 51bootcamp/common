@@ -35,7 +35,7 @@
                 android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="210dp"
+                android:layout_marginTop="200dp"
                 android:textColor="#ffffff"
                 android:textSize="24dp"
                 android:textStyle="bold"
@@ -48,11 +48,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="240dp"
+                android:layout_marginTop="230dp"
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/classTextView"/>
+
+            <Button
+                android:id="@+id/confirmTextView"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="300dp"
+                android:layout_marginTop="223dp"
+                android:background="@color/white"
+                android:text="CONFIRMED" />
 
             <TextView
                 android:id="@+id/dateView"
@@ -63,65 +72,196 @@
                 android:layout_below="@+id/classImgView"
                 android:layout_alignParentLeft="true"
                 android:text="Date"
-                android:textSize="22sp"
-                />
+                android:textStyle="bold"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/resDateTextView"
-                android:layout_width="300dp"
+                android:layout_width="370dp"
                 android:layout_height="22dp"
-                android:layout_below="@id/classImgView"
-                android:layout_marginStart="85dp"
-                android:layout_marginTop="17dp"
+                android:layout_below="@id/dateView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
                 android:textSize="18sp" />
 
-            <ImageView
-                android:id="@+id/peopleImgView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/classImgView"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="50dp"
+            <TextView
+                android:id="@+id/resTimeTextView"
+                android:layout_width="370dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/resDateTextView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
-                android:src="@drawable/people"/>
+                android:textSize="18sp"/>
+
+            <View
+                android:id="@+id/underDateHLines"
+                android:layout_width="375dp"
+                android:layout_height="3dp"
+                android:layout_below="@id/resTimeTextView"
+                android:background="@drawable/horizental_lines"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"/>
+
+            <TextView
+                android:id="@+id/addressTextView"
+                android:layout_width="90dp"
+                android:layout_height="31dp"
+                android:layout_below="@+id/underDateHLines"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentLeft="true"
+                android:text="Address"
+                android:textStyle="bold"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/addressInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_below="@id/addressTextView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="188 The Embarcadero,"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/cityStateInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_below="@id/addressInfo"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="San Francisco, CA 94105"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/underAddressHLines"
+                android:layout_width="375dp"
+                android:layout_height="3dp"
+                android:layout_below="@id/cityStateInfo"
+                android:background="@drawable/horizental_lines"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/whosComingTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:layout_below="@+id/underAddressHLines"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:text="Who's Coming"
+                android:textStyle="bold"
+                android:textSize="22sp" />
 
             <TextView
                 android:id="@+id/numOfPeopleView"
-                android:layout_width="327dp"
-                android:layout_height="22dp"
-                android:layout_below="@id/classImgView"
-                android:layout_marginStart="85dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:textSize="18sp"/>
-
-            <ImageView
-                android:id="@+id/priceImgView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/classImgView"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="80dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:src="@drawable/coin"/>
+                android:layout_height="31dp"
+                android:layout_below="@+id/underAddressHLines"
+                android:layout_marginStart="168dp"
+                android:layout_marginTop="12dp"
+                android:textStyle="bold"
+                android:textSize="22sp" />
 
             <TextView
-                android:id="@+id/totalResPriceView"
-                android:layout_width="327dp"
+                android:id="@+id/resUserEmailTextInfo"
+                android:layout_width="370dp"
                 android:layout_height="22dp"
-                android:layout_below="@id/classImgView"
-                android:layout_marginStart="85dp"
-                android:layout_marginTop="80dp"
+                android:layout_below="@id/whosComingTextView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/resUserInfo"
+                android:layout_width="370dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/resUserEmailTextInfo"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
                 android:textSize="18sp"/>
+
+            <View
+                android:id="@+id/underWhosComingHLines"
+                android:layout_width="375dp"
+                android:layout_height="3dp"
+                android:layout_below="@id/resUserInfo"
+                android:background="@drawable/horizental_lines"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/totalCostTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:layout_below="@+id/underWhosComingHLines"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentLeft="true"
+                android:text="Total Cost"
+                android:textStyle="bold"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/usdTextView"
+                android:layout_width="370dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/totalCostTextView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/underUsdHLines"
+                android:layout_width="375dp"
+                android:layout_height="3dp"
+                android:layout_below="@id/usdTextView"
+                android:background="@drawable/horizental_lines"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp" />
+
+            <TextView
+                android:id="@+id/cancellationPolicyTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:layout_below="@+id/underUsdHLines"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="12dp"
+                android:layout_alignParentLeft="true"
+                android:text="Cancellation Policy"
+                android:textStyle="bold"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/cancellationPolicyInfo"
+                android:layout_width="370dp"
+                android:layout_height="22dp"
+                android:layout_below="@id/cancellationPolicyTextView"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="About the cancellation policy........."
+                android:textSize="18sp" />
 
         </RelativeLayout>
 
