@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AccountManager accountManager = new AccountManager(context);
     private CallbackManager callbackManager;
-    private FacebookCallback mLoginCallback;
+    private FacebookCallback LoginCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         LoginButton.setReadPermissions(Arrays.asList("email","public_profile"));
         LoginButton.setAuthType(AUTH_TYPE);
 
-        mLoginCallback = new FacebookLoginCallback(context);
-        LoginButton.registerCallback(callbackManager, mLoginCallback);
+        LoginCallback = new FacebookLoginCallback(context);
+        LoginButton.registerCallback(callbackManager, LoginCallback);
     }
 
     @Override

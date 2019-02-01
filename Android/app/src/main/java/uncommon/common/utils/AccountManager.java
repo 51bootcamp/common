@@ -48,7 +48,7 @@ public class AccountManager {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                //TODO(woongjin) handle onFailure
             }
         });
     }
@@ -69,7 +69,7 @@ public class AccountManager {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-
+                //TODO(woongjin) handle onFailure
             }
         });
     }
@@ -86,7 +86,7 @@ public class AccountManager {
         builder.setCustomTitle(title);
 
         TextView msg = new TextView(context);
-        msg.setText("You are not sign-up yet.\n Would you like to sign up?");
+        msg.setText("Welcome, " + userName + "!\nWould you like to sign up?");
         msg.setGravity(Gravity.LEFT);
         Typeface tf = context.getResources().getFont(R.font.rockb);
         msg.setTypeface(tf);
