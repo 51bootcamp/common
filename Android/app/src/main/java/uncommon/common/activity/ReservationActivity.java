@@ -250,7 +250,7 @@ public class ReservationActivity extends AppCompatActivity {
                             .OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
-                            org.json.simple.JSONObject requestBody = new JSONObject();
+                            JSONObject requestBody = new JSONObject();
                             requestBody.put("userEmail", "jmj@kookmin.ac.kr");
                             requestBody.put("timeTableIdx",
                                     timeSlotIdxList.get(selectedTimeSlotIdx));
