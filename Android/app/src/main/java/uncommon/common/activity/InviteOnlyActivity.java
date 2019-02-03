@@ -48,7 +48,8 @@ public class InviteOnlyActivity extends AppCompatActivity {
         submitTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
+                ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                        .create(ApiInterface.class);
                 Call<Void> request = service.getInviteCode(inviteEditText.getText().toString());
                 request.enqueue(new Callback<Void>() {
                     @Override
@@ -59,7 +60,8 @@ public class InviteOnlyActivity extends AppCompatActivity {
                             startActivity(signupIntent);
                         } else if(response.code() == 203) {
                             Toast.makeText(InviteOnlyActivity.this,
-                                    "Invitation code is already expired", Toast.LENGTH_LONG).show();
+                                    "Invitation code is already expired",
+                                    Toast.LENGTH_LONG).show();
                         }
                         else {
                             Toast.makeText(InviteOnlyActivity.this,

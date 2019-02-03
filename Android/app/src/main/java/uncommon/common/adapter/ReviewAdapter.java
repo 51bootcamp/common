@@ -11,9 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uncommon.common.R;
-import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Review;
-import uncommon.common.network.RetrofitInstance;
 
 public class ReviewAdapter extends ArrayAdapter<String> {
 
