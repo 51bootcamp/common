@@ -3,7 +3,6 @@ package uncommon.common.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -70,12 +69,9 @@ public class SignupActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void click(View view) {
-        Intent loginintent = new Intent(SignupActivity.this, MainActivity.class);
-        startActivity(loginintent);
-    }
     public void requestMe(AccessToken token) {
-        GraphRequest graphRequest = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+        GraphRequest graphRequest = GraphRequest.newMeRequest(token,
+                new GraphRequest.GraphJSONObjectCallback() {
             @Override
             public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
