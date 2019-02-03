@@ -27,9 +27,10 @@ public class ConfirmReservationActivity extends AppCompatActivity {
 
     TextView classTextView;
     TextView expertTextView;
-    TextView numOfPeopleView;
     TextView resDateTextView;
-    TextView totalResPriceView;
+    TextView usdTextView;
+    TextView resTimeTextView;
+    TextView resUserEmailTextInfo;
     ImageView classImgView;
 
     @Override
@@ -42,9 +43,10 @@ public class ConfirmReservationActivity extends AppCompatActivity {
         classImgView = (ImageView) this.findViewById(R.id.classImgView);
         classTextView = (TextView) this.findViewById(R.id.classTextView);
         expertTextView = (TextView) this.findViewById(R.id.expertTextView);
-        numOfPeopleView = (TextView) this.findViewById(R.id.numOfPeopleView);
-        totalResPriceView = (TextView) this.findViewById(R.id.totalResPriceView);
         resDateTextView = (TextView) this.findViewById(R.id.resDateTextView);
+        resTimeTextView = (TextView) this.findViewById(R.id.resTimeTextView);
+        resUserEmailTextInfo = (TextView) this.findViewById(R.id.resUserEmailTextInfo);
+        usdTextView = (TextView) this.findViewById(R.id.usdTextView);
 
         // class Img
         String imageURL = bundle.getString("classImgURL");
@@ -61,8 +63,12 @@ public class ConfirmReservationActivity extends AppCompatActivity {
 
                 classTextView.setText(res.getClassName());
                 expertTextView.setText(res.getExpertName());
-                //numOfPeopleView.setText(res.getGuestCount().toString());
-                totalResPriceView.setText(res.getTotalResPrice().toString());
+                resTimeTextView.setText(res.getStartTime()+ " - " + res.getEndTime());
+                resUserEmailTextInfo.setText(res.getUserEmail());
+                /*usdTextView.setText("$ " + res.getTotalResPrice().toString() + " * " +
+                        res.getGuestCount() + " (person) " + " = $ " + res.getTotalResPrice()
+                        *res.getGuestCount());*/
+                usdTextView.setText("$ " + res.getTotalResPrice()*res.getGuestCount());
 
                 //convert date format yyyy-MM-dd into E, MMM dd,  yyyy
                 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");

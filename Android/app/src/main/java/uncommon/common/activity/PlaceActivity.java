@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
@@ -34,6 +35,7 @@ public class PlaceActivity extends AppCompatActivity {
     TextView placeTextView;
     String selectedClass;
     String selectedDate;
+    ImageView peopleImgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class PlaceActivity extends AppCompatActivity {
 
         //Reservation Notification
         resNotificationTextView = (TextView) this.findViewById(R.id.resNotificationText);
-
+        peopleImgView = (ImageView) this.findViewById(R.id.peopleImgView);
         placeimgButton = (ImageButton) findViewById(R.id.cafeImgButton);
         placeTextView = (TextView) findViewById(R.id.placeTextView);
 
@@ -110,6 +112,7 @@ public class PlaceActivity extends AppCompatActivity {
                 }
                 //no reservation
                 else {
+                    peopleImgView.setVisibility(View.GONE);
                     resNotificationTextView.setVisibility(View.GONE);
                 }
             }

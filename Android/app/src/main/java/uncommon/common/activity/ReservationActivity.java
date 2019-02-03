@@ -31,7 +31,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 import uncommon.common.R;
+import uncommon.common.utils.GradientTransformation;
+import uncommon.common.utils.ListDynamicViewUtil;
 import uncommon.common.adapter.ReviewAdapter;
 import uncommon.common.adapter.TimeSlotAdapter;
 import uncommon.common.api_interface.ApiInterface;
@@ -41,8 +44,7 @@ import uncommon.common.models.Review;
 import uncommon.common.models.ReviewList;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
-import uncommon.common.utils.GradientTransformation;
-import uncommon.common.utils.ListDynamicViewUtil;
+
 
 public class ReservationActivity extends AppCompatActivity {
 
@@ -108,7 +110,6 @@ public class ReservationActivity extends AppCompatActivity {
 
         // time list
         final ListView timeListView = (ListView) findViewById(R.id.timeListView);
-
         final List<String> timeList = new ArrayList<>();
         timeslot = selectedClass.getAvailableTimeTable();
 
@@ -257,8 +258,9 @@ public class ReservationActivity extends AppCompatActivity {
                             .OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
+                            //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
-                            requestBody.put("userEmail", "jmj@kookmin.ac.kr");
+                            requestBody.put("userEmail", "kahye5232@naver.com");
                             requestBody.put("timeTableIdx",
                                     timeSlotIdxList.get(selectedTimeSlotIdx));
                             requestBody.put("guestCount", ticketCount);

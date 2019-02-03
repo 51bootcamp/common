@@ -80,9 +80,7 @@ public class MainActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                         accountManager.Login(userEmail, userName);
-
                     }
                 });
         Bundle parameters = new Bundle();

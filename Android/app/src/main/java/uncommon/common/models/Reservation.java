@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Reservation implements Parcelable
 {
+    @SerializedName("userEmail")
+    @Expose
+    private String userEmail;
     @SerializedName("expertName")
     @Expose
     private String expertName;
@@ -47,6 +50,7 @@ public class Reservation implements Parcelable
     };
 
     protected Reservation(Parcel in) {
+        this.userEmail = ((String) in.readValue((String.class.getClassLoader())));
         this.expertName = ((String) in.readValue((String.class.getClassLoader())));
         this.classID = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.className = ((String) in.readValue((String.class.getClassLoader())));
@@ -59,6 +63,8 @@ public class Reservation implements Parcelable
 
     public Reservation() {
     }
+
+    public String getUserEmail() { return userEmail; }
 
     public String getExpertName() {
         return expertName;
@@ -106,6 +112,7 @@ public class Reservation implements Parcelable
     }
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(userEmail);
         dest.writeValue(expertName);
         dest.writeValue(classID);
         dest.writeValue(className);
