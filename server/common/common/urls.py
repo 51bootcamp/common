@@ -19,9 +19,10 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.static import serve
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/',include('api.urls'))
+    path('api/v1/',include('api.urls')),
 ]
 
 # Uploaded image file shows on web page

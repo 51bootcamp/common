@@ -52,8 +52,7 @@ public class Review implements Parcelable {
         
     }
 
-    public Review(String userEmail, String userName, Integer classID, String title, String content,
-                  Float rating) {
+    public Review(Integer classID, String title, String content, Float rating) {
         this.userEmail = userEmail;
         this.userName = userName;
         this.classID = classID;

@@ -84,7 +84,7 @@ public class PlaceActivity extends AppCompatActivity {
         });
 
         ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<Reservation> request = service.getReservation("kahye5232@naver.com");
+        Call<Reservation> request = service.getReservation();
         request.enqueue(new Callback<Reservation>() {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {

@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class MyReservationActivity extends AppCompatActivity {
         context = this;
 
         // get data from server
-        Call<ReservationList> request = service.getReservationList("jmj@kookmin.ac.kr");
+        Call<ReservationList> request = service.getReservationList();
         request.enqueue(new Callback<ReservationList>() {
             @Override
             public void onResponse(Call<ReservationList> call, Response<ReservationList> response) {
@@ -58,7 +57,8 @@ public class MyReservationActivity extends AppCompatActivity {
 
                 reservationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    public void onItemClick(AdapterView<?> adapterView, View view,
+                                            int position, long l) {
                         view.setSelected(true);
 
                         Intent confirmReserveIntent = new Intent(MyReservationActivity.this,

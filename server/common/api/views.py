@@ -1,18 +1,21 @@
 #-*- coding: utf-8 -*-
 from api.models import * #import models
+from api.custombackend import BaseJSONWebTokenAuthentication
 
 from datetime import datetime
-import pytz
 
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt #csrf exempt
 
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-import json
+from rest_framework import authentication, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+
+import hashlib, json, jwt, pytz
 
 def index(request):
     return HttpResponse("Hello woRld! you're at the api index.")
@@ -34,16 +37,23 @@ def signup(request):
     jsonBody = json.loads(request.body)
 
     try:
-        User.objects.get(pk = jsonBody['userEmail'])
+        User.objects.get(email = jsonBody['userEmail'])
 
     except User.DoesNotExist:
-        newUser = User(userEmail =  jsonBody['userEmail'],
-            userName = jsonBody['userName'],
-            accountType = jsonBody['accountType'])
+        userEmail = jsonBody['userEmail']
+        password = hashlib.sha256(userEmail.encode()).hexdigest()[:10]
+        newUser = User.objects.create_user(username = jsonBody['userName'],
+                                            email = userEmail,
+                                            password = password)
         newUser.save()
 
-        return HttpResponse("Signup Success", status = 201);
-
+        payload = {
+            'userEmail' : newUser.email,
+            'userName'  : newUser.username
+        }
+        return JsonResponse({
+            'token' : jwt.encode(payload, "SECRET_KEY").decode('utf-8')
+            })
     else:
         return HttpResponse("you are already registered", status = 409)
 
@@ -54,17 +64,26 @@ def login(request):
 
     jsonBody = json.loads(request.body)
 
-    try:
-        user = User.objects.get(pk = jsonBody['userEmail'])
+    userEmail = jsonBody['userEmail']
 
+    try:
+        user = User.objects.get(email = userEmail)
     except User.DoesNotExist:
         return HttpResponse("Please signup first", status = 409)
-
+    if user:
+        payload = {
+            'userEmail' : user.email,
+            'userName'  : user.username
+        }
+        return JsonResponse({
+            'token' : jwt.encode(payload, "SECRET_KEY").decode('utf-8')
+            })
     else:
-        #TODO: Password Check routine
         return JsonResponse({"userName":user.userName}, status = 202)
 
 def getClassList(request, date):
+    authentication_classes = (BaseJSONWebTokenAuthentication, )
+
     try:
         availableClassList = TimeTable.objects.filter( date = date )
 
@@ -96,8 +115,10 @@ def getClassList(request, date):
 
 def getClassInfo(request, classID, date):
     selectedClass = Class.objects.get(pk = classID)
-    expert = User.objects.get(pk = selectedClass.expertEmail_id)
-    timeslot = TimeTable.objects.filter(classID = selectedClass, date = date)
+    expert = selectedClass.expert
+    timeslot = TimeTable.objects.filter(classID = selectedClass, 
+                                        date = date,
+                                        isBooked = False)
 
     availableTimeTable = []
     for i in timeslot:
@@ -111,79 +132,20 @@ def getClassInfo(request, classID, date):
         jsondict["endTime"] = et
         jsondict["isBooked"] = i.isBooked
         availableTimeTable.append(jsondict)
-    availableTimeTable = sorted(availableTimeTable, key=lambda
-        timeTableList : timeTableList["startTime"]);
+    availableTimeTable = sorted(availableTimeTable, 
+        key=lambda timeTableList : timeTableList["epStartTime"]);
 
     for slot in availableTimeTable :
         del slot["epStartTime"]
-
     return JsonResponse({
                             "classID"           : selectedClass.classID,
                             "className"         : selectedClass.className,
-                            "expertName"        : expert.userName,
+                            "expertName"        : expert.username,
                             "minGuestCount"     : selectedClass.minGuestCount,
                             "maxGuestCount"     : selectedClass.maxGuestCount,
-                            "availableTimeTable": availableTimeTable,
-                            "price"             : selectedClass.price
-                        })
-
-@csrf_exempt
-def makeReservation(request):
-    jsonBody = json.loads(request.body)
-
-    bookingUser = User.objects.get(pk = jsonBody['userEmail'])
-    selectedTimeTable = TimeTable.objects.get(pk = jsonBody['timeTableIdx'])
-
-    if selectedTimeTable.isBooked:
-        return HttpResponse("Already booked", status = 409)
-    newReservation = Reservation(timeTableIdx = selectedTimeTable,
-                                userEmail = bookingUser,
-                                guestCount = jsonBody['guestCount'])
-    selectedTimeTable.isBooked = True
-    #TODO: think about how to deal with synchronization
-    #mark the isbooked field first and than
-    selectedTimeTable.save(update_fields = ['isBooked'])
-    #made the reservation
-    newReservation.save()
-    selectedClass = selectedTimeTable.classID
-
-    expert = User.objects.get(pk = selectedClass.expertEmail_id)
-    startTime, endTime = epochToLocalTime(selectedTimeTable.startTime,
-                                 selectedTimeTable.endTime,
-                                 selectedTimeTable.timezone)
-
-    return JsonResponse({
-                            "expertName"    : expert.userName,
-                            "className"     : selectedClass.className,
-                            "date"          : selectedTimeTable.date,
-                            "startTime"     : startTime,
-                            "endTime"       : endTime
-                        })
-
-def getReservation(request, userEmail):
-    try:
-        reservation = Reservation.objects.get(userEmail = userEmail)
-
-    except Reservation.DoesNotExist:
-        return HttpResponse("No upcoming class", status = 203)
-
-    else:
-        bookedTimeTable = reservation.timeTableIdx
-        bookedClass = bookedTimeTable.classID
-        expert = User.objects.get(pk = bookedClass.expertEmail_id)
-
-        startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
-                                     bookedTimeTable.endTime,
-                                     bookedTimeTable.timezone)
-
-    return JsonResponse({
-                            "expertName"    : expert.userName,
-                            "classID"       : bookedClass.classID,
-                            "className"     : bookedClass.className,
-                            "price"         : bookedClass.price,
-                            "date"          : bookedTimeTable.date,
-                            "startTime"     : startTime,
-                            "endTime"       : endTime
+                            "price"             : selectedClass.price,
+                            "classRating"       : selectedClass.classRating,
+                            "availableTimeTable": availableTimeTable
                         })
 
 @csrf_exempt
@@ -202,9 +164,9 @@ def imageUpload(request):
 
 @csrf_exempt
 def writeReview(request):
+    bookingUser = request.user
     jsonBody = json.loads(request.body)
 
-    bookingUser = User.objects.get(pk = jsonBody['userEmail'])
     clasID = Class.objects.get(pk = jsonBody['classID'])
 
     newReview = Review(title = jsonBody['title'],
@@ -213,19 +175,10 @@ def writeReview(request):
                        classID = classID,
                        userID = bookingUser
     )
-    classID = Class.objects.get(pk = jsonBody['classID'])
 
-    newReview = Review(title = jsonBody['title'],
-    content = jsonBody['content'],
-
-    rating = jsonBody['rating'],
-    classID = classID,
-    userID = bookingUser)
     newReview.save()
 
-    return JsonResponse({
-                         "reviewIdx"     : newReview.reviewIdx
-    })
+    return JsonResponse({"reviewIdx" : newReview.reviewIdx})
 
 def getReviewList(request, classID):
     try:
@@ -243,10 +196,136 @@ def getReviewList(request, classID):
             jsondict["content"] = query.content
             jsondict["rating"] = query.rating
             jsondict["createdDate"] = query.createdDate
-            jsondict["userName"] = reviewer.userName
+            jsondict["userName"] = reviewer.username
 
             li.append(jsondict)
 
         li = sorted(li, key=lambda reviewList: reviewList["createdDate"],
                     reverse=False)
         return JsonResponse({"reviewList": li}, status=200)
+
+@csrf_exempt
+def imageUpload(request):
+    if request.method == 'POST':
+        # just for checking image upload properly
+        selectedClass = Class.objects.get(pk = 4)
+
+        newImage = Image(coverImage=request.FILES['coverImage'],
+                         ImageType=1,
+                         classID = selectedClass
+                         )
+        newImage.save()
+
+        return HttpResponse("upload image correctly", status = 200)
+
+class reservationView(APIView):
+    def post(self, request):
+        jsonBody = json.loads(request.body)
+
+        bookingUser = request.user
+        selectedTimeTable = TimeTable.objects.get(pk = jsonBody['timeTableIdx'])
+        if selectedTimeTable.isBooked:
+            return HttpResponse("Already booked", status = 409)
+        newReservation = Reservation(timeTableIdx = selectedTimeTable,
+                                    user = bookingUser,
+                                    guestCount = jsonBody['guestCount'])
+        selectedTimeTable.isBooked = True
+        #TODO: think about how to deal with synchronization
+        #mark the isbooked field first and than
+        selectedTimeTable.save(update_fields = ['isBooked'])
+        #made the reservation
+        newReservation.save()
+        selectedClass = selectedTimeTable.classID
+
+        expert = selectedClass.expert
+        startTime, endTime = epochToLocalTime(selectedTimeTable.startTime,
+                                     selectedTimeTable.endTime,
+                                     selectedTimeTable.timezone)
+
+        return JsonResponse({
+                                "expertName"    : expert.username,
+                                "className"     : selectedClass.className,
+                                "date"          : selectedTimeTable.date,
+                                "startTime"     : startTime,
+                                "endTime"       : endTime
+                            })
+
+    def get(self, request):
+        try:
+            reservation = Reservation.objects.get(user = request.user)
+
+        except Reservation.DoesNotExist:
+            return JsonResponse({}, status = 200)
+
+        else:
+            bookedTimeTable = reservation.timeTableIdx
+            bookedClass = bookedTimeTable.classID
+            expert = User.objects.get(email = bookedClass.expert.email)
+
+            startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
+                                         bookedTimeTable.endTime,
+                                         bookedTimeTable.timezone)
+
+        return JsonResponse({
+                                "userEmail"     : request.user.email,
+                                "expertName"    : expert.username,
+                                "classID"       : bookedClass.classID,
+                                "className"     : bookedClass.className,
+                                "price"         : bookedClass.price,
+                                "date"          : bookedTimeTable.date,
+                                "startTime"     : startTime,
+                                "endTime"       : endTime,
+                                "guestCount"    : reservation.guestCount
+                            })       
+
+class getReservationList(APIView):
+    def get(self, request):
+        try:
+            reservationList = Reservation.objects.filter(user = request.user)
+        except Reservation.DoesNotExist:
+            return HttpResponse("No reservation", status=203)
+        else:
+            li = []
+            for query in reservationList:
+                jsondict = {}
+                
+                reservation = Reservation.objects.get(pk=query.reservationID)
+                bookedTimeTable = reservation.timeTableIdx
+                bookedClass = bookedTimeTable.classID
+                expert = bookedClass.expert
+                classImage = Image.objects.get(classID = bookedClass)
+                startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
+                                                      bookedTimeTable.endTime,
+                                                      bookedTimeTable.timezone)
+                
+                jsondict["reservationID"] = reservation.reservationID
+                jsondict["userEmail"] = request.user.email
+                jsondict["expertName"] = expert.username
+                jsondict["classID"] = bookedClass.classID
+                jsondict["className"] = bookedClass.className
+                jsondict["price"] = bookedClass.price
+                jsondict["date"] = bookedTimeTable.date
+                jsondict["startTime"] = startTime
+                jsondict["endTime"] = endTime
+                jsondict["guestCount"] = reservation.guestCount
+                jsondict["coverImg"] = classImage.coverImage.url
+                li.append(jsondict)  # append: O(1)
+
+            li = sorted(li, key=lambda reservationList: reservationList["date"],
+                reverse=False)
+
+            return JsonResponse({"reservationList": li}, status=200)
+
+def getInviteCode(request, inviteCode):
+    try:
+        availableCode = InviteCode.objects.get(randomCode = inviteCode)
+        # print(availableCode.randomCode)
+    except InviteCode.DoesNotExist:
+        return HttpResponse("Invite Code mismatched", status = 201)
+    else:
+        if (availableCode.isExpired == True):
+            return HttpResponse("Invite Code mismatched", status = 203)
+        else :
+            availableCode.isExpired = True
+            availableCode.save()
+            return HttpResponse("Invite Code is existed", status=200)

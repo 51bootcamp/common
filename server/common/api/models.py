@@ -1,12 +1,12 @@
 #-*- coding: utf-8 -*-
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
-	userEmail = models.CharField(max_length = 40, primary_key = True)
-	userName = models.CharField(max_length = 40)
+class User(AbstractUser):
 	accountType = models.CharField(max_length = 40, default = "FACEBOOK")
 	isLecturer = models.BooleanField(default = False)
+
 
 class Class(models.Model):
 	classID = models.AutoField(primary_key = True)
@@ -18,7 +18,10 @@ class Class(models.Model):
 					validators = [MaxValueValidator(5.0),
 					MinValueValidator(0.0)])
 	RatingCount = models.IntegerField(default=0)
-	expertEmail = models.ForeignKey(User, on_delete = models.CASCADE)
+	expert = models.ForeignKey(User, on_delete = models.CASCADE)
+
+	def __str__(self):
+		return self.className
 
 class TimeTable(models.Model):
 	timeTableIdx = models.AutoField(primary_key = True)
@@ -33,7 +36,7 @@ class TimeTable(models.Model):
 class Reservation(models.Model):
 	reservationID = models.AutoField(primary_key = True)
 	guestCount = models.IntegerField()
-	userEmail = models.ForeignKey(User, on_delete = models.CASCADE)
+	user = models.ForeignKey(User, on_delete = models.CASCADE)
 	timeTableIdx = models.ForeignKey(TimeTable, on_delete = models.CASCADE)
 
 class Image(models.Model):
@@ -58,3 +61,11 @@ class Review(models.Model):
     createdDate = models.DateField(auto_now = True)
     classID = models.ForeignKey(Class, on_delete = models.CASCADE)
     userID = models.ForeignKey(User, on_delete = models.CASCADE)
+
+    def __str__(self):
+    	return self.title
+
+class InviteCode(models.Model):
+    inviteCodeID = models.AutoField(primary_key = True)
+    randomCode = models.CharField(max_length = 40)
+    isExpired = models.BooleanField(default = False)

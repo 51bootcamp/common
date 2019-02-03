@@ -53,7 +53,7 @@ public class ConfirmReservationActivity extends AppCompatActivity {
         Picasso.get().load(imageURL).fit().into(classImgView);
 
         ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<Reservation> request = service.getReservation("kahye5232@naver.com");
+        Call<Reservation> request = service.getReservation();
         request.enqueue(new Callback<Reservation>() {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
@@ -64,7 +64,7 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                 expertTextView.setText(res.getExpertName());
                 resTimeTextView.setText(res.getStartTime()+ " - " + res.getEndTime());
                 resUserEmailTextInfo.setText(res.getUserEmail());
-                usdTextView.setText("$ " + res.getTotalResPrice()*res.getGuestCount());
+                usdTextView.setText("$ " + res.getTotalResPrice() * res.getGuestCount());
 
                 //convert date format yyyy-MM-dd into E, MMM dd,  yyyy
                 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,10 +82,13 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                                 reservationClass = classList.getClassList().get(i);
                             }
                         }
-                        String imageURL =
-                                "http://52.8.187.167:8000" + reservationClass.getCoverImage().get(0);
-                        Picasso.get().load(imageURL).resize(2438, 1600)
-                                .onlyScaleDown().into(classImgView);
+                        String imageURL = "http://52.8.187.167:8000"
+                                + reservationClass.getCoverImage().get(0);
+                        Picasso.get()
+                                .load(imageURL)
+                                .resize(2438, 1600)
+                                .onlyScaleDown()
+                                .into(classImgView);
 
                         Date date = null;
                         try {
