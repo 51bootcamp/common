@@ -26,9 +26,6 @@ public class ReviewAdapter extends ArrayAdapter<String> {
     private TextView reviewContent;
     private TextView userName;
 
-    ApiInterface service = RetrofitInstance.getRetrofitInstance()
-            .create(ApiInterface.class);
-
     public ReviewAdapter(Context context, List<Review> reviews){
         super(context, android.R.layout.simple_list_item_1);
         this.context = context;

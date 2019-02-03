@@ -128,7 +128,7 @@ public class PlaceActivity extends AppCompatActivity {
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent reviewIntent = new Intent(PlaceActivity.this, ReviewActivity.class);
+                Intent reviewIntent = new Intent(PlaceActivity.this, MyReservationActivity.class);
                 startActivity(reviewIntent);
             }
         });
