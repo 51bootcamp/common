@@ -136,6 +136,4 @@
             android:layout_below="@id/placeTextView"
             android:layout_marginTop="30dp"
             android:text="review"/>
-
-    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
