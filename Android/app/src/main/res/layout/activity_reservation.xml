@@ -40,6 +40,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="230dp"
                 android:numStars="5"
+                android:progressBackgroundTint="@color/white"
                 android:rating="4"
                 android:stepSize="0.5"
                 app:layout_constraintTop_toBottomOf="@+id/classImgView"
@@ -137,6 +138,7 @@
                 android:layout_below="@id/priceView"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginBottom="15dp"
                 android:layout_marginEnd="20dp"
                 android:text="@string/changeDate"
                 android:textSize="15dp"/>
@@ -148,7 +150,6 @@
                 android:layout_below="@id/changeTheDateView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="gone"/>
 
@@ -160,7 +161,6 @@
                 android:layout_below="@id/datepicker"
                 android:listSelector="@color/colorPrimaryLight"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:scrollbars="vertical" />
 
@@ -171,7 +171,7 @@
                 android:layout_below="@id/timeListView"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:text="Tickets"
@@ -226,11 +226,48 @@
 
             <Button
                 android:id="@+id/getTickets"
-                android:layout_width="wrap_content"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryLight"
                 android:layout_below="@+id/numOfTickets"
                 android:layout_centerInParent="true"
-                android:text="Get Tickets" />
+                android:layout_marginTop="30dp"
+                android:text="Get Tickets"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/margin"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/textBackGround"
+                android:layout_below="@+id/getTickets"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/reviewText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/margin"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="Review"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <ListView
+                android:id="@+id/reviewList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/reviewText"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical" />
 
         </RelativeLayout>
 

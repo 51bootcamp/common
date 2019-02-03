@@ -7,10 +7,11 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-
 import uncommon.common.models.Class;
 import uncommon.common.models.ClassList;
 import uncommon.common.models.Reservation;
+import uncommon.common.models.Review;
+import uncommon.common.models.ReviewList;
 import uncommon.common.models.User;
 
 public interface ApiInterface {
@@ -32,4 +33,10 @@ public interface ApiInterface {
 
     @GET("reserve/{userEmail}")
     Call<Reservation> getReservation(@Path("userEmail") String userEmail);
+
+    @POST("review/")
+    Call<Review> writeReview(@Body Review review);
+
+    @GET("review/{classID}")
+    Call<ReviewList> getReviewList(@Path("classID") Integer classID);
 }

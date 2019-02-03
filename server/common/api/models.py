@@ -48,3 +48,12 @@ class Image(models.Model):
 
 	ImageType = models.IntegerField(default=1, choices=IMAGE_CHOICES)
 	classID = models.ForeignKey(Class, on_delete = models.CASCADE)
+
+class Review(models.Model):
+    reviewIdx = models.AutoField(primary_key = True)
+    title = models.CharField(max_length = 40)
+    content = models.CharField(max_length = 500)
+    rating = models.FloatField()
+    createdDate = models.DateField(auto_now = True)
+    classID = models.ForeignKey(Class, on_delete = models.CASCADE)
+    userID = models.ForeignKey(User, on_delete = models.CASCADE)

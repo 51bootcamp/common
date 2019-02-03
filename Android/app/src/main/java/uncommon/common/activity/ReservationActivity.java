@@ -1,5 +1,6 @@
 package uncommon.common.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -31,10 +32,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uncommon.common.R;
+import uncommon.common.adapter.ReviewAdapter;
 import uncommon.common.adapter.TimeSlotAdapter;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
+import uncommon.common.models.Review;
+import uncommon.common.models.ReviewList;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
 import uncommon.common.utils.GradientTransformation;
@@ -45,6 +49,7 @@ public class ReservationActivity extends AppCompatActivity {
     private TimeSlotAdapter timeslotAdapter;
     private ArrayList<Integer> timeSlotIdxList = new ArrayList<Integer>();
     private Button alertButton;
+    private Context context;
     private Class selectedClass;
     private DatePicker datePicker;
     private int ticketCount;
@@ -52,6 +57,10 @@ public class ReservationActivity extends AppCompatActivity {
     private Integer selectedTimeSlotIdx;
     private ImageButton upButton;
     private ImageButton downButton;
+    private List<Review> reviews;
+    private List<TimeTable> timeslot;
+    private ListView reviewListView;
+    private ReviewList reviewList;
     private String selectedDate;
     private String selectedTime;
     private TextView changeTheDateView;
@@ -60,13 +69,13 @@ public class ReservationActivity extends AppCompatActivity {
     private TextView numOfPeopleView;
     private TextView numTickets;
     private TextView priceView;
-    private List<TimeTable> timeslot;
     private ApiInterface service = RetrofitInstance.getRetrofitInstance()
             .create(ApiInterface.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_reservation);
         Bundle bundle = this.getIntent().getExtras();
 
@@ -81,8 +90,8 @@ public class ReservationActivity extends AppCompatActivity {
                 (classImgView);
 
         // class Info
-        classNameView = (TextView)findViewById(R.id.classTextView);
-        expertNameView = (TextView)findViewById(R.id.expertTextView);
+        classNameView = (TextView) findViewById(R.id.classTextView);
+        expertNameView = (TextView) findViewById(R.id.expertTextView);
         numOfPeopleView = (TextView) findViewById(R.id.numOfPeopleView);
         priceView = (TextView) findViewById(R.id.priceView);
 
@@ -237,10 +246,8 @@ public class ReservationActivity extends AppCompatActivity {
                     TextView msg = new TextView(
                             ReservationActivity.this);
                     msg.setText(selectedClass.getClassName() + "\n" + selectedDate + "\n"
-                                + selectedTime + "\n" + " " + ticketCount + " " + "tickets");
+                                + selectedTime + "\n" + ticketCount + " " + "tickets");
                     msg.setGravity(Gravity.LEFT);
-                    Typeface tf = getResources().getFont(R.font.rockb);
-                    msg.setTypeface(tf);
                     msg.setLineSpacing(2,1);
                     msg.setTextSize(20);
                     msg.setPadding(50, 20, 10, 20);
@@ -285,6 +292,30 @@ public class ReservationActivity extends AppCompatActivity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
+            }
+        });
+
+        //review
+        Call<ReviewList> request = service.getReviewList(selectedClassID);
+        request.enqueue(new Callback<ReviewList>() {
+            @Override
+            public void onResponse(Call<ReviewList> call, Response<ReviewList> response) {
+                reviewList = response.body();
+                reviews = new ArrayList<Review>();
+                int reviewListSize = reviewList.getReviewList().size();
+                for(int reviewIdx = 0; reviewIdx < reviewListSize; reviewIdx++){
+                    reviews.add(reviewList.getReviewList().get(reviewIdx));
+                }
+
+                ReviewAdapter reviewAdapter = new ReviewAdapter(context, reviews);
+                reviewListView = (ListView)findViewById(R.id.reviewList);
+                reviewListView.setAdapter(reviewAdapter);
+                ListDynamicViewUtil.setListViewHeightBasedOnChildren(reviewListView);
+            }
+
+            @Override
+            public void onFailure(Call<ReviewList> call, Throwable t) {
+
             }
         });
     }
