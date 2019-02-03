@@ -42,8 +42,6 @@ public class PlaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
 
-        Bundle bundle = new Bundle();
-
         //Reservation Notification
         resNotificationTextView = (TextView) this.findViewById(R.id.resNotificationText);
         peopleImgView = (ImageView) this.findViewById(R.id.peopleImgView);

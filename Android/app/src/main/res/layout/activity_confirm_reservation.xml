@@ -65,7 +65,7 @@
 
             <TextView
                 android:id="@+id/dateView"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="31dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="12dp"
@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/addressTextView"
-                android:layout_width="90dp"
+                android:layout_width="wrap_content"
                 android:layout_height="31dp"
                 android:layout_below="@+id/underDateHLines"
                 android:layout_marginStart="20dp"

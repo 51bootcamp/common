@@ -9,6 +9,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import uncommon.common.models.Class;
 import uncommon.common.models.ClassList;
+import uncommon.common.models.InviteCode;
 import uncommon.common.models.Reservation;
 import uncommon.common.models.ReservationList;
 import uncommon.common.models.Review;
@@ -34,6 +35,9 @@ public interface ApiInterface {
 
     @GET("reserve/{userEmail}")
     Call<Reservation> getReservation(@Path("userEmail") String userEmail);
+
+    @GET("invite/{inviteCode}")
+    Call<Void> getInviteCode(@Path("inviteCode") String inviteCode);
 
     @GET("reserveList/{userEmail}")
     Call<ReservationList> getReservationList(@Path("userEmail") String userEmail);
