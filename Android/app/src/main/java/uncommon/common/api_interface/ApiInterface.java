@@ -11,6 +11,7 @@ import uncommon.common.models.Class;
 import uncommon.common.models.ClassList;
 import uncommon.common.models.Reservation;
 import uncommon.common.models.Review;
+import uncommon.common.models.ReviewList;
 import uncommon.common.models.User;
 
 public interface ApiInterface {
@@ -35,4 +36,7 @@ public interface ApiInterface {
 
     @POST("review/")
     Call<Review> writeReview(@Body Review review);
+
+    @GET("review/{classID}")
+    Call<ReviewList> getReviewList(@Path("classID") Integer classID);
 }

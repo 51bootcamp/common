@@ -14,6 +14,9 @@ public class Review implements Parcelable {
     @SerializedName("userEmail")
     @Expose
     private String userEmail;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
     @SerializedName("classID")
     @Expose
     private Integer classID;
@@ -28,7 +31,6 @@ public class Review implements Parcelable {
     private Float rating;
 
     public final static Parcelable.Creator<Review> CREATOR = new Creator<Review>() {
-
         @SuppressWarnings({
                 "unchecked"
         })
@@ -39,14 +41,21 @@ public class Review implements Parcelable {
 
     protected Review(Parcel in) {
         this.userEmail = ((String) in.readValue((String.class.getClassLoader())));
+        this.userName = ((String) in.readValue((String.class.getClassLoader())));
         this.classID = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.title = ((String) in.readValue((String.class.getClassLoader())));
         this.content = ((String) in.readValue((String.class.getClassLoader())));
         this.rating = ((Float) in.readValue((Float.class.getClassLoader())));
     }
 
-    public Review(String userEmail, Integer classID, String title, String content, Float rating) {
+    public Review(){
+        
+    }
+
+    public Review(String userEmail, String userName, Integer classID, String title, String content,
+                  Float rating) {
         this.userEmail = userEmail;
+        this.userName = userName;
         this.classID = classID;
         this.title = title;
         this.content = content;
@@ -59,6 +68,10 @@ public class Review implements Parcelable {
 
     public String getUserEmail() {
         return userEmail;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public Integer getClassID() {

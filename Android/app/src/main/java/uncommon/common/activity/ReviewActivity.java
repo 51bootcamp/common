@@ -38,7 +38,9 @@ public class ReviewActivity extends AppCompatActivity {
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Review newReview = new Review("jmj@kookmin.ac.kr", 4,
+                //TODO(gayeon): change userEmail and classID after making reservation list
+                // new review goes to server
+                Review newReview = new Review("jmj@kookmin.ac.kr", "jmj", 4,
                         titleEditText.getText().toString(), reviewEditText.getText().toString(),
                         reviewRating.getRating());
 

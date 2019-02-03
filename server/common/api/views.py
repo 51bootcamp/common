@@ -199,3 +199,27 @@ def writeReview(request):
     return JsonResponse({
                              "reviewIdx"     : newReview.reviewIdx
     })
+
+def getReviewList(request, classID):
+    try:
+        availableReviewList = Review.objects.filter(classID = classID)
+    except Review.objects.DoesNotExist:
+        return HttpResponse("No review")
+
+    else:
+        li = []
+        for query in availableReviewList:
+            jsondict = {}
+            reviewer = query.userID
+
+            jsondict["reviewIdx"] = query.reviewIdx
+            jsondict["title"] = query.title
+            jsondict["content"] = query.content
+            jsondict["rating"] = query.rating
+            jsondict["createdDate"] = query.createdDate
+            jsondict["userName"] = reviewer.userName
+
+            li.append(jsondict)
+
+        li = sorted(li, key=lambda reviewList: reviewList["createdDate"], reverse=False)
+        return JsonResponse({"reviewList": li}, status=200)

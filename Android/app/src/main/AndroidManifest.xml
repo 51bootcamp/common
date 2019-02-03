@@ -56,7 +56,6 @@
         <activity android:name=".activity.ReservationActivity" />
         <activity android:name=".activity.TrendingClassActivity2" />
         <activity android:name=".activity.ReviewActivity" />
-        <activity android:name=".activity.ShowReviewActivity"></activity>
     </application>
 
 </manifest>

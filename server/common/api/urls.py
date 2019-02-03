@@ -20,6 +20,7 @@ urlpatterns = [
     path('reserve/<str:userEmail>', views.getReservation, 
     	name = 'getReservation'),
     path('review/', views.writeReview, name = 'writeReview'),
+    path('review/<int:classID>', views.getReviewList, name = 'getReviewList'),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^docs/', schema_view)
 
