@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ConfirmReservationActivity"></activity>
+        <activity android:name=".activity.ConfirmReservationActivity" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,6 +55,7 @@
         <activity android:name=".activity.SignupActivity" />
         <activity android:name=".activity.ReservationActivity" />
         <activity android:name=".activity.TrendingClassActivity2" />
+        <activity android:name=".activity.ReviewActivity" />
     </application>
 
 </manifest>
