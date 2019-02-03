@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from api.models import * #import models
 
 from datetime import datetime
@@ -36,11 +37,11 @@ def signup(request):
         User.objects.get(pk = jsonBody['userEmail'])
 
     except User.DoesNotExist:
-        newUser = User(userEmail =  jsonBody['userEmail'], 
-            userName = jsonBody['userName'], 
+        newUser = User(userEmail =  jsonBody['userEmail'],
+            userName = jsonBody['userName'],
             accountType = jsonBody['accountType'])
         newUser.save()
-        
+
         return HttpResponse("Signup Success", status = 201);
 
     else:
@@ -74,7 +75,6 @@ def getClassList(request, date):
         availableClassList = availableClassList.values("classID").distinct()
 
         li = []
-
         for query in availableClassList:
             jsondict = {}
             imageList = []
@@ -82,7 +82,6 @@ def getClassList(request, date):
             availableClass = Class.objects.get(pk = query['classID'])
             jsondict["classID"] = availableClass.classID
             jsondict["className"] = availableClass.className
-
             classImageList = Image.objects.filter(classID =
                                                   availableClass.classID)
             for img in classImageList :
@@ -104,6 +103,7 @@ def getClassInfo(request, classID, date):
     for i in timeslot:
         jsondict = {}
         jsondict["timeTableIdx"] = i.timeTableIdx
+        jsondict["epStartTime"] = i.startTime
         st, et = epochToLocalTime(i.startTime,
                                   i.endTime,
                                   i.timezone)
@@ -114,13 +114,17 @@ def getClassInfo(request, classID, date):
     availableTimeTable = sorted(availableTimeTable, key=lambda
         timeTableList : timeTableList["startTime"]);
 
+    for slot in availableTimeTable :
+        del slot["epStartTime"]
+
     return JsonResponse({
                             "classID"           : selectedClass.classID,
                             "className"         : selectedClass.className,
                             "expertName"        : expert.userName,
                             "minGuestCount"     : selectedClass.minGuestCount,
                             "maxGuestCount"     : selectedClass.maxGuestCount,
-                            "availableTimeTable": availableTimeTable
+                            "availableTimeTable": availableTimeTable,
+                            "price"             : selectedClass.price
                         })
 
 @csrf_exempt
@@ -174,17 +178,41 @@ def getReservation(request, userEmail):
 
     return JsonResponse({
                             "expertName"    : expert.userName,
+                            "classID"       : bookedClass.classID,
                             "className"     : bookedClass.className,
+                            "price"         : bookedClass.price,
                             "date"          : bookedTimeTable.date,
                             "startTime"     : startTime,
                             "endTime"       : endTime
                         })
 
 @csrf_exempt
+def imageUpload(request):
+    if request.method == 'POST':
+        # just for checking image upload properly
+        selectedClass = Class.objects.get(pk = 4)
+
+        newImage = Image(coverImage=request.FILES['coverImage'],
+                         ImageType=1,
+                         classID = selectedClass
+                         )
+        newImage.save()
+
+        return HttpResponse("upload image correctly", status = 200)
+
+@csrf_exempt
 def writeReview(request):
     jsonBody = json.loads(request.body)
 
     bookingUser = User.objects.get(pk = jsonBody['userEmail'])
+    clasID = Class.objects.get(pk = jsonBody['classID'])
+
+    newReview = Review(title = jsonBody['title'],
+                       content = jsonBody['content'],
+                       rating = jsonBody['rating'],
+                       classID = classID,
+                       userID = bookingUser
+    )
     classID = Class.objects.get(pk = jsonBody['classID'])
 
     newReview = Review(title = jsonBody['title'],
@@ -193,11 +221,10 @@ def writeReview(request):
     rating = jsonBody['rating'],
     classID = classID,
     userID = bookingUser)
-
     newReview.save()
 
     return JsonResponse({
-                             "reviewIdx"     : newReview.reviewIdx
+                         "reviewIdx"     : newReview.reviewIdx
     })
 
 def getReviewList(request, classID):
@@ -205,7 +232,6 @@ def getReviewList(request, classID):
         availableReviewList = Review.objects.filter(classID = classID)
     except Review.objects.DoesNotExist:
         return HttpResponse("No review")
-
     else:
         li = []
         for query in availableReviewList:
@@ -221,5 +247,6 @@ def getReviewList(request, classID):
 
             li.append(jsondict)
 
-        li = sorted(li, key=lambda reviewList: reviewList["createdDate"], reverse=False)
+        li = sorted(li, key=lambda reviewList: reviewList["createdDate"],
+                    reverse=False)
         return JsonResponse({"reviewList": li}, status=200)

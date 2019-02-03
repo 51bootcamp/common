@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -8,7 +9,7 @@ class User(models.Model):
 	isLecturer = models.BooleanField(default = False)
 
 class Class(models.Model):
-	classID = models.IntegerField(primary_key = True)
+	classID = models.AutoField(primary_key = True)
 	className = models.CharField(max_length = 40)
 	minGuestCount = models.IntegerField(default = 4)
 	maxGuestCount = models.IntegerField(default = 8)
