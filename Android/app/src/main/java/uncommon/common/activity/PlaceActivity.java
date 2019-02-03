@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -120,7 +121,15 @@ public class PlaceActivity extends AppCompatActivity {
             }
         });
 
-
+        //TODO(gayeon) : change button position to navigation bar
+        Button reviewButton = (Button) findViewById(R.id.reviewbutton);
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent reviewIntent = new Intent(PlaceActivity.this, MyReservationActivity.class);
+                startActivity(reviewIntent);
+            }
+        });
     }
 
     public void click(View view) {

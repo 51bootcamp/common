@@ -129,5 +129,13 @@
             </RelativeLayout>
 
     </ScrollView>
+        <Button
+            android:id="@+id/reviewbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/placeTextView"
+            android:layout_marginTop="30dp"
+            android:text="review"/>
 
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
