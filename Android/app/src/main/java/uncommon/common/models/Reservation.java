@@ -32,6 +32,9 @@ public class Reservation implements Parcelable
     @SerializedName("price")
     @Expose
     private Float totalResPrice;
+    @SerializedName("coverImg")
+    @Expose
+    private String coverImg;
 
     public final static Parcelable.Creator<Reservation> CREATOR = new Creator<Reservation>() {
 
@@ -55,6 +58,7 @@ public class Reservation implements Parcelable
         this.endTime = ((String) in.readValue((String.class.getClassLoader())));
         this.guestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.totalResPrice = ((Float) in.readValue((Float.class.getClassLoader())));
+        this.coverImg = ((String) in.readValue((String.class.getClassLoader())));
     }
 
     public Reservation() {
@@ -101,9 +105,12 @@ public class Reservation implements Parcelable
     public Integer getGuestCount(){
         return guestCount;
     }
+
     public Float getTotalResPrice() {
         return totalResPrice;
     }
+
+    public String getCoverImg() { return coverImg; }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(expertName);
@@ -114,6 +121,7 @@ public class Reservation implements Parcelable
         dest.writeValue(endTime);
         dest.writeValue(guestCount);
         dest.writeValue(totalResPrice);
+        dest.writeValue(coverImg);
     }
 
     public int describeContents() {

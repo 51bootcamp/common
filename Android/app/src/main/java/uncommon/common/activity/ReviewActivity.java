@@ -14,6 +14,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import uncommon.common.R;
 import uncommon.common.api_interface.ApiInterface;
+import uncommon.common.models.ClassList;
 import uncommon.common.models.Review;
 import uncommon.common.network.RetrofitInstance;
 
@@ -29,6 +30,8 @@ public class ReviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review);
+        Bundle bundle = getIntent().getExtras();
+        Integer selectedClassID = bundle.getInt("classID");
 
         completeButton = (Button) findViewById(R.id.completeButton);
         reviewEditText = (EditText) findViewById(R.id.reviewEditText);
@@ -40,7 +43,7 @@ public class ReviewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO(gayeon): change userEmail and classID after making reservation list
                 // new review goes to server
-                Review newReview = new Review("jmj@kookmin.ac.kr", "jmj", 4,
+                Review newReview = new Review("jmj@kookmin.ac.kr", "jmj", selectedClassID,
                         titleEditText.getText().toString(), reviewEditText.getText().toString(),
                         reviewRating.getRating());
 
