@@ -76,8 +76,11 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
         timeTextView = (TextView) convertView.findViewById(R.id.timeTextView);
 
         String imageURL = "http://52.8.187.167:8000" + positionReservation.getCoverImg();
-        Picasso.get().load(imageURL).fit().transform(new GradientTransformation()).into
-                (classImageView);
+        Picasso.get()
+                .load(imageURL).
+                fit()
+                .transform(new GradientTransformation())
+                .into(classImageView);
         classNameTextView.setText(positionReservation.getClassName().toString());
         dateTextView.setText(positionReservation.getDate().toString());
         reservationTime = positionReservation.getStartTime().toString() + " ~ " +
@@ -90,8 +93,6 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
             public void onClick(View view) {
                 Intent reviewIntent = new Intent(context, ReviewActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("classID", positionReservation.getClassId());
-
                 context.startActivity(reviewIntent);
             }
         });

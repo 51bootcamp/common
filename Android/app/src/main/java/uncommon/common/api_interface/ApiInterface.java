@@ -16,31 +16,38 @@ import uncommon.common.models.ReviewList;
 import uncommon.common.models.User;
 
 public interface ApiInterface {
-    @GET("class/{date}/")
+    @GET("class/{date}")
     Call<ClassList> getClassList(@Path("date") String date);
 
     @GET("class/{date}/{classID}")
     Call<Class> getClassInfo(@Path("date") String date,
                              @Path("classID") Integer classID);
 
-    @POST("login/")
-    Call<User> login(@Body JSONObject userEmail);
+    @GET("invite/{inviteCode}")
+    Call<Void> getInviteCode(@Path("inviteCode") String inviteCode);
 
-    @POST("signup/")
-    Call<Void> signup(@Body User user);
+    @POST("login/")
+    Call<JSONObject> login(@Body JSONObject userEmail);
+
+    @GET("reserve/upcoming")
+    Call<Reservation> getUpcoming();
+
+    @GET("reserve/{reservationID}")
+    Call<Reservation> getReservation(@Path("reservationID") Integer reservationID);
 
     @POST("reserve/")
     Call<Reservation> makeReservation(@Body JSONObject reservation);
 
-    @GET("reserve/{userEmail}")
-    Call<Reservation> getReservation(@Path("userEmail") String userEmail);
-
-    @GET("reserveList/{userEmail}")
-    Call<ReservationList> getReservationList(@Path("userEmail") String userEmail);
+    @GET("reserveList")
+    Call<ReservationList> getReservationList();
 
     @POST("review/")
     Call<Review> writeReview(@Body Review review);
 
     @GET("review/{classID}")
     Call<ReviewList> getReviewList(@Path("classID") Integer classID);
+
+    @POST("signup/")
+    Call<JSONObject> signup(@Body User user);
+
 }

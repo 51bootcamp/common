@@ -138,7 +138,6 @@ public class ReservationActivity extends AppCompatActivity {
         datePicker = (DatePicker) findViewById(R.id.datepicker);
 
         changeTheDateView.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View view) {
                 datePicker.setVisibility(View.VISIBLE);
@@ -149,7 +148,6 @@ public class ReservationActivity extends AppCompatActivity {
 
                 datePicker.init(datePicker.getYear(), datePicker.getMonth(),
                         datePicker.getDayOfMonth(), new DatePicker.OnDateChangedListener(){
-
                             @Override
                             public void onDateChanged(DatePicker view, int year,
                                                       int monthOfYear, int dayOfMonth) {
@@ -260,7 +258,6 @@ public class ReservationActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which){
                             //TODO(gayeon):send reservation data to server
                             JSONObject requestBody = new JSONObject();
-                            requestBody.put("userEmail", "kahye5232@naver.com");
                             requestBody.put("timeTableIdx",
                                     timeSlotIdxList.get(selectedTimeSlotIdx));
                             requestBody.put("guestCount", ticketCount);
@@ -274,6 +271,15 @@ public class ReservationActivity extends AppCompatActivity {
                                                        Response<Reservation> response) {
                                     Toast.makeText(ReservationActivity.this,
                                             "success",Toast.LENGTH_LONG).show();
+                                    Reservation res = response.body();
+                                    Intent confirmResIntent = new Intent(context,
+                                            ConfirmReservationActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    confirmResIntent.putExtra("_reservationID",
+                                            res.getReservationID());
+                                    confirmResIntent.putExtras(bundle);
+
+                                    startActivity(confirmResIntent);
                                 }
 
                                 @Override
