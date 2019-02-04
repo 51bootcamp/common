@@ -17,6 +17,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,6 @@ import uncommon.common.models.ReviewList;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
 
-
 public class ReservationActivity extends AppCompatActivity {
 
     private TimeSlotAdapter timeslotAdapter;
@@ -62,6 +62,7 @@ public class ReservationActivity extends AppCompatActivity {
     private List<Review> reviews;
     private List<TimeTable> timeslot;
     private ListView reviewListView;
+    private RatingBar classRating;
     private ReviewList reviewList;
     private String selectedDate;
     private String selectedTime;
@@ -93,12 +94,14 @@ public class ReservationActivity extends AppCompatActivity {
 
         // class Info
         classNameView = (TextView) findViewById(R.id.classTextView);
+        classRating = (RatingBar) findViewById(R.id.classRating);
         expertNameView = (TextView) findViewById(R.id.expertTextView);
         numOfPeopleView = (TextView) findViewById(R.id.numOfPeopleView);
         priceView = (TextView) findViewById(R.id.priceView);
 
         selectedClassID = selectedClass.getClassID();
         classNameView.setText(selectedClass.getClassName());
+        classRating.setRating(selectedClass.getClassRating());
         expertNameView.setText(selectedClass.getExpertName());
         numOfPeopleView.setText(selectedClass.getMinGuestCount().toString() + " - "
                         + selectedClass.getMaxGuestCount().toString());
@@ -177,6 +180,7 @@ public class ReservationActivity extends AppCompatActivity {
                                                     .getTimeTableIdx());
                                         }
                                         timeslotAdapter.notifyDataSetChanged();
+                                        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
                                     }
 
                                     @Override
@@ -203,11 +207,19 @@ public class ReservationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(ticketCount >= selectedClass.getMaxGuestCount()){
                     numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
+                    upButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .reserved));
                     Toast.makeText(ReservationActivity.this, "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
                     numTickets.setText(Integer.toString(++ticketCount));
+                    upButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
+                }
+                if (ticketCount > selectedClass.getMinGuestCount()) {
+                    downButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
                 }
             }
         });
@@ -215,10 +227,20 @@ public class ReservationActivity extends AppCompatActivity {
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ticketCount <= selectedClass.getMinGuestCount())
+                if (ticketCount <= selectedClass.getMinGuestCount()) {
                     numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
-                else
+                    downButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .reserved));
+                }
+                else {
                     numTickets.setText(Integer.toString(--ticketCount));
+                    downButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
+                }
+                if(ticketCount < selectedClass.getMaxGuestCount()){
+                    upButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
+                }
             }
         });
 

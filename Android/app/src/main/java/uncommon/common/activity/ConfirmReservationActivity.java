@@ -1,7 +1,10 @@
 package uncommon.common.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,13 +27,14 @@ import uncommon.common.network.RetrofitInstance;
 
 public class ConfirmReservationActivity extends AppCompatActivity {
 
-    TextView classTextView;
-    TextView expertTextView;
-    TextView resDateTextView;
-    TextView usdTextView;
-    TextView resTimeTextView;
-    TextView resUserEmailTextInfo;
-    ImageView classImgView;
+    private Button reviewButton;
+    private TextView classTextView;
+    private TextView expertTextView;
+    private TextView resDateTextView;
+    private TextView usdTextView;
+    private TextView resTimeTextView;
+    private TextView resUserEmailTextInfo;
+    private ImageView classImgView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class ConfirmReservationActivity extends AppCompatActivity {
         resDateTextView = (TextView) this.findViewById(R.id.resDateTextView);
         resTimeTextView = (TextView) this.findViewById(R.id.resTimeTextView);
         resUserEmailTextInfo = (TextView) this.findViewById(R.id.resUserEmailTextInfo);
+        reviewButton = (Button) this.findViewById(R.id.reviewButton);
         usdTextView = (TextView) this.findViewById(R.id.usdTextView);
 
         // class Img
@@ -110,6 +115,17 @@ public class ConfirmReservationActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Reservation> call, Throwable t) {
                 //TODO (kahye)
+            }
+        });
+
+        //go to ReviewActivity
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent reviewIntent = new Intent(ConfirmReservationActivity.this, ReviewActivity
+                        .class);
+                Bundle bundle = new Bundle();
+                startActivity(reviewIntent);
             }
         });
     }

@@ -23,7 +23,6 @@ public class ReviewActivity extends AppCompatActivity {
     private EditText reviewEditText;
     private EditText titleEditText;
     private RatingBar reviewRating;
-    private Review review;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

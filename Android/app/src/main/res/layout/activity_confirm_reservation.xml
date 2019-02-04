@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -263,8 +264,16 @@
                 android:text="About the cancellation policy........."
                 android:textSize="18sp" />
 
+            <Button
+                android:id="@+id/reviewButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cancellationPolicyInfo"
+                android:layout_margin="10dp"
+                android:text="Review"
+                android:textSize="15dp"/>
+
         </RelativeLayout>
 
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>

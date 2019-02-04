@@ -19,6 +19,9 @@ public class Class implements Parcelable {
     @SerializedName("className")
     @Expose
     private String className;
+    @SerializedName("classRating")
+    @Expose
+    private Float classRating;
     @SerializedName("expertName")
     @Expose
     private String expertName;
@@ -42,6 +45,8 @@ public class Class implements Parcelable {
     public String getClassName() {
         return className;
     }
+
+    public Float getClassRating() { return classRating; }
 
     public String getExpertName() {
         return expertName;
@@ -83,6 +88,7 @@ public class Class implements Parcelable {
     protected Class(Parcel in) {
         this.classID = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.className = ((String) in.readValue((String.class.getClassLoader())));
+        this.classRating = ((Float) in.readValue((Float.class.getClassLoader())));
         this.expertName = ((String) in.readValue((String.class.getClassLoader())));
         this.minGuestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.maxGuestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -100,6 +106,7 @@ public class Class implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(classID);
         dest.writeValue(className);
+        dest.writeValue(classRating);
         dest.writeValue(expertName);
         dest.writeValue(minGuestCount);
         dest.writeValue(maxGuestCount);
