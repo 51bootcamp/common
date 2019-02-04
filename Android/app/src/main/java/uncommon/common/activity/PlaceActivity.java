@@ -37,6 +37,8 @@ public class PlaceActivity extends AppCompatActivity {
     Integer reservationID;
     ImageView peopleImgView;
 
+    ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +52,6 @@ public class PlaceActivity extends AppCompatActivity {
 
         placeimgButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            ApiInterface service = RetrofitInstance.getRetrofitInstance()
-                    .create(ApiInterface.class);
-
             //get current date
             long now = System.currentTimeMillis();
             Date date = new Date(now);
@@ -83,7 +82,6 @@ public class PlaceActivity extends AppCompatActivity {
             }
         });
 
-        ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
         Call<Reservation> request = service.getUpcoming();
         request.enqueue(new Callback<Reservation>() {
             @Override

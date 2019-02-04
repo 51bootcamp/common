@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
@@ -15,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +39,7 @@ public class ConfirmReservationActivity extends AppCompatActivity {
     private Integer classID;
 
     String base_image_url = "http://52.8.187.167:8000";
+    ImageView facebookProfileView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,12 @@ public class ConfirmReservationActivity extends AppCompatActivity {
         resUserEmailTextInfo = (TextView) this.findViewById(R.id.resUserEmailTextInfo);
         reviewButton = (Button) this.findViewById(R.id.reviewButton);
         usdTextView = (TextView) this.findViewById(R.id.usdTextView);
+        facebookProfileView = (ImageView) this.findViewById(R.id.facebookprofile);
+
+        Picasso.get().load( "https://graph.facebook.com/" +
+                AccessToken.getCurrentAccessToken().getUserId() + "/picture?type=large")
+                .transform(new CropCircleTransformation())
+                .into(facebookProfileView);
 
         // class Img
         reservationID = bundle.getInt("_reservationID");

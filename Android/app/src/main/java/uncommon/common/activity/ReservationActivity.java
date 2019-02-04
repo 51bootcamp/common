@@ -1,6 +1,5 @@
 package uncommon.common.activity;
 
-import android.arch.core.util.Function;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,17 +8,14 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -93,8 +89,11 @@ public class ReservationActivity extends AppCompatActivity {
         // class Img
         String imageURL = bundle.getString("classImgURL");
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
-        Picasso.get().load(imageURL).fit().transform(new GradientTransformation()).into
-                (classImgView);
+        Picasso.get()
+                .load(imageURL)
+                .fit()
+                .transform(new GradientTransformation())
+                .into(classImgView);
 
         // class Info
         classNameView = (TextView) findViewById(R.id.classTextView);
@@ -150,8 +149,8 @@ public class ReservationActivity extends AppCompatActivity {
                 datePicker.setVisibility(View.VISIBLE);
 
                 String[] dateTokens = selectedDate.split("-");
-                datePicker.updateDate(new Integer(dateTokens[0]), new Integer
-                        (dateTokens[1]) - 1, new Integer(dateTokens[2]));
+                datePicker.updateDate(new Integer(dateTokens[0]),
+                        new Integer(dateTokens[1]) - 1, new Integer(dateTokens[2]));
 
                 datePicker.init(datePicker.getYear(), datePicker.getMonth(),
                         datePicker.getDayOfMonth(), new DatePicker.OnDateChangedListener(){
@@ -184,7 +183,8 @@ public class ReservationActivity extends AppCompatActivity {
                                                     .getTimeTableIdx());
                                         }
                                         timeslotAdapter.notifyDataSetChanged();
-                                        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
+                                        ListDynamicViewUtil.
+                                                setListViewHeightBasedOnChildren(timeListView);
                                     }
 
                                     @Override

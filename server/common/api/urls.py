@@ -16,7 +16,9 @@ urlpatterns = [
     	name = 'getClassInfo'),
     path('login/', views.login, name = 'login'),
     path('invite/<str:inviteCode>', views.getInviteCode, name = 'getInviteCode'),
-    path('review/', views.writeReview, name = 'writeReview'),
+
+    path('review/', views.writeReviewView.as_view(), name = 'writeReviewView'),
+    
     path('review/<int:classID>', views.getReviewList, name = 'getReviewList'),
     path('reserve/', views.reservationView.as_view(), name = 'reservation'),
     path('reserve/<int:reservationID>', views.getReservationView.as_view(), 
