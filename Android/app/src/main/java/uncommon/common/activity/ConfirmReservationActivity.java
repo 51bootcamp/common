@@ -3,6 +3,7 @@ package uncommon.common.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,22 +20,24 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uncommon.common.R;
-import uncommon.common.models.ClassList;
 import uncommon.common.api_interface.ApiInterface;
-import uncommon.common.models.Class;
 import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
 
 public class ConfirmReservationActivity extends AppCompatActivity {
 
     private Button reviewButton;
+    private ImageView classImgView;
+    private Integer reservationID;
     private TextView classTextView;
     private TextView expertTextView;
     private TextView resDateTextView;
     private TextView usdTextView;
     private TextView resTimeTextView;
     private TextView resUserEmailTextInfo;
-    private ImageView classImgView;
+    private Integer classID;
+
+    String base_image_url = "http://52.8.187.167:8000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,12 +56,12 @@ public class ConfirmReservationActivity extends AppCompatActivity {
         usdTextView = (TextView) this.findViewById(R.id.usdTextView);
 
         // class Img
-        String imageURL = bundle.getString("classImgURL");
+        reservationID = bundle.getInt("_reservationID");
+
         ImageView classImgView = (ImageView) findViewById(R.id.classImgView);
-        Picasso.get().load(imageURL).fit().into(classImgView);
 
         ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<Reservation> request = service.getReservation();
+        Call<Reservation> request = service.getReservation(reservationID);
         request.enqueue(new Callback<Reservation>() {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
@@ -70,46 +73,24 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                 resTimeTextView.setText(res.getStartTime()+ " - " + res.getEndTime());
                 resUserEmailTextInfo.setText(res.getUserEmail());
                 usdTextView.setText("$ " + res.getTotalResPrice() * res.getGuestCount());
+                Picasso.get()
+                        .load(base_image_url + res.getCoverImg())
+                        .fit()
+                        .into(classImgView);
 
                 //convert date format yyyy-MM-dd into E, MMM dd,  yyyy
                 DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                 DateFormat outputFormat = new SimpleDateFormat("MMM dd, E, yyyy");
                 String inputDateStr= res.getDate();
-
-                Call<ClassList> request = service.getClassList(inputDateStr);
-                request.enqueue(new Callback<ClassList>() {
-                    @Override
-                    public void onResponse(Call<ClassList> call, Response<ClassList> response) {
-                        ClassList classList = response.body();
-                        Class reservationClass = new Class();
-                        for(int i = 0; i < classList.getClassList().size(); i++){
-                            if(classList.getClassList().get(i).getClassID() == res.getClassId()){
-                                reservationClass = classList.getClassList().get(i);
-                            }
-                        }
-                        String imageURL = "http://52.8.187.167:8000"
-                                + reservationClass.getCoverImage().get(0);
-                        Picasso.get()
-                                .load(imageURL)
-                                .resize(2438, 1600)
-                                .onlyScaleDown()
-                                .into(classImgView);
-
-                        Date date = null;
-                        try {
-                            date = inputFormat.parse(inputDateStr);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        String outputDateStr = outputFormat.format(date);
-                        resDateTextView.setText(outputDateStr);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ClassList> call, Throwable t) {
-                        //TODO (kahye)
-                    }
-                });
+                Date date = null;
+                try {
+                    date = inputFormat.parse(inputDateStr);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String outputDateStr = outputFormat.format(date);
+                resDateTextView.setText(outputDateStr);
+                classID = res.getClassId();
             }
 
             @Override
@@ -125,6 +106,9 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                 Intent reviewIntent = new Intent(ConfirmReservationActivity.this, ReviewActivity
                         .class);
                 Bundle bundle = new Bundle();
+                Log.e("TEST", classID.toString());
+                reviewIntent.putExtra("_classID", classID);
+                reviewIntent.putExtras(bundle);
                 startActivity(reviewIntent);
             }
         });

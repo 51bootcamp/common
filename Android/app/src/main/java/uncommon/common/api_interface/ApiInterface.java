@@ -29,8 +29,11 @@ public interface ApiInterface {
     @POST("login/")
     Call<JSONObject> login(@Body JSONObject userEmail);
 
-    @GET("reserve")
-    Call<Reservation> getReservation();
+    @GET("reserve/upcoming")
+    Call<Reservation> getUpcoming();
+
+    @GET("reserve/{reservationID}")
+    Call<Reservation> getReservation(@Path("reservationID") Integer reservationID);
 
     @POST("reserve/")
     Call<Reservation> makeReservation(@Body JSONObject reservation);

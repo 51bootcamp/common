@@ -2,6 +2,8 @@ package uncommon.common.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import uncommon.common.utils.GradientTransformation;
 
 public class MyReservationAdapter extends ArrayAdapter<String> {
 
+    private boolean isRe
     private Button confirmButton;
     private Context context;
     private ImageView classImageView;
@@ -30,6 +33,7 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
     private String reservationTime;
     private TextView classNameTextView;
     private TextView dateTextView;
+    private TextView reviewedTextView;
     private TextView timeTextView;
 
     public MyReservationAdapter(Context context, List<Reservation> reservations){
@@ -70,6 +74,7 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
         classNameTextView = (TextView) convertView.findViewById(R.id.classNameTextView);
         confirmButton = (Button) convertView.findViewById(R.id.confirmButton);
         dateTextView = (TextView) convertView.findViewById(R.id.dateTextView);
+        reviewedTextView = (TextView) convertView.findViewById(R.id.reviewedTextView);
         timeTextView = (TextView) convertView.findViewById(R.id.timeTextView);
 
         confirmButton.setOnClickListener(new View.OnClickListener(){
@@ -78,6 +83,12 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
             public void onClick(View view) {
                 Intent confirmReserveIntent = new Intent(view.getContext(),
                         ConfirmReservationActivity.class);
+                Integer reservationID = reservations.get(position).getReservationID();
+                Log.e("TEST", reservationID.toString());
+
+                Bundle bundle = new Bundle();
+                confirmReserveIntent.putExtra("_reservationID", reservationID);
+                confirmReserveIntent.putExtras(bundle);
 
                 context.startActivity(confirmReserveIntent);
             }
