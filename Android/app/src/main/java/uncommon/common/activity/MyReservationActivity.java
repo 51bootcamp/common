@@ -31,7 +31,9 @@ public class MyReservationActivity extends AppCompatActivity {
             .create(ApiInterface.class);
     private Context context;
     private List<Reservation> reservations;
+    private List<Reservation> passedReservations;
     private ListView reservationListView;
+    private ListView passedReservationListView;
     private ReservationList reservationList;
 
     @Override
@@ -41,6 +43,7 @@ public class MyReservationActivity extends AppCompatActivity {
         context = this;
 
         reservationListView = (ListView) findViewById(R.id.myReservationListView);
+        passedReservationListView = (ListView) findViewById(R.id.passedMyReservationListView);
 
         // get data from server
         Call<ReservationList> request = service.getReservationList();
@@ -49,12 +52,12 @@ public class MyReservationActivity extends AppCompatActivity {
             public void onResponse(Call<ReservationList> call, Response<ReservationList> response) {
                 reservationList = response.body();
                 reservations = new ArrayList<Reservation>();
+                passedReservations = new ArrayList<Reservation>();
                 int reservationListSize = reservationList.getReservationList().size();
 
                 // if there is no reservation
                 if(reservationListSize == 0){
                     reservationListView.setVisibility(View.INVISIBLE);
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(MyReservationActivity.this);
                     // msg
                     TextView msg = new TextView(MyReservationActivity.this);
@@ -65,11 +68,12 @@ public class MyReservationActivity extends AppCompatActivity {
                     msg.setPadding(50, 60, 10, 10);
                     builder.setView(msg);
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which){
-                            Intent placeIntent = new Intent(MyReservationActivity.this,
-                                    PlaceActivity.class);
-                            startActivity(placeIntent);
+
+                     @Override
+                     public void onClick(DialogInterface dialog, int which){
+                        Intent placeIntent = new Intent(MyReservationActivity.this,
+                                PlaceActivity.class);
+                        startActivity(placeIntent);
                         }
                     });
                     AlertDialog dialog = builder.create();
@@ -77,13 +81,26 @@ public class MyReservationActivity extends AppCompatActivity {
                 }
 
                 for(int reserveIdx = 0; reserveIdx < reservationListSize; reserveIdx++){
-                    reservations.add(reservationList.getReservationList().get(reserveIdx));
+                    Reservation resposition = reservationList.getReservationList().get(reserveIdx);
+                    if(resposition.getIsPassed()) {
+                        passedReservations.add(resposition);
+                    }
+                    else{
+                        reservations.add(resposition);
+                    }
                 }
 
+                // Upcoming Class ReservationList
                 MyReservationAdapter reservationAdapter = new MyReservationAdapter(context,
                         reservations);
                 reservationListView.setAdapter(reservationAdapter);
                 ListDynamicViewUtil.setListViewHeightBasedOnChildren(reservationListView);
+
+                // Past ReservationList
+                MyReservationAdapter passedReservationAdapter = new MyReservationAdapter(context,
+                        passedReservations);
+                passedReservationListView.setAdapter(passedReservationAdapter);
+                ListDynamicViewUtil.setListViewHeightBasedOnChildren(passedReservationListView);
             }
 
             @Override

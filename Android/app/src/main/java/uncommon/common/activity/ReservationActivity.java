@@ -1,5 +1,6 @@
 package uncommon.common.activity;
 
+import android.arch.core.util.Function;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,14 +9,17 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -274,8 +278,7 @@ public class ReservationActivity extends AppCompatActivity {
                     msg.setPadding(50, 20, 10, 20);
                     builder.setView(msg);
 
-                    builder.setPositiveButton("Yes", new DialogInterface
-                            .OnClickListener() {
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
                             //TODO(gayeon):send reservation data to server
@@ -312,8 +315,7 @@ public class ReservationActivity extends AppCompatActivity {
                             });
                         }
                     });
-                    builder.setNegativeButton("No", new DialogInterface
-                            .OnClickListener() {
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
                             dialog.dismiss(); // back to ReservationActivity
@@ -341,6 +343,8 @@ public class ReservationActivity extends AppCompatActivity {
                 reviewListView = (ListView)findViewById(R.id.reviewList);
                 reviewListView.setAdapter(reviewAdapter);
                 ListDynamicViewUtil.setListViewHeightBasedOnChildren(reviewListView);
+
+                reviewAdapter.notifyDataSetChanged();
             }
 
             @Override

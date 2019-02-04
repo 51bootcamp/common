@@ -43,14 +43,27 @@
             android:stepSize="0.5" />
 
         <TextView
-            android:id="@+id/reviewContent"
+            android:id="@+id/reviewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/reviewRating"
+            android:layout_marginBottom="3dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/reviewContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reviewTitle"
             android:layout_marginBottom="20dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="5dp"
-            android:textSize="15dp"/>
+            android:textSize="18dp"/>
+
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

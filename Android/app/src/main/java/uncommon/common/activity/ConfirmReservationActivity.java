@@ -3,7 +3,6 @@ package uncommon.common.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -91,6 +90,10 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                 String outputDateStr = outputFormat.format(date);
                 resDateTextView.setText(outputDateStr);
                 classID = res.getClassId();
+                if(!res.getIsPassed()){
+                    reviewButton.setVisibility(View.GONE);
+                }
+
             }
 
             @Override
@@ -106,7 +109,6 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                 Intent reviewIntent = new Intent(ConfirmReservationActivity.this, ReviewActivity
                         .class);
                 Bundle bundle = new Bundle();
-                Log.e("TEST", classID.toString());
                 reviewIntent.putExtra("_classID", classID);
                 reviewIntent.putExtras(bundle);
                 startActivity(reviewIntent);
