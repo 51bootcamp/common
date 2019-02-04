@@ -23,7 +23,6 @@ import uncommon.common.utils.GradientTransformation;
 
 public class MyReservationAdapter extends ArrayAdapter<String> {
 
-    private boolean isRe
     private Button confirmButton;
     private Context context;
     private ImageView classImageView;
