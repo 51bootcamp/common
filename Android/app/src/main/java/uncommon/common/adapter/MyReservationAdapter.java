@@ -17,14 +17,12 @@ import java.util.List;
 
 import uncommon.common.R;
 import uncommon.common.activity.ConfirmReservationActivity;
-import uncommon.common.activity.PlaceActivity;
-import uncommon.common.activity.ReviewActivity;
 import uncommon.common.models.Reservation;
 import uncommon.common.utils.GradientTransformation;
 
 public class MyReservationAdapter extends ArrayAdapter<String> {
 
-    private Button reviewButton;
+    private Button confirmButton;
     private Context context;
     private ImageView classImageView;
     private LayoutInflater inflater;
@@ -33,6 +31,7 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
     private String reservationTime;
     private TextView classNameTextView;
     private TextView dateTextView;
+    private TextView priceTextView;
     private TextView timeTextView;
 
     public MyReservationAdapter(Context context, List<Reservation> reservations){
@@ -71,10 +70,28 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
 
         classImageView = (ImageView) convertView.findViewById(R.id.classImageView);
         classNameTextView = (TextView) convertView.findViewById(R.id.classNameTextView);
+        confirmButton = (Button) convertView.findViewById(R.id.confirmButton);
         dateTextView = (TextView) convertView.findViewById(R.id.dateTextView);
-        reviewButton = (Button) convertView.findViewById(R.id.reviewButton);
+        priceTextView = (TextView) convertView.findViewById(R.id.priceTextView);
         timeTextView = (TextView) convertView.findViewById(R.id.timeTextView);
 
+        confirmButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent confirmReserveIntent = new Intent(view.getContext(),
+                        ConfirmReservationActivity.class);
+                Integer reservationID = reservations.get(position).getReservationID();
+
+                Bundle bundle = new Bundle();
+                confirmReserveIntent.putExtra("_reservationID", reservationID);
+                confirmReserveIntent.putExtras(bundle);
+
+                context.startActivity(confirmReserveIntent);
+            }
+        });
+
+        // data setting
         String imageURL = "http://52.8.187.167:8000" + positionReservation.getCoverImg();
         Picasso.get()
                 .load(imageURL).
@@ -85,17 +102,10 @@ public class MyReservationAdapter extends ArrayAdapter<String> {
         dateTextView.setText(positionReservation.getDate().toString());
         reservationTime = positionReservation.getStartTime().toString() + " ~ " +
                 positionReservation.getEndTime().toString();
+        priceTextView.setText("$" + positionReservation.getTotalResPrice().toString() + ",  " +
+                positionReservation.getGuestCount().toString() + " person");
         timeTextView.setText(reservationTime);
 
-        //go to ReviewActivity
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent reviewIntent = new Intent(context, ReviewActivity.class);
-                Bundle bundle = new Bundle();
-                context.startActivity(reviewIntent);
-            }
-        });
         return convertView;
     }
 }

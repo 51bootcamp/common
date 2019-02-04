@@ -1,7 +1,10 @@
 package uncommon.common.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,14 +25,17 @@ import uncommon.common.network.RetrofitInstance;
 
 public class ConfirmReservationActivity extends AppCompatActivity {
 
-    TextView classTextView;
-    TextView expertTextView;
-    TextView resDateTextView;
-    TextView usdTextView;
-    TextView resTimeTextView;
-    TextView resUserEmailTextInfo;
-    ImageView classImgView;
-    Integer reservationID;
+    private Button reviewButton;
+    private ImageView classImgView;
+    private Integer reservationID;
+    private TextView classTextView;
+    private TextView expertTextView;
+    private TextView resDateTextView;
+    private TextView usdTextView;
+    private TextView resTimeTextView;
+    private TextView resUserEmailTextInfo;
+    private Integer classID;
+
     String base_image_url = "http://52.8.187.167:8000";
 
     @Override
@@ -45,6 +51,7 @@ public class ConfirmReservationActivity extends AppCompatActivity {
         resDateTextView = (TextView) this.findViewById(R.id.resDateTextView);
         resTimeTextView = (TextView) this.findViewById(R.id.resTimeTextView);
         resUserEmailTextInfo = (TextView) this.findViewById(R.id.resUserEmailTextInfo);
+        reviewButton = (Button) this.findViewById(R.id.reviewButton);
         usdTextView = (TextView) this.findViewById(R.id.usdTextView);
 
         // class Img
@@ -82,11 +89,29 @@ public class ConfirmReservationActivity extends AppCompatActivity {
                 }
                 String outputDateStr = outputFormat.format(date);
                 resDateTextView.setText(outputDateStr);
+                classID = res.getClassId();
+                if(!res.getIsPassed()){
+                    reviewButton.setVisibility(View.GONE);
+                }
+
             }
 
             @Override
             public void onFailure(Call<Reservation> call, Throwable t) {
                 //TODO (kahye)
+            }
+        });
+
+        //go to ReviewActivity
+        reviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent reviewIntent = new Intent(ConfirmReservationActivity.this, ReviewActivity
+                        .class);
+                Bundle bundle = new Bundle();
+                reviewIntent.putExtra("_classID", classID);
+                reviewIntent.putExtras(bundle);
+                startActivity(reviewIntent);
             }
         });
     }

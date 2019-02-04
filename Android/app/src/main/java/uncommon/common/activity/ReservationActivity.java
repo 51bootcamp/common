@@ -1,5 +1,6 @@
 package uncommon.common.activity;
 
+import android.arch.core.util.Function;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,15 +9,19 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +50,6 @@ import uncommon.common.models.ReviewList;
 import uncommon.common.models.TimeTable;
 import uncommon.common.network.RetrofitInstance;
 
-
 public class ReservationActivity extends AppCompatActivity {
 
     private TimeSlotAdapter timeslotAdapter;
@@ -62,6 +66,7 @@ public class ReservationActivity extends AppCompatActivity {
     private List<Review> reviews;
     private List<TimeTable> timeslot;
     private ListView reviewListView;
+    private RatingBar classRating;
     private ReviewList reviewList;
     private String selectedDate;
     private String selectedTime;
@@ -93,12 +98,14 @@ public class ReservationActivity extends AppCompatActivity {
 
         // class Info
         classNameView = (TextView) findViewById(R.id.classTextView);
+        classRating = (RatingBar) findViewById(R.id.classRating);
         expertNameView = (TextView) findViewById(R.id.expertTextView);
         numOfPeopleView = (TextView) findViewById(R.id.numOfPeopleView);
         priceView = (TextView) findViewById(R.id.priceView);
 
         selectedClassID = selectedClass.getClassID();
         classNameView.setText(selectedClass.getClassName());
+        classRating.setRating(selectedClass.getClassRating());
         expertNameView.setText(selectedClass.getExpertName());
         numOfPeopleView.setText(selectedClass.getMinGuestCount().toString() + " - "
                         + selectedClass.getMaxGuestCount().toString());
@@ -177,6 +184,7 @@ public class ReservationActivity extends AppCompatActivity {
                                                     .getTimeTableIdx());
                                         }
                                         timeslotAdapter.notifyDataSetChanged();
+                                        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
                                     }
 
                                     @Override
@@ -203,11 +211,19 @@ public class ReservationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(ticketCount >= selectedClass.getMaxGuestCount()){
                     numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
+                    upButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .reserved));
                     Toast.makeText(ReservationActivity.this, "Too many Tickets!",
                             Toast.LENGTH_LONG).show();
                 }
                 else {
                     numTickets.setText(Integer.toString(++ticketCount));
+                    upButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
+                }
+                if (ticketCount > selectedClass.getMinGuestCount()) {
+                    downButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
                 }
             }
         });
@@ -215,10 +231,20 @@ public class ReservationActivity extends AppCompatActivity {
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ticketCount <= selectedClass.getMinGuestCount())
+                if (ticketCount <= selectedClass.getMinGuestCount()) {
                     numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
-                else
+                    downButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .reserved));
+                }
+                else {
                     numTickets.setText(Integer.toString(--ticketCount));
+                    downButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
+                }
+                if(ticketCount < selectedClass.getMaxGuestCount()){
+                    upButton.setColorFilter(view.getContext().getResources().getColor(R.color
+                            .colorPrimaryText));
+                }
             }
         });
 
@@ -252,8 +278,7 @@ public class ReservationActivity extends AppCompatActivity {
                     msg.setPadding(50, 20, 10, 20);
                     builder.setView(msg);
 
-                    builder.setPositiveButton("Yes", new DialogInterface
-                            .OnClickListener() {
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
                             //TODO(gayeon):send reservation data to server
@@ -290,8 +315,7 @@ public class ReservationActivity extends AppCompatActivity {
                             });
                         }
                     });
-                    builder.setNegativeButton("No", new DialogInterface
-                            .OnClickListener() {
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which){
                             dialog.dismiss(); // back to ReservationActivity
@@ -319,6 +343,8 @@ public class ReservationActivity extends AppCompatActivity {
                 reviewListView = (ListView)findViewById(R.id.reviewList);
                 reviewListView.setAdapter(reviewAdapter);
                 ListDynamicViewUtil.setListViewHeightBasedOnChildren(reviewListView);
+
+                reviewAdapter.notifyDataSetChanged();
             }
 
             @Override
