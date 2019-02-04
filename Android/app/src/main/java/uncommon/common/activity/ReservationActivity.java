@@ -271,6 +271,15 @@ public class ReservationActivity extends AppCompatActivity {
                                                        Response<Reservation> response) {
                                     Toast.makeText(ReservationActivity.this,
                                             "success",Toast.LENGTH_LONG).show();
+                                    Reservation res = response.body();
+                                    Intent confirmResIntent = new Intent(context,
+                                            ConfirmReservationActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    confirmResIntent.putExtra("_reservationID",
+                                            res.getReservationID());
+                                    confirmResIntent.putExtras(bundle);
+
+                                    startActivity(confirmResIntent);
                                 }
 
                                 @Override

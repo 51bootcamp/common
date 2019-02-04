@@ -48,7 +48,7 @@ public class InviteOnlyActivity extends AppCompatActivity {
         submitTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiInterface service = RetrofitInstance.getRetrofitInstance()
+                ApiInterface service = RetrofitInstance.getLoginRetrofitInstance()
                         .create(ApiInterface.class);
                 Call<Void> request = service.getInviteCode(inviteEditText.getText().toString());
                 request.enqueue(new Callback<Void>() {

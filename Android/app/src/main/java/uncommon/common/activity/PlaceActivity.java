@@ -33,8 +33,8 @@ public class PlaceActivity extends AppCompatActivity {
     ImageButton placeimgButton;
     TextView resNotificationTextView;
     TextView placeTextView;
-    String selectedClass;
     String selectedDate;
+    Integer reservationID;
     ImageView peopleImgView;
 
     @Override
@@ -84,7 +84,7 @@ public class PlaceActivity extends AppCompatActivity {
         });
 
         ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
-        Call<Reservation> request = service.getReservation();
+        Call<Reservation> request = service.getUpcoming();
         request.enqueue(new Callback<Reservation>() {
             @Override
             public void onResponse(Call<Reservation> call, Response<Reservation> response) {
@@ -104,6 +104,7 @@ public class PlaceActivity extends AppCompatActivity {
                     }
                     String outputDateStr = outputFormat.format(date);
 
+                    reservationID = res.getReservationID();
                     resNotificationTextView.setText(outputDateStr + " · " + res.getClassName() +
                             " · " + res.getExpertName());
                     resNotificationTextView.setSelected(true);
@@ -137,8 +138,7 @@ public class PlaceActivity extends AppCompatActivity {
                 ConfirmReservationActivity.class);
 
         Bundle bundle = new Bundle();
-        confirmResIntent.putExtra("_classInfo", selectedClass);
-        confirmResIntent.putExtra("_date", selectedDate);
+        confirmResIntent.putExtra("_reservationID", reservationID);
         confirmResIntent.putExtras(bundle);
 
         startActivity(confirmResIntent);

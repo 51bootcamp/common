@@ -38,6 +38,9 @@ public class Reservation implements Parcelable
     @SerializedName("coverImg")
     @Expose
     private String coverImg;
+    @SerializedName("reservationID")
+    @Expose
+    private Integer reservationID;
 
     public final static Parcelable.Creator<Reservation> CREATOR = new Creator<Reservation>() {
 
@@ -63,6 +66,7 @@ public class Reservation implements Parcelable
         this.guestCount = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.totalResPrice = ((Float) in.readValue((Float.class.getClassLoader())));
         this.coverImg = ((String) in.readValue((String.class.getClassLoader())));
+        this.reservationID = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
     public Reservation() {
@@ -80,10 +84,6 @@ public class Reservation implements Parcelable
         return className;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
     public String getDate() {
         return date;
     }
@@ -96,16 +96,8 @@ public class Reservation implements Parcelable
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
     public String getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public Integer getGuestCount(){
@@ -118,6 +110,8 @@ public class Reservation implements Parcelable
 
     public String getCoverImg() { return coverImg; }
 
+    public Integer getReservationID() { return reservationID; }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(userEmail);
         dest.writeValue(expertName);
@@ -129,6 +123,7 @@ public class Reservation implements Parcelable
         dest.writeValue(guestCount);
         dest.writeValue(totalResPrice);
         dest.writeValue(coverImg);
+        dest.writeValue(reservationID);
     }
 
     public int describeContents() {
@@ -136,7 +131,7 @@ public class Reservation implements Parcelable
     }
 
     public boolean isValid(){
-        if (expertName == null) return false;
+        if (reservationID == null) return false;
         else return true;
     }
 }

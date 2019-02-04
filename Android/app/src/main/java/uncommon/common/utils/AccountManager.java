@@ -1,11 +1,16 @@
 package uncommon.common.utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 
@@ -84,22 +89,37 @@ public class AccountManager {
 
         TextView title = new TextView(context);
         title.setGravity(Gravity.CENTER);
-        title.setText("SignUp First");
+        title.setText("SignUp Failed");
         title.setTextSize(30);
         title.setTypeface(null, Typeface.BOLD);
         title.setPadding(10, 20, 10, 10);
         builder.setCustomTitle(title);
 
         TextView msg = new TextView(context);
-        msg.setText("Sorry, " + userName + ",\nyou are not signed yet");
-        msg.setGravity(Gravity.LEFT);
-        msg.setLineSpacing(2,1);
+        msg.setText("It looks you haven't signed up yet.\nPlease sign up with an invite code\n" +
+                "first");
+        msg.setGravity(Gravity.CENTER);
         msg.setTextSize(20);
-        msg.setPadding(50, 20, 10, 20);
+        msg.setPadding(10, 20, 10, 10);
+
+
         builder.setView(msg);
+        builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+
+        Button btnNeutral = dialog.getButton(dialog.BUTTON_NEUTRAL);
+
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)
+                btnNeutral.getLayoutParams();
+        layoutParams.weight = 20;
+        btnNeutral.setLayoutParams(layoutParams);
 
     };
 }

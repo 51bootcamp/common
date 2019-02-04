@@ -14,8 +14,7 @@ from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
-import hashlib, json, jwt, pytz
+import hashlib, json, jwt, pytz, time
 
 def index(request):
     return HttpResponse("Hello woRld! you're at the api index.")
@@ -99,8 +98,10 @@ def getClassList(request, date):
             imageList = []
 
             availableClass = Class.objects.get(pk = query['classID'])
+            expert = availableClass.expert
             jsondict["classID"] = availableClass.classID
             jsondict["className"] = availableClass.className
+            jsondict["expertName"] = expert.username
             classImageList = Image.objects.filter(classID =
                                                   availableClass.classID)
             for img in classImageList :
@@ -218,6 +219,63 @@ def imageUpload(request):
 
         return HttpResponse("upload image correctly", status = 200)
 
+class upcomingView(APIView):
+    def get(self, request):
+        now = time.time()
+        query = Reservation.objects.filter(user = request.user,
+            timeTableIdx__startTime__gt=now)
+        print(query)
+        if not query:
+            return JsonResponse({}, status = 200)
+        else:
+            # print(query)
+            # query = query.objects.filter('timeTableIdx__startTime__gt=now')
+            reservation = query.order_by('timeTableIdx__startTime').first()
+            bookedTimeTable = reservation.timeTableIdx
+            bookedClass = bookedTimeTable.classID
+            expert = User.objects.get(email = bookedClass.expert.email)
+
+            startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
+                                         bookedTimeTable.endTime,
+                                         bookedTimeTable.timezone) 
+            return JsonResponse({
+                        "reservationID" : reservation.reservationID,
+                        "expertName"    : expert.username,
+                        "className"     : bookedClass.className,
+                        "date"          : bookedTimeTable.date,
+                    })            
+class getReservationView(APIView):
+    def get(self, request, reservationID):
+        now = time.time()
+        try: 
+           reservation = Reservation.objects.get(pk = reservationID)
+        except Reservation.DoesNotExist:
+            return HttpResponse("check the reservation id again", status = 200)
+        else:
+            bookedTimeTable = reservation.timeTableIdx
+            bookedClass = bookedTimeTable.classID
+            expert = User.objects.get(email = bookedClass.expert.email)
+            classImage = Image.objects.get(classID = bookedClass)
+            isPassed = bookedTimeTable.endTime < now
+
+            startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
+                                         bookedTimeTable.endTime,
+                                         bookedTimeTable.timezone)
+
+        return JsonResponse({
+                                "userEmail"     : request.user.email,
+                                "expertName"    : expert.username,
+                                "classID"       : bookedClass.classID,
+                                "className"     : bookedClass.className,
+                                "price"         : bookedClass.price,
+                                "date"          : bookedTimeTable.date,
+                                "startTime"     : startTime,
+                                "endTime"       : endTime,
+                                "guestCount"    : reservation.guestCount,
+                                "coverImg"      : classImage.coverImage.url,
+                                "isPassed"      : isPassed
+                            }) 
+
 class reservationView(APIView):
     def post(self, request):
         jsonBody = json.loads(request.body)
@@ -243,43 +301,12 @@ class reservationView(APIView):
                                      selectedTimeTable.timezone)
 
         return JsonResponse({
-                                "expertName"    : expert.username,
-                                "className"     : selectedClass.className,
-                                "date"          : selectedTimeTable.date,
-                                "startTime"     : startTime,
-                                "endTime"       : endTime
-                            })
-
-    def get(self, request):
-        try:
-            reservation = Reservation.objects.get(user = request.user)
-
-        except Reservation.DoesNotExist:
-            return JsonResponse({}, status = 200)
-
-        else:
-            bookedTimeTable = reservation.timeTableIdx
-            bookedClass = bookedTimeTable.classID
-            expert = User.objects.get(email = bookedClass.expert.email)
-
-            startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
-                                         bookedTimeTable.endTime,
-                                         bookedTimeTable.timezone)
-
-        return JsonResponse({
-                                "userEmail"     : request.user.email,
-                                "expertName"    : expert.username,
-                                "classID"       : bookedClass.classID,
-                                "className"     : bookedClass.className,
-                                "price"         : bookedClass.price,
-                                "date"          : bookedTimeTable.date,
-                                "startTime"     : startTime,
-                                "endTime"       : endTime,
-                                "guestCount"    : reservation.guestCount
-                            })       
+                                "reservationID" : newReservation.reservationID
+                            })  
 
 class getReservationList(APIView):
     def get(self, request):
+        now = time.time()
         try:
             reservationList = Reservation.objects.filter(user = request.user)
         except Reservation.DoesNotExist:
@@ -294,6 +321,8 @@ class getReservationList(APIView):
                 bookedClass = bookedTimeTable.classID
                 expert = bookedClass.expert
                 classImage = Image.objects.get(classID = bookedClass)
+                isPassed = bookedTimeTable.endTime < now
+
                 startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
                                                       bookedTimeTable.endTime,
                                                       bookedTimeTable.timezone)
@@ -309,6 +338,7 @@ class getReservationList(APIView):
                 jsondict["endTime"] = endTime
                 jsondict["guestCount"] = reservation.guestCount
                 jsondict["coverImg"] = classImage.coverImage.url
+                jsondict["isPassed"] = isPassed
                 li.append(jsondict)  # append: O(1)
 
             li = sorted(li, key=lambda reservationList: reservationList["date"],
@@ -319,7 +349,6 @@ class getReservationList(APIView):
 def getInviteCode(request, inviteCode):
     try:
         availableCode = InviteCode.objects.get(randomCode = inviteCode)
-        # print(availableCode.randomCode)
     except InviteCode.DoesNotExist:
         return HttpResponse("Invite Code mismatched", status = 201)
     else:
