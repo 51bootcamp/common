@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.InviteOnlyActivity">
+    tools:context="uncommon.common.activity.InviteFriendsActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -31,10 +30,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="WE'RE SO GLAD YOU'RE HERE!"
+        android:text="Send friends an invite code \n and enjoy common together."
         android:textColor="@android:color/black"
         android:textSize="18dp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
@@ -44,14 +42,14 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/enter_code"
+        android:id="@+id/send_your_invite_code_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="14dp"
-        android:text="Have an invite code? Enter your \n invitation code &amp; create your account."
+        android:text="SEND YOUR INVITE CODE"
         android:textAlignment="center"
         android:textSize="16dp"
         android:textStyle="bold"
@@ -60,32 +58,42 @@
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.57" />
+
+    <TextView
+        android:id="@+id/givenInviteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/send_your_invite_code_text"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="176dp"
+        tools:layout_editor_absoluteY="432dp"
+        tools:ignore="MissingConstraints" />
+
 
     <EditText
-        android:id="@+id/inviteEditText"
+        android:id="@+id/email_text"
         android:layout_width="316dp"
         android:layout_height="43dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/invite_code_textview_border"
         android:ems="10"
-        android:hint="Enter your invitation code"
+        android:hint="Email"
         android:importantForAutofill="no"
-        android:inputType="text"
-        android:textAlignment="center"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.556"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.747" />
+        app:layout_constraintVertical_bias="0.74" />
 
 
     <TextView
-        android:id="@+id/submitTextButton"
+        android:id="@+id/sendButton"
         android:layout_width="316dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
@@ -96,7 +104,7 @@
         android:clickable="true"
         android:backgroundTint="@color/colorPrimary"
         android:gravity="center"
-        android:text="SUBMIT"
+        android:text="SEND"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
@@ -105,41 +113,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.848" />
-
-    <TextView
-        android:id="@+id/already_onboard_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/already_onboard_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.39"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
-
-    <TextView
-        android:id="@+id/back_login_to_main_text_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
-        android:onClick="click"
-        android:text="@string/back_login_to_main_text_button"
-        android:textColor="@color/colorPrimaryLight"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.66"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
 
 </android.support.constraint.ConstraintLayout>
