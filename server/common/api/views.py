@@ -13,6 +13,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 import json
+import random
 
 def index(request):
     return HttpResponse("Hello woRld! you're at the api index.")
@@ -160,6 +161,90 @@ def makeReservation(request):
                             "endTime"       : endTime
                         })
 
+@csrf_exempt
+def makeClass(request):
+    if request.method == 'POST':
+        jsonBody = json.loads(request.body)
+        timezone = "America/Los_Angeles"
+
+        # selectedExpert = User.objects.get(pk = jsonBody['userEmail'])
+        selectedExpert = User.objects.get(pk="ywj@kookmin.ac.kr")
+
+        newClass = Class(className = jsonBody['className'],
+                         minGuestCount = jsonBody['minGuestCount'],
+                         maxGuestCount = jsonBody['maxGuestCount'],
+                         price = jsonBody['price'],
+                         expertEmail = selectedExpert
+                         )
+        newClass.save()
+
+        # startEpochTime = jsonBody['startTime']
+        # endEpochTime = jsonBody['endTime']
+        selectedDate = jsonBody['date']
+
+        print(jsonBody['timeSlotList'])
+
+        timeSlotList = jsonBody['timeSlotList']
+
+        for timeSlot in timeSlotList:
+            newTimeTable = TimeTable(date = selectedDate,
+                                     startTime = timeSlot['startTime'],
+                                     endTime = timeSlot['endTime'],
+                                     classID = newClass)
+            newTimeTable.save()
+
+        return JsonResponse({
+                    "className": newClass.className,
+                    "timeTable" : newTimeTable.timeTableIdx
+                })
+
+
+    # string = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
+    # code = random.choice(string)
+    # code = code[0:6]
+    # print(code)
+
+def getReservationList(request, userEmail):
+    try:
+        availableReservationList = Reservation.objects.filter(
+            userEmail = userEmail)
+
+    except Reservation.objects.DoesNotExist:
+        return HttpResponse("No reservation", status=203)
+
+    else:
+        li = []
+        for query in availableReservationList:
+            jsondict = {}
+
+            availableReservation = Reservation.objects.get(
+                pk=query.reservationID)
+            bookedTimeTable = availableReservation.timeTableIdx
+            bookedClass = bookedTimeTable.classID
+            expert = User.objects.get(pk = bookedClass.expertEmail_id)
+
+            startTime, endTime = epochToLocalTime(bookedTimeTable.startTime,
+                                         bookedTimeTable.endTime,
+                                         bookedTimeTable.timezone)
+
+            jsondict["reservationID"] = availableReservation.reservationID
+            jsondict["userEmail"] = userEmail
+            jsondict["expertName"] = expert.userName
+            jsondict["classID"] = bookedClass.classID
+            jsondict["className"] = bookedClass.className
+            jsondict["price"] = bookedClass.price
+            jsondict["date"] = bookedTimeTable.date
+            jsondict["startTime"] = startTime
+            jsondict["endTime"] = endTime
+            jsondict["guestCount"] = availableReservation.guestCount
+
+            li.append(jsondict)  # append: O(1)
+
+        li = sorted(li, key=lambda reservationList: reservationList["date"],
+                    reverse=False)
+        return JsonResponse({"reservationList": li}, status=200)
+
+
 def getReservation(request, userEmail):
     try:
         reservation = Reservation.objects.get(userEmail = userEmail)
@@ -177,6 +262,7 @@ def getReservation(request, userEmail):
                                      bookedTimeTable.timezone)
 
     return JsonResponse({
+                            "userEmail"     :userEmail,
                             "expertName"    : expert.userName,
                             "classID"       : bookedClass.classID,
                             "className"     : bookedClass.className,
@@ -200,12 +286,26 @@ def imageUpload(request):
 
         return HttpResponse("upload image correctly", status = 200)
 
+# @csrf_exempt
+# def imageUpload(request):
+#     if request.method == 'POST':
+#         jsonBody = json.loads(request.body)
+#         selectedClass = Class.objects.get(pk = 4)
+#
+#         newImage = Image(coverImage=jsonBody['coverImage']['coverImage'],
+#                          ImageType=1,
+#                          classID = selectedClass
+#                          )
+#         newImage.save()
+#
+#         return HttpResponse("upload image correctly", status = 200)
+
 @csrf_exempt
 def writeReview(request):
     jsonBody = json.loads(request.body)
 
     bookingUser = User.objects.get(pk = jsonBody['userEmail'])
-    clasID = Class.objects.get(pk = jsonBody['classID'])
+    classID = Class.objects.get(pk = jsonBody['classID'])
 
     newReview = Review(title = jsonBody['title'],
                        content = jsonBody['content'],
@@ -219,3 +319,18 @@ def writeReview(request):
     return JsonResponse({
         "reviewIdx" : newReview.reviewIdx
     })
+
+def getInviteCode(request, inviteCode):
+
+    availableCode = InviteCode.objects.filter(randomCode = inviteCode)
+
+    if availableCode.objects.DoesNotExist:
+        if (availableCode.isExpired == True) :
+            return HttpResponse("Invite Code is alreay expired", status=203)
+        else:
+            return HttpResponse("Invite Code mismatched", status = 203)
+    else:
+        availableCode.isExpired = True
+        availableCode.save()
+
+        return HttpResponse("Invite Code is existed", status=200)

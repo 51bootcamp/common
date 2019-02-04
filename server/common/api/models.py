@@ -49,3 +49,8 @@ class Image(models.Model):
 
 	ImageType = models.IntegerField(default=1, choices=IMAGE_CHOICES)
 	classID = models.ForeignKey(Class, on_delete = models.CASCADE)
+
+class InviteCode (models.Model):
+	inviteCodeID = models.AutoField(primary_key = True)
+	randomCode = models.CharField(max_length = 40)
+	isExpired = models.BooleanField(default = False)

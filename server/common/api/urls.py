@@ -19,6 +19,10 @@ urlpatterns = [
     path('reserve/', views.makeReservation, name = 'makeReservation'),
     path('reserve/<str:userEmail>', views.getReservation, 
     	name = 'getReservation'),
+    path('reserveList/<str:userEmail>', views.getReservationList,
+    	name = 'getReservationList'),
+    path('makeClass/', views.makeClass, name = 'makeClass'),
+    path('invite/', views.getInviteCode, name = 'getInviteCode'),
     path('upload/', views.imageUpload, name = 'imageUpload'),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^docs/', schema_view)
