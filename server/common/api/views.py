@@ -313,7 +313,14 @@ def writeReview(request):
                        classID = classID,
                        userID = bookingUser
     )
+    classID = Class.objects.get(pk = jsonBody['classID'])
 
+    newReview = Review(title = jsonBody['title'],
+    content = jsonBody['content'],
+
+    rating = jsonBody['rating'],
+    classID = classID,
+    userID = bookingUser)
     newReview.save()
 
     return JsonResponse({
@@ -334,3 +341,28 @@ def getInviteCode(request, inviteCode):
         availableCode.save()
 
         return HttpResponse("Invite Code is existed", status=200)
+
+def getReviewList(request, classID):
+    try:
+        availableReviewList = Review.objects.filter(classID = classID)
+    except Review.objects.DoesNotExist:
+        return HttpResponse("No review")
+    else:
+        li = []
+        for query in availableReviewList:
+            jsondict = {}
+            reviewer = query.userID
+
+            jsondict["reviewIdx"] = query.reviewIdx
+            jsondict["title"] = query.title
+            jsondict["content"] = query.content
+            jsondict["rating"] = query.rating
+            jsondict["createdDate"] = query.createdDate
+            jsondict["userName"] = reviewer.userName
+
+            li.append(jsondict)
+
+        li = sorted(li, key=lambda reviewList: reviewList["createdDate"],
+                    reverse=False)
+        return JsonResponse({"reviewList": li}, status=200)
+
