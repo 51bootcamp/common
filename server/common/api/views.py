@@ -163,23 +163,24 @@ def imageUpload(request):
 
         return HttpResponse("upload image correctly", status = 200)
 
-@csrf_exempt
-def writeReview(request):
-    bookingUser = request.user
-    jsonBody = json.loads(request.body)
+class writeReviewView(APIView):
+    @csrf_exempt
+    def post(self, request):
+        bookingUser = request.user
+        jsonBody = json.loads(request.body)
 
-    clasID = Class.objects.get(pk = jsonBody['classID'])
+        classID = Class.objects.get(pk = jsonBody['classID'])
 
-    newReview = Review(title = jsonBody['title'],
-                       content = jsonBody['content'],
-                       rating = jsonBody['rating'],
-                       classID = classID,
-                       userID = bookingUser
-    )
+        newReview = Review(title = jsonBody['title'],
+                           content = jsonBody['content'],
+                           rating = jsonBody['rating'],
+                           classID = classID,
+                           userID = bookingUser
+        )
 
-    newReview.save()
+        newReview.save()
 
-    return JsonResponse({"reviewIdx" : newReview.reviewIdx})
+        return JsonResponse({"reviewIdx" : newReview.reviewIdx})
 
 def getReviewList(request, classID):
     try:
