@@ -3,7 +3,6 @@ package uncommon.common.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -67,6 +66,7 @@ public class InviteFriendsActivity extends AppCompatActivity
         logoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent logoIntent = new Intent(context, PlaceActivity.class);
+                logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoIntent);
                 finish();
                 return;
@@ -94,7 +94,10 @@ public class InviteFriendsActivity extends AppCompatActivity
                         Toast.makeText(getApplicationContext(),
                                 "Send Email",Toast.LENGTH_LONG).show();
                         Intent sendEmailIntent = new Intent(InviteFriendsActivity.this,
-                                InviteOnlyActivity.class);
+                                PlaceActivity.class);
+                        sendEmailIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
                         startActivity(sendEmailIntent);
                     }
                     @Override
@@ -110,6 +113,7 @@ public class InviteFriendsActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.nav_home: {
                 Intent navIntent = new Intent(context, PlaceActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;
@@ -138,6 +142,7 @@ public class InviteFriendsActivity extends AppCompatActivity
             case R. id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;

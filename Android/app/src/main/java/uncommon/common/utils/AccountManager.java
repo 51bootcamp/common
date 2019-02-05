@@ -1,5 +1,6 @@
 package uncommon.common.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,7 +47,10 @@ public class AccountManager {
                     RetrofitInstance.isLecturer = Boolean.valueOf(response.body()
                             .get("isLecturer").toString());
                     Intent placeIntent = new Intent(context, PlaceActivity.class);
+                    placeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(placeIntent);
+                    ((Activity) context).finish();
                 }
                 else if(response.code() == 409){
                     alertSingUpBox(userName);
@@ -71,7 +75,10 @@ public class AccountManager {
                     RetrofitInstance.isLecturer = Boolean.valueOf(response.body()
                             .get("isLecturer").toString());
                     Intent placeIntent = new Intent(context, PlaceActivity.class);
+                    placeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     context.startActivity(placeIntent);
+                    ((Activity) context).finish();
                 }
                 else{
                     LoginManager.getInstance().logOut();

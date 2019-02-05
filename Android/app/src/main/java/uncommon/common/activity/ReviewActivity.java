@@ -36,13 +36,12 @@ public class ReviewActivity extends AppCompatActivity
     private EditText reviewEditText;
     private EditText titleEditText;
     private RatingBar reviewRating;
-    Context context;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = this;
         setContentView(R.layout.drawer_review);
 
         hideItem();
@@ -68,6 +67,7 @@ public class ReviewActivity extends AppCompatActivity
         logoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent logoIntent = new Intent(context, PlaceActivity.class);
+                logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoIntent);
                 finish();
                 return;
@@ -98,6 +98,8 @@ public class ReviewActivity extends AppCompatActivity
                         Toast.makeText(ReviewActivity.this,"success",
                                 Toast.LENGTH_LONG).show();
                         Intent placeIntent = new Intent(ReviewActivity.this, PlaceActivity.class);
+                        placeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(placeIntent);
                     }
 
@@ -115,6 +117,7 @@ public class ReviewActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.nav_home: {
                 Intent navIntent = new Intent(context, PlaceActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;
@@ -145,6 +148,7 @@ public class ReviewActivity extends AppCompatActivity
             case R. id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;

@@ -10,28 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uncommon.common.R;
 import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.network.RetrofitInstance;
-import uncommon.common.utils.AccountManager;
 
 public class InviteOnlyActivity extends AppCompatActivity {
 
     private Context context = this;
-    private String userName;
-    private String userEmail;
-    private AccountManager accountManager = new AccountManager(context);
-
     TextView submitTextButton;
     EditText inviteEditText;
 
@@ -45,8 +33,6 @@ public class InviteOnlyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-        AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
-        if (currentAccessToken != null) { requestMe(currentAccessToken); }
 
         inviteEditText = (EditText) this.findViewById(R.id.inviteEditText);
         submitTextButton = (TextView) this.findViewById(R.id.submitTextButton);
@@ -64,6 +50,7 @@ public class InviteOnlyActivity extends AppCompatActivity {
                             Intent signupIntent = new Intent(InviteOnlyActivity.this,
                                     SignupActivity.class);
                             startActivity(signupIntent);
+                            finish();
                         } else if(response.code() == 203) {
                             Toast.makeText(InviteOnlyActivity.this,
                                     "Invitation code is already expired",
@@ -88,29 +75,5 @@ public class InviteOnlyActivity extends AppCompatActivity {
     public void click(View view) {
         Intent loginIntent = new Intent(InviteOnlyActivity.this, MainActivity.class);
         startActivity(loginIntent);
-    }
-
-    public void requestMe(AccessToken token) {
-        GraphRequest graphRequest = GraphRequest.newMeRequest(token,
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        try {
-                            userName = object.get("name").toString();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            userEmail = object.get("email").toString();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        accountManager.Login(userEmail, userName);
-                    }
-                });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday");
-        graphRequest.setParameters(parameters);
-        graphRequest.executeAsync();
     }
 }

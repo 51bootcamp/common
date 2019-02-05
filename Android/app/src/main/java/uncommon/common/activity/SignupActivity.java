@@ -1,6 +1,5 @@
 package uncommon.common.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,13 +33,11 @@ public class SignupActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private String userName;
     private String userEmail;
-    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = this;
         setContentView(R.layout.activity_signup);
 
         // Toolbar
