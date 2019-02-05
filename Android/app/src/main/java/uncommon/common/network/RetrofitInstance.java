@@ -18,6 +18,7 @@ public class RetrofitInstance {
             "http://52.8.187.167:8000/api/v1/";
 
     public static String JWT;
+    public static Boolean isLecturer;
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

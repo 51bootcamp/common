@@ -51,7 +51,8 @@ def signup(request):
             'userName'  : newUser.username
         }
         return JsonResponse({
-            'token' : jwt.encode(payload, "SECRET_KEY").decode('utf-8')
+            'token' : jwt.encode(payload, "SECRET_KEY").decode('utf-8'),
+            'isLecturer' : newUser.isLecturer
             })
     else:
         return HttpResponse("you are already registered", status = 409)
@@ -75,7 +76,8 @@ def login(request):
             'userName'  : user.username
         }
         return JsonResponse({
-            'token' : jwt.encode(payload, "SECRET_KEY").decode('utf-8')
+            'token' : jwt.encode(payload, "SECRET_KEY").decode('utf-8'),
+            'isLecturer' : user.isLecturer
             })
     else:
         return JsonResponse({"userName":user.userName}, status = 202)
