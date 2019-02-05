@@ -43,6 +43,8 @@ public class AccountManager {
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                 if (response.code() == 200){
                     RetrofitInstance.JWT = "Bearer " + response.body().get("token").toString();
+                    RetrofitInstance.isLecturer = Boolean.valueOf(response.body()
+                            .get("isLecturer").toString());
                     Intent placeIntent = new Intent(context, PlaceActivity.class);
                     context.startActivity(placeIntent);
                 }
@@ -66,6 +68,8 @@ public class AccountManager {
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
                 if (response.code() == 200){
                     RetrofitInstance.JWT = "Bearer " + response.body().get("token").toString();
+                    RetrofitInstance.isLecturer = Boolean.valueOf(response.body()
+                            .get("isLecturer").toString());
                     Intent placeIntent = new Intent(context, PlaceActivity.class);
                     context.startActivity(placeIntent);
                 }
