@@ -25,7 +25,6 @@
                 android:id="@+id/place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 tools:layout_editor_absoluteX="0dp"
                 tools:ignore="MissingConstraints">
 
@@ -161,48 +160,10 @@
                     android:textStyle="bold"
                     tools:ignore="MissingConstraints" />
 
-                <Button
-                    android:id="@+id/reviewButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Button" />
-
-                <Button
-                    android:id="@+id/inviteFriends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="283dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="5dp"
-                    android:text="inviteFriends" />
 
             </RelativeLayout>
 
         </ScrollView>
-
-            <Button
-                android:id="@+id/reviewbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/placeTextView"
-                android:layout_marginTop="30dp"
-                android:text="review"/>
-
-            <Button
-              android:id="@+id/newClassButton"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_below="@id/placeTextView"
-              android:layout_marginStart="244dp"
-              android:layout_marginEnd="8dp"
-              android:onClick="createClass"
-              android:text="NEW Class"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintStart_toStartOf="@+id/reviewbutton"
-              tools:layout_editor_absoluteY="0dp" />
 
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>

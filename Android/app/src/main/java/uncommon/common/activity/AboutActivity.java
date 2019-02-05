@@ -18,7 +18,8 @@ import com.facebook.login.LoginManager;
 
 import uncommon.common.R;
 
-public class AboutActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AboutActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     Context context;
 

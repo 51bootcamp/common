@@ -35,7 +35,8 @@ import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
 
-public class ConfirmReservationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ConfirmReservationActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Button reviewButton;
     private ImageView classImgView;

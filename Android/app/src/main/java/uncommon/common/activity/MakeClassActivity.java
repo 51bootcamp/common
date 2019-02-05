@@ -58,7 +58,8 @@ import uncommon.common.models.Image;
 import uncommon.common.models.TimeSlot;
 import uncommon.common.network.RetrofitInstance;
 
-public class MakeClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MakeClassActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     final int numberOfTimeslot = 7;
     private static final int RESULT_LOAD_IMAGE = 1;

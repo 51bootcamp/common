@@ -10,10 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +33,8 @@ import uncommon.common.models.ClassList;
 import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
 
-public class PlaceActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class PlaceActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageButton placeimgButton;
     TextView resNotificationTextView;
@@ -146,27 +145,6 @@ public class PlaceActivity extends AppCompatActivity implements NavigationView.O
                 //TODO (kahye) : error handling
             }
         });
-
-        //TODO(gayeon) : change button position to navigation bar
-        Button reviewButton = (Button) findViewById(R.id.reviewButton);
-        reviewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent reviewIntent = new Intent(PlaceActivity.this, MyReservationActivity.class);
-                startActivity(reviewIntent);
-            }
-        });
-
-        //TODO(kahye) : have to change the position into menu
-        Button inviteFriend = (Button) findViewById(R.id.inviteFriends);
-        inviteFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent inviteFriendIntent = new Intent(PlaceActivity.this,
-                        InviteFriendsActivity.class);
-                startActivity(inviteFriendIntent);
-            }
-        });
     }
 
     public void click(View view) {
@@ -178,38 +156,6 @@ public class PlaceActivity extends AppCompatActivity implements NavigationView.O
         confirmResIntent.putExtras(bundle);
 
         startActivity(confirmResIntent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.actionbar_actions, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        LoginManager.getInstance().logOut();
-
-        Intent mainIntent = new Intent(PlaceActivity.this, MainActivity.class);
-        startActivity(mainIntent);
-        finish();
-        /*
-        switch (item.getItemId()) {
-            case R.id.action_settings :
-                // TODO (kahye) : process the click event for action_search item.
-                //when we need another actionbar item
-                return true ;
-            default :
-                return super.onOptionsItemSelected(MenuItem ) ;
-        }*/
-        return true;
-    }
-
-    public void createClass(View view) {
-
-        Intent createClassIntent = new Intent(PlaceActivity.this, MakeClassActivity.class);
-        startActivity(createClassIntent);
-
     }
 
     @Override
