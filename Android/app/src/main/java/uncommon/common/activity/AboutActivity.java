@@ -23,14 +23,13 @@ import uncommon.common.network.RetrofitInstance;
 public class AboutActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Context context;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = this;
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.drawer_about);
 
         hideItem();
 
