@@ -179,7 +179,7 @@ class writeReviewView(APIView):
         )
 
         newReview.save()
-        
+
         return JsonResponse({ "reviewIdx" : newReview.reviewIdx })
 
 def getReviewList(request, classID):
@@ -365,7 +365,6 @@ class makeClassView(APIView):
                     "classID": newClass.classID,
                     "timeTable" : newTimeTable.timeTableIdx
                 })
-
 
 def getInviteCode(request, inviteCode):
     try:
