@@ -183,18 +183,20 @@
             android:layout_below="@id/placeTextView"
             android:layout_marginTop="30dp"
             android:text="review"/>
-
+    
         <Button
-            android:id="@+id/newClassButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/placeTextView"
-            android:layout_marginStart="244dp"
-            android:layout_marginEnd="8dp"
-            android:onClick="createClass"
-            android:text="NEW Class"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/reviewbutton"
-            tools:layout_editor_absoluteY="0dp" />
+          android:id="@+id/newClassButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/placeTextView"
+          android:layout_marginStart="244dp"
+          android:layout_marginEnd="8dp"
+          android:onClick="createClass"
+          android:text="NEW Class"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="@+id/reviewbutton"
+          tools:layout_editor_absoluteY="0dp" />
+
+>>>>>>> a0181dbb9e980d55d4764703af553fae3a58ae38
 
 </android.support.constraint.ConstraintLayout>

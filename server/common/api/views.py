@@ -202,7 +202,7 @@ def imageUpload(request, classID):
                          classID = selectedClass
                          )
         newImage.save()
-
+        
         return HttpResponse("upload image correctly", status = 200)
 
 @csrf_exempt

@@ -65,6 +65,8 @@
         <activity android:name=".activity.ConfirmReservationActivity" />
         <activity android:name=".activity.InviteOnlyActivity" />
         <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MakeClassActivity"></activity>
+
     </application>
 
 </manifest>
