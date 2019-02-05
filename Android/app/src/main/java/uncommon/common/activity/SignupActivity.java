@@ -1,8 +1,10 @@
 package uncommon.common.activity;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -32,13 +34,20 @@ public class SignupActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private String userName;
     private String userEmail;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        context = this;
         setContentView(R.layout.activity_signup);
+
+        // Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
 

@@ -1,69 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="uncommon.common.activity.TrendingClassActivity2">
+    android:orientation="vertical" >
 
-    <ScrollView
+    <include layout="@layout/toolbar_common"/>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent"
+        tools:context="uncommon.common.activity.TrendingClassActivity2">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            tools:ignore="MissingConstraints">
 
-            <TextView
-                android:id="@+id/select_from_date_text"
-                android:layout_width="wrap_content"
-                android:layout_height="31dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/select_from_data_text"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-
-            <DatePicker
-                android:id="@+id/datepicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:layout_gravity="center"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="29dp">
-            </DatePicker>
-
-            <TextView
-                android:id="@+id/classesText"
-                android:layout_width="wrap_content"
-                android:layout_height="31dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/classesText"
-                android:textSize="24sp"
-                android:textStyle="bold"/>
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/classViewPager"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                tools:ignore="MissingConstraints">
-            </android.support.v4.view.ViewPager>
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/select_from_date_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="31dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/select_from_data_text"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <DatePicker
+                    android:id="@+id/datepicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="11dp"
+                    android:layout_gravity="center"
+                    tools:layout_editor_absoluteX="8dp"
+                    tools:layout_editor_absoluteY="29dp">
+                </DatePicker>
+
+                <TextView
+                    android:id="@+id/classesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="31dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/classesText"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/classViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    tools:ignore="MissingConstraints">
+                </android.support.v4.view.ViewPager>
+            </LinearLayout>
+
+        </ScrollView>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>
