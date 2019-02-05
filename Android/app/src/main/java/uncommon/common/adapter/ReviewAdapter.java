@@ -53,17 +53,19 @@ public class ReviewAdapter extends ArrayAdapter<String> {
                 inflater = (LayoutInflater) context.getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
             }
-            convertView = inflater.inflate(R.layout.review_item, parent, false);
+            convertView = inflater.inflate(R.layout.review_item, null, false);
         }
 
         positionReview = reviews.get(position);
 
         rating = (RatingBar) convertView.findViewById(R.id.reviewRating);
         reviewContent = (TextView) convertView.findViewById(R.id.reviewContent);
+        reviewTitle = (TextView) convertView.findViewById(R.id.reviewTitle);
         userName = (TextView) convertView.findViewById(R.id.userName);
 
         rating.setRating(positionReview.getRating());
         reviewContent.setText(positionReview.getContent().toString());
+        reviewTitle.setText("\"" + positionReview.getTitle().toString() + "\"");
         userName.setText(positionReview.getUserName().toString());
 
         return convertView;

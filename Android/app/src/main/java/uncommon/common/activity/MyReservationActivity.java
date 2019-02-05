@@ -1,12 +1,15 @@
 package uncommon.common.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,9 @@ public class MyReservationActivity extends AppCompatActivity {
             .create(ApiInterface.class);
     private Context context;
     private List<Reservation> reservations;
+    private List<Reservation> passedReservations;
     private ListView reservationListView;
+    private ListView passedReservationListView;
     private ReservationList reservationList;
 
     @Override
@@ -37,6 +42,9 @@ public class MyReservationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_reservation);
         context = this;
 
+        reservationListView = (ListView) findViewById(R.id.myReservationListView);
+        passedReservationListView = (ListView) findViewById(R.id.passedMyReservationListView);
+
         // get data from server
         Call<ReservationList> request = service.getReservationList();
         request.enqueue(new Callback<ReservationList>() {
@@ -44,28 +52,55 @@ public class MyReservationActivity extends AppCompatActivity {
             public void onResponse(Call<ReservationList> call, Response<ReservationList> response) {
                 reservationList = response.body();
                 reservations = new ArrayList<Reservation>();
+                passedReservations = new ArrayList<Reservation>();
                 int reservationListSize = reservationList.getReservationList().size();
-                for(int reserveIdx = 0; reserveIdx < reservationListSize; reserveIdx++){
-                    reservations.add(reservationList.getReservationList().get(reserveIdx));
+
+                // if there is no reservation
+                if(reservationListSize == 0){
+                    reservationListView.setVisibility(View.INVISIBLE);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyReservationActivity.this);
+                    // msg
+                    TextView msg = new TextView(MyReservationActivity.this);
+                    msg.setGravity(Gravity.LEFT);
+                    msg.setLineSpacing(2,1);
+                    msg.setText("There is no reservations.");
+                    msg.setTextSize(20);
+                    msg.setPadding(50, 60, 10, 10);
+                    builder.setView(msg);
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                     @Override
+                     public void onClick(DialogInterface dialog, int which){
+                        Intent placeIntent = new Intent(MyReservationActivity.this,
+                                PlaceActivity.class);
+                        startActivity(placeIntent);
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
 
+                for(int reserveIdx = 0; reserveIdx < reservationListSize; reserveIdx++){
+                    Reservation resposition = reservationList.getReservationList().get(reserveIdx);
+                    if(resposition.getIsPassed()) {
+                        passedReservations.add(resposition);
+                    }
+                    else{
+                        reservations.add(resposition);
+                    }
+                }
+
+                // Upcoming Class ReservationList
                 MyReservationAdapter reservationAdapter = new MyReservationAdapter(context,
                         reservations);
-                reservationListView = (ListView)findViewById(R.id.myReservationListView);
                 reservationListView.setAdapter(reservationAdapter);
                 ListDynamicViewUtil.setListViewHeightBasedOnChildren(reservationListView);
 
-                reservationListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view,
-                                            int position, long l) {
-                        view.setSelected(true);
-
-                        Intent confirmReserveIntent = new Intent(MyReservationActivity.this,
-                                ConfirmReservationActivity.class);
-                        startActivity(confirmReserveIntent);
-                    }
-                });
+                // Past ReservationList
+                MyReservationAdapter passedReservationAdapter = new MyReservationAdapter(context,
+                        passedReservations);
+                passedReservationListView.setAdapter(passedReservationAdapter);
+                ListDynamicViewUtil.setListViewHeightBasedOnChildren(passedReservationListView);
             }
 
             @Override

@@ -18,21 +18,22 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/launcher_icon_common"
+        android:icon="@mipmap/logo_heart"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/launcher_icon_common_round"
+        android:roundIcon="@mipmap/logo_heart_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.ConfirmReservationActivity" />
-        <activity android:name=".activity.InviteOnlyActivity">
+        <activity android:name=".activity.InviteFriendsActivity"></activity>
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -61,7 +62,9 @@
         <activity android:name=".activity.TrendingClassActivity2" />
         <activity android:name=".activity.ReviewActivity" />
         <activity android:name=".activity.MyReservationActivity" />
-        <activity android:name=".activity.MakeClassActivity"></activity>
+        <activity android:name=".activity.ConfirmReservationActivity" />
+        <activity android:name=".activity.InviteOnlyActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

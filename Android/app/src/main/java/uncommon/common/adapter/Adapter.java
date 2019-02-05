@@ -67,14 +67,6 @@ public class Adapter extends PagerAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.class_viewpager, null);
         classButton = (ImageButton) view.findViewById(R.id.classButton);
-        classRating = (RatingBar) view.findViewById(R.id.classRating);
-
-        classRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean b) {
-                classRating.setRating(rating);
-            }
-        });
 
         Picasso.get().load(ImgURL)
                 .resize(2048, 1600)
@@ -114,6 +106,9 @@ public class Adapter extends PagerAdapter {
         });
 
         // put data on class Img
+        classRating = (RatingBar) view.findViewById(R.id.classRating);
+        classRating.setRating(positionClass.getClassRating());
+
         classTextView = view.findViewById(R.id.classTextView);
         classTextView.setText(positionClass.getClassName());
 

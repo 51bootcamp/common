@@ -192,34 +192,18 @@ def makeClass(request):
 
 
 @csrf_exempt
-def imageUpload(request):
+def imageUpload(request, classID):
     if request.method == 'POST':
-        jsonBody = json.loads(request.body)
-        selectedClass = Class.objects.filter(classID = jsonBody['class'])
+        # just for checking image upload properly
+        selectedClass = Class.objects.get(pk = classID)
 
-        print(selectedClass.className)
-
-        newImage = Image(coverImage=jsonBody['image'].FILES['coverImage'],
+        newImage = Image(coverImage=request.FILES['coverImage'],
                          ImageType=1,
                          classID = selectedClass
                          )
         newImage.save()
 
         return HttpResponse("upload image correctly", status = 200)
-
-# @csrf_exempt
-# def imageUpload(request):
-#     if request.method == 'POST':
-#         jsonBody = json.loads(request.body)
-#         selectedClass = Class.objects.get(pk = 4)
-#
-#         newImage = Image(coverImage=jsonBody['coverImage']['coverImage'],
-#                          ImageType=1,
-#                          classID = selectedClass
-#                          )
-#         newImage.save()
-#
-#         return HttpResponse("upload image correctly", status = 200)
 
 @csrf_exempt
 def writeReview(request):
@@ -229,17 +213,25 @@ def writeReview(request):
     bookingUser = User.objects.get(pk = jsonBody['userEmail'])
     classID = Class.objects.get(pk = jsonBody['classID'])
 
-    newReview = Review(title = jsonBody['title'],
-                       content = jsonBody['content'],
-                       rating = jsonBody['rating'],
-                       classID = classID,
-                       userID = bookingUser
-    )
+class writeReviewView(APIView):
+    @csrf_exempt
+    def post(self, request):
+        bookingUser = request.user
+        jsonBody = json.loads(request.body)
 
-    newReview.save()
-    return JsonResponse({
-        "reviewIdx" : newReview.reviewIdx
-    })
+        classID = Class.objects.get(pk = jsonBody['classID'])
+
+        newReview = Review(title = jsonBody['title'],
+                           content = jsonBody['content'],
+                           rating = jsonBody['rating'],
+                           classID = classID,
+                           userID = bookingUser
+        )
+
+        newReview.save()
+        return JsonResponse({
+            "reviewIdx" : newReview.reviewIdx
+        })
 
 def getInviteCode(request, inviteCode):
 
