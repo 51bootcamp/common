@@ -41,6 +41,9 @@ public class Reservation implements Parcelable
     @SerializedName("reservationID")
     @Expose
     private Integer reservationID;
+    @SerializedName("isPassed")
+    @Expose
+    private Boolean isPassed;
 
     public final static Parcelable.Creator<Reservation> CREATOR = new Creator<Reservation>() {
 
@@ -67,6 +70,7 @@ public class Reservation implements Parcelable
         this.totalResPrice = ((Float) in.readValue((Float.class.getClassLoader())));
         this.coverImg = ((String) in.readValue((String.class.getClassLoader())));
         this.reservationID = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.isPassed = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
     public Reservation() {
@@ -112,6 +116,8 @@ public class Reservation implements Parcelable
 
     public Integer getReservationID() { return reservationID; }
 
+    public Boolean getIsPassed() { return isPassed; }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(userEmail);
         dest.writeValue(expertName);
@@ -124,6 +130,7 @@ public class Reservation implements Parcelable
         dest.writeValue(totalResPrice);
         dest.writeValue(coverImg);
         dest.writeValue(reservationID);
+        dest.writeValue(isPassed);
     }
 
     public int describeContents() {

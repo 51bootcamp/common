@@ -37,6 +37,8 @@ public class PlaceActivity extends AppCompatActivity {
     Integer reservationID;
     ImageView peopleImgView;
 
+    ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +52,6 @@ public class PlaceActivity extends AppCompatActivity {
 
         placeimgButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            ApiInterface service = RetrofitInstance.getRetrofitInstance()
-                    .create(ApiInterface.class);
-
             //get current date
             long now = System.currentTimeMillis();
             Date date = new Date(now);
@@ -83,7 +82,6 @@ public class PlaceActivity extends AppCompatActivity {
             }
         });
 
-        ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
         Call<Reservation> request = service.getUpcoming();
         request.enqueue(new Callback<Reservation>() {
             @Override
@@ -123,12 +121,23 @@ public class PlaceActivity extends AppCompatActivity {
         });
 
         //TODO(gayeon) : change button position to navigation bar
-        Button reviewButton = (Button) findViewById(R.id.reviewbutton);
+        Button reviewButton = (Button) findViewById(R.id.reviewButton);
         reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent reviewIntent = new Intent(PlaceActivity.this, MyReservationActivity.class);
                 startActivity(reviewIntent);
+            }
+        });
+
+        //TODO(kahye) : have to change the position into menu
+        Button inviteFriend = (Button) findViewById(R.id.inviteFriends);
+        inviteFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent inviteFriendIntent = new Intent(PlaceActivity.this,
+                        InviteFriendsActivity.class);
+                startActivity(inviteFriendIntent);
             }
         });
     }

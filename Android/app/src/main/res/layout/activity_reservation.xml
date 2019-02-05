@@ -180,46 +180,41 @@
 
             <ImageButton
                 android:id="@+id/downButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_below="@id/ticketTextView"
                 android:layout_alignParentLeft="true"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="90dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="8dp"
                 android:adjustViewBounds="true"
-                android:background="@color/cardview_shadow_end_color"
+                android:background="@null"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/down" />
+                app:srcCompat="@drawable/round_remove" />
 
             <ImageButton
                 android:id="@+id/upButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_below="@id/ticketTextView"
-                android:layout_alignBaseline="@id/downButton"
                 android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="300dp"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="50dp"
+                android:layout_marginEnd="90dp"
                 android:layout_marginBottom="8dp"
                 android:adjustViewBounds="true"
-                android:background="@color/cardview_shadow_end_color"
+                android:background="@null"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/up" />
+                app:srcCompat="@drawable/round_add" />
 
             <TextView
                 android:id="@+id/numOfTickets"
-                android:layout_width="150dp"
+                android:layout_width="50dp"
                 android:layout_height="30dp"
                 android:layout_below="@id/ticketTextView"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginBottom="12dp"
                 android:gravity="center"
                 android:textSize="24sp" />
@@ -239,7 +234,7 @@
                 android:id="@+id/margin"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/textBackGround"
+                android:background="#CCD0D4"
                 android:layout_below="@+id/getTickets"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="10dp" />
@@ -267,7 +262,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:scrollbars="vertical" />
 
         </RelativeLayout>
 

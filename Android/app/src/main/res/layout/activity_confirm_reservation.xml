@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -178,29 +179,33 @@
                 android:id="@+id/resUserEmailTextInfo"
                 android:layout_width="370dp"
                 android:layout_height="22dp"
-                android:layout_below="@id/whosComingTextView"
+                android:layout_below="@id/facebookprofile"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="12dp"
                 android:layout_marginBottom="12dp"
                 android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/resUserInfo"
-                android:layout_width="370dp"
-                android:layout_height="22dp"
-                android:layout_below="@id/resUserEmailTextInfo"
+
+            <ImageView
+                android:id="@+id/facebookprofile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@+id/whosComingTextView"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:textSize="18sp"/>
+                android:layout_marginEnd="304dp"
+                android:layout_marginBottom="12dp" />
+
+
 
             <View
                 android:id="@+id/underWhosComingHLines"
                 android:layout_width="375dp"
                 android:layout_height="3dp"
-                android:layout_below="@id/resUserInfo"
+                android:layout_below="@id/resUserEmailTextInfo"
                 android:background="@drawable/horizental_lines"
                 android:layout_marginTop="12dp"
                 android:layout_marginStart="15dp"
@@ -263,8 +268,16 @@
                 android:text="About the cancellation policy........."
                 android:textSize="18sp" />
 
+            <Button
+                android:id="@+id/reviewButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cancellationPolicyInfo"
+                android:layout_margin="10dp"
+                android:text="Review"
+                android:textSize="15dp"/>
+
         </RelativeLayout>
 
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>
