@@ -69,8 +69,7 @@ public class InviteFriendsActivity extends AppCompatActivity
                 return;
             }
         });
-
-
+        
         emailText = (EditText) findViewById(R.id.email_text);
         sendButton = (TextView) findViewById(R.id.sendButton);
 
