@@ -96,7 +96,6 @@ public class MakeClassActivity extends AppCompatActivity {
         selectedDate = thisDate + ":9";
 
         try {
-//            epochTime = new SimpleDateFormat("yyyy-MM-dd").parse(selectedDate).getTime();
             epochTime = today.parse(selectedDate).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
@@ -154,7 +153,6 @@ public class MakeClassActivity extends AppCompatActivity {
         }
 
         timeListView.setAdapter(adapter);
-//        ListDynamicViewUtil.setListViewHeightBasedOnChildren(timeListView);
         timeListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         timeListView.setOnItemClickListener(new AdapterView
                 .OnItemClickListener() {
@@ -166,8 +164,6 @@ public class MakeClassActivity extends AppCompatActivity {
                 ListViewEpochStartTime = epochTime;
                 ListViewEpochEndTime = epochTime;
                 view.setSelected(true);
-//                Object o = timeListView.getItemAtPosition(position);
-//                selectedTime = o.toString();
 
                 if(timeSlotArrayList.get(position).getSeleced() == true){
                     timeSlotArrayList.get(position).setSelected(false);
@@ -176,16 +172,7 @@ public class MakeClassActivity extends AppCompatActivity {
                     timeSlotArrayList.get(position).setSelected(true);
                 }
 
-//                TimeSlot timeslot = new TimeSlot(timeListView.getItemAtPosition(position).toString() , true);
-//                Toast.makeText(getApplicationContext(),"In listView : " + selectedTime,Toast.LENGTH_LONG).show();
-
                 selectedTimeSlotIdx = position;
-//                Toast.makeText(getApplicationContext(),"In listView : " + selectedTimeSlotIdx,Toast.LENGTH_LONG).show();
-//                ListViewEpochStartTime = getEpochTime(epochTime, selectedTimeSlotIdx);
-//                ListViewEpochEndTime = getEpochTime(epochTime + 7200, selectedTimeSlotIdx);
-                Toast.makeText(getApplicationContext(),"selected date : " + selectedDate +
-                        "\n StartepochTime : " + ListViewEpochStartTime+
-                        "\n EndepochTime : " + ListViewEpochEndTime,Toast.LENGTH_LONG).show();
             }
         });
 
@@ -306,7 +293,8 @@ public class MakeClassActivity extends AppCompatActivity {
             String[] proj = { MediaStore.Images.Media.DATA };
 
             assert imageUri != null;
-            cursor = getContentResolver().query(imageUri, proj, null, null, null);
+            cursor = getContentResolver().query(imageUri, proj,
+                    null, null, null);
 
             assert cursor != null;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -322,27 +310,29 @@ public class MakeClassActivity extends AppCompatActivity {
 
     private boolean grantExternalStoragePermission() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED) {
                 return true;
             }else{
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                ActivityCompat.requestPermissions(this, new String[]{
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
         }else{
-            Toast.makeText(this, "External Storage Permission is Grant", Toast.LENGTH_SHORT).show();
             return true;
         }
     }
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (Build.VERSION.SDK_INT >= 23) {
-            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+    public void onRequestPermissionsResult
+            (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
 
-            }
-        }
+                    }
+                }
     }
 
     public void uploadImage(Integer classID){
@@ -362,7 +352,7 @@ public class MakeClassActivity extends AppCompatActivity {
         imageCall.enqueue(new Callback<Image>() {
             @Override
             public void onResponse(Call<Image> call, Response<Image> response) {
-                Toast.makeText(getApplicationContext(),"Create Image",Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -395,13 +385,9 @@ public class MakeClassActivity extends AppCompatActivity {
 
         JSONObject requestBody = new JSONObject();
         requestBody.put("className", className.getText().toString());
-//                        requestBody.put("expertEmail", expertName.getText());
         requestBody.put("minGuestCount", minGuestCount.getText().toString());
         requestBody.put("maxGuestCount", maxGuestCount.getText().toString());
         requestBody.put("price", price.getText().toString());
-//        requestBody.put("startTime", Long.toString(ListViewEpochStartTime));
-//        requestBody.put("endTime", Long.toString(ListViewEpochEndTime));
-
         requestBody.put("timeSlotList",timeSlotObjectList);
         requestBody.put("date", thisDate);
 
@@ -414,8 +400,10 @@ public class MakeClassActivity extends AppCompatActivity {
 
                 uploadImage(classID);
 
-                Toast.makeText(getApplicationContext(),"Create New Class",Toast.LENGTH_LONG).show();
-                Intent submitIntent = new Intent(MakeClassActivity.this, MainActivity.class);
+                Toast.makeText(getApplicationContext(),
+                        "Create New Class",Toast.LENGTH_LONG).show();
+                Intent submitIntent = new Intent(MakeClassActivity.this,
+                        MainActivity.class);
                 startActivity(submitIntent);
             }
             @Override

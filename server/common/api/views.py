@@ -10,13 +10,11 @@ from django.views.decorators.csrf import csrf_exempt #csrf exempt
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 
-import random
 from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import hashlib, json, jwt, pytz, time
-
 
 def index(request):
     return HttpResponse("Hello woRld! you're at the api index.")
@@ -151,67 +149,19 @@ def getClassInfo(request, classID, date):
                             "classRating": selectedClass.classRating,
     })
 
-
-@csrf_exempt
-def makeClass(request):
-    if request.method == 'POST':
-        jsonBody = json.loads(request.body)
-        timezone = "America/Los_Angeles"
-
-        # selectedExpert = User.objects.get(pk = jsonBody['userEmail'])
-        selectedExpert = User.objects.get(pk="ywj@kookmin.ac.kr")
-
-        newClass = Class(className = jsonBody['className'],
-                         minGuestCount = jsonBody['minGuestCount'],
-                         maxGuestCount = jsonBody['maxGuestCount'],
-                         price = jsonBody['price'],
-                         expertEmail = selectedExpert
-                         )
-        newClass.save()
-
-        # startEpochTime = jsonBody['startTime']
-        # endEpochTime = jsonBody['endTime']
-        selectedDate = jsonBody['date']
-
-        print(jsonBody['timeSlotList'])
-
-        timeSlotList = jsonBody['timeSlotList']
-
-        for timeSlot in timeSlotList:
-            newTimeTable = TimeTable(date = selectedDate,
-                                     startTime = timeSlot['startTime'],
-                                     endTime = timeSlot['endTime'],
-                                     classID = newClass)
-            newTimeTable.save()
-
-        return JsonResponse({
-                    "className": newClass.className,
-                    "timeTable" : newTimeTable.timeTableIdx
-                })
-
-
-
 @csrf_exempt
 def imageUpload(request, classID):
     if request.method == 'POST':
-        # just for checking image upload properly
-        selectedClass = Class.objects.get(pk = classID)
+
+        selectedClass = Class.objects.get(pk=classID)
 
         newImage = Image(coverImage=request.FILES['coverImage'],
                          ImageType=1,
-                         classID = selectedClass
+                         classID=selectedClass
                          )
         newImage.save()
-        
-        return HttpResponse("upload image correctly", status = 200)
 
-@csrf_exempt
-def writeReview(request):
-    bookingUser = request.user
-    jsonBody = json.loads(request.body)
-
-    bookingUser = User.objects.get(pk = jsonBody['userEmail'])
-    classID = Class.objects.get(pk = jsonBody['classID'])
+        return HttpResponse("upload image correctly", status=200)
 
 class writeReviewView(APIView):
     @csrf_exempt
@@ -229,24 +179,8 @@ class writeReviewView(APIView):
         )
 
         newReview.save()
-        return JsonResponse({
-            "reviewIdx" : newReview.reviewIdx
-        })
-
-def getInviteCode(request, inviteCode):
-
-    availableCode = InviteCode.objects.filter(randomCode = inviteCode)
-
-    if availableCode.objects.DoesNotExist:
-        if (availableCode.isExpired == True) :
-            return HttpResponse("Invite Code is alreay expired", status=203)
-        else:
-            return HttpResponse("Invite Code mismatched", status = 203)
-    else:
-        availableCode.isExpired = True
-        availableCode.save()
-
-        return HttpResponse("Invite Code is existed", status=200)
+        
+        return JsonResponse({ "reviewIdx" : newReview.reviewIdx })
 
 def getReviewList(request, classID):
     try:
@@ -272,20 +206,6 @@ def getReviewList(request, classID):
                     reverse=False)
         return JsonResponse({"reviewList": li}, status=200)
 
-@csrf_exempt
-def imageUpload(request):
-    if request.method == 'POST':
-        # just for checking image upload properly
-        selectedClass = Class.objects.get(pk = 4)
-
-        newImage = Image(coverImage=request.FILES['coverImage'],
-                         ImageType=1,
-                         classID = selectedClass
-                         )
-        newImage.save()
-
-        return HttpResponse("upload image correctly", status = 200)
-
 class upcomingView(APIView):
     def get(self, request):
         now = time.time()
@@ -310,7 +230,8 @@ class upcomingView(APIView):
                         "expertName"    : expert.username,
                         "className"     : bookedClass.className,
                         "date"          : bookedTimeTable.date,
-                    })            
+                    })
+
 class getReservationView(APIView):
     def get(self, request, reservationID):
         now = time.time()
@@ -412,6 +333,39 @@ class getReservationList(APIView):
                 reverse=False)
 
             return JsonResponse({"reservationList": li}, status=200)
+
+class makeClassView(APIView):
+    @csrf_exempt
+    def makeClass(request):
+        jsonBody = json.loads(request.body)
+        selectedExpert = request.user
+
+        newClass = Class(className = jsonBody['className'],
+                         minGuestCount = jsonBody['minGuestCount'],
+                         maxGuestCount = jsonBody['maxGuestCount'],
+                         price = jsonBody['price'],
+                         expertEmail = selectedExpert
+                         )
+        newClass.save()
+
+        selectedDate = jsonBody['date']
+
+        print(jsonBody['timeSlotList'])
+
+        timeSlotList = jsonBody['timeSlotList']
+
+        for timeSlot in timeSlotList:
+            newTimeTable = TimeTable(date = selectedDate,
+                                     startTime = timeSlot['startTime'],
+                                     endTime = timeSlot['endTime'],
+                                     classID = newClass)
+            newTimeTable.save()
+
+        return JsonResponse({
+                    "classID": newClass.classID,
+                    "timeTable" : newTimeTable.timeTableIdx
+                })
+
 
 def getInviteCode(request, inviteCode):
     try:

@@ -183,7 +183,7 @@
             android:layout_below="@id/placeTextView"
             android:layout_marginTop="30dp"
             android:text="review"/>
-    
+
         <Button
           android:id="@+id/newClassButton"
           android:layout_width="wrap_content"
@@ -196,7 +196,5 @@
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="@+id/reviewbutton"
           tools:layout_editor_absoluteY="0dp" />
-
->>>>>>> a0181dbb9e980d55d4764703af553fae3a58ae38
 
 </android.support.constraint.ConstraintLayout>

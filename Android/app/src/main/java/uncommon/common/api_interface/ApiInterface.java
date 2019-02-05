@@ -54,7 +54,6 @@ public interface ApiInterface {
 
     @POST("upload/{classID}/")
     Call <Image> uploadImage(@Body RequestBody coverImage, @Path("classID") Integer classID);
-//    Call <Image> uploadImage(@Body JSONObject coverImage);
 
     @POST("makeClass/")
     Call<Class> makeClass(@Body JSONObject makeClass);
