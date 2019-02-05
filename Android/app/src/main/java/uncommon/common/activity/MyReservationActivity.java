@@ -35,7 +35,8 @@ import uncommon.common.models.ReservationList;
 import uncommon.common.network.RetrofitInstance;
 import uncommon.common.utils.ListDynamicViewUtil;
 
-public class MyReservationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MyReservationActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private ApiInterface service = RetrofitInstance.getRetrofitInstance()
             .create(ApiInterface.class);

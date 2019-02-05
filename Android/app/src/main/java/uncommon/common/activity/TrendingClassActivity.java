@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
@@ -29,7 +28,8 @@ import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.ClassList;
 import uncommon.common.network.RetrofitInstance;
 
-public class TrendingClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class TrendingClassActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     Adapter adapter;
     ViewPager classViewPager;
@@ -121,31 +121,6 @@ public class TrendingClassActivity extends AppCompatActivity implements Navigati
                         });
                     }
                 });
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
-        return true ;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        LoginManager.getInstance().logOut();
-
-        Intent mainIntent = new Intent(TrendingClassActivity.this,
-                MainActivity.class);
-        startActivity(mainIntent);
-        finish();
-        /*
-        switch (item.getItemId()) {
-            case R.id.action_settings :
-                // TODO (kahye) : process the click event for action_search item.
-                //when we need another actionbar item
-                return true ;
-            default :
-                return super.onOptionsItemSelected(MenuItem ) ;
-        }*/
-        return true;
     }
 
     @Override

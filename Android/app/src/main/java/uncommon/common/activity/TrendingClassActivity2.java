@@ -123,32 +123,6 @@ public class TrendingClassActivity2 extends AppCompatActivity implements Navigat
                     }
                 });
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
-        return true ;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        LoginManager.getInstance().logOut();
-
-        Intent mainIntent = new Intent(
-                TrendingClassActivity2.this,
-                MainActivity.class);
-        startActivity(mainIntent);
-        finish();
-        /*
-        switch (item.getItemId()) {
-            case R.id.action_settings :
-                // TODO (kahye) : process the click event for action_search item.
-                //when we need another actionbar item
-                return true ;
-            default :
-                return super.onOptionsItemSelected(MenuItem ) ;
-        }*/
-        return true;
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

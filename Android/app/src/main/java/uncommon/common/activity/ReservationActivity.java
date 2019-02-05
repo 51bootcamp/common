@@ -51,7 +51,8 @@ import uncommon.common.network.RetrofitInstance;
 import uncommon.common.utils.GradientTransformation;
 import uncommon.common.utils.ListDynamicViewUtil;
 
-public class ReservationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ReservationActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private TimeSlotAdapter timeslotAdapter;
     private ArrayList<Integer> timeSlotIdxList = new ArrayList<Integer>();
@@ -385,33 +386,6 @@ public class ReservationActivity extends AppCompatActivity implements Navigation
 
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        ///getMenuInflater().inflate(R.menu.actionbar_actions, menu) ;
-
-        return true ;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        LoginManager.getInstance().logOut();
-
-        Intent mainIntent = new Intent(ReservationActivity.this,
-                MainActivity.class);
-        startActivity(mainIntent);
-        finish();
-        /*
-        switch (item.getItemId()) {
-            case R.id.action_settings :
-                // TODO (kahye) : process the click event for action_search item.
-                //when we need another actionbar item
-                return true ;
-            default :
-                return super.onOptionsItemSelected(MenuItem ) ;
-        }*/
-        return true;
     }
 
     @Override
