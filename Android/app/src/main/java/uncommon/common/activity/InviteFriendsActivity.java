@@ -3,6 +3,7 @@ package uncommon.common.activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -79,6 +80,10 @@ public class InviteFriendsActivity extends AppCompatActivity
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (!isValidSignInForm()) {
+                    return;
+                }
 
                 ApiInterface service = RetrofitInstance.getLoginRetrofitInstance()
                         .create(ApiInterface.class);
@@ -161,6 +166,21 @@ public class InviteFriendsActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_createClass).setVisible(false);
         }
         return;
+    }
+
+    public boolean isValidSignInForm() {
+        boolean isValid = true;
+
+        String userEmail = emailText.getText().toString();
+
+        if (userEmail.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            emailText.setError("Invalid E-mail address");
+            isValid = false;
+        } else {
+            emailText.setError(null);
+        }
+
+        return isValid;
     }
 
 }
