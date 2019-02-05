@@ -153,6 +153,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:inputType="number"
                     android:ems="10"
                     android:hint="Minimum"
                     tools:layout_editor_absoluteX="113dp"
@@ -183,6 +184,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="8dp"
+                    android:inputType="number"
                     android:ems="10"
                     android:hint="Maximum"
                     tools:layout_editor_absoluteX="113dp"
@@ -212,6 +214,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="8dp"
+                    android:inputType="numberDecimal"
                     android:ems="10"
                     android:hint="$"
                     android:importantForAutofill="no" />

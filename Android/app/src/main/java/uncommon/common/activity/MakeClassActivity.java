@@ -240,7 +240,20 @@ public class MakeClassActivity extends AppCompatActivity
     {
         isTimeSlotChecked = timeSlotCheck();
 
-        if(!isTimeSlotChecked){
+        if (coverImageFile == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Upload Class Cover Image First!!");
+            builder.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+            builder.show();
+        }
+
+        else if(!isTimeSlotChecked){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Choose TimeTable First!!");
             builder.setPositiveButton("OK",
