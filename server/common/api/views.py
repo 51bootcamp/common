@@ -165,11 +165,15 @@ def imageUpload(request, classID):
 
 class writeReviewView(APIView):
     @csrf_exempt
-    def post(self, request):
+    def post(self, request, reservationID):
         bookingUser = request.user
         jsonBody = json.loads(request.body)
 
         classID = Class.objects.get(pk = jsonBody['classID'])
+
+        selectedReservation = Reservation.objects.get(pk = reservationID)
+        selectedReservation.isReviewed = True
+        selectedReservation.save()
 
         newReview = Review(title = jsonBody['title'],
                            content = jsonBody['content'],
