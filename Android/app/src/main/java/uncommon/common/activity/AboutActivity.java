@@ -2,13 +2,13 @@ package uncommon.common.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +18,7 @@ import com.facebook.login.LoginManager;
 
 import uncommon.common.R;
 
-public class InviteFriendsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class AboutActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     Context context;
 
@@ -27,7 +27,7 @@ public class InviteFriendsActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
 
         context = this;
-        setContentView(R.layout.drawer_invite);
+        setContentView(R.layout.activity_about);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -78,6 +78,8 @@ public class InviteFriendsActivity extends AppCompatActivity implements Navigati
                 break;
             }
             case R. id.nav_invite: {
+                Intent navIntent = new Intent(context, InviteFriendsActivity.class);
+                startActivity(navIntent);
                 break;
             }
             case R. id.nav_about: {

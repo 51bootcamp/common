@@ -1,6 +1,7 @@
 package uncommon.common.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,18 +11,27 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.facebook.login.LoginManager;
 
 import org.json.simple.JSONObject;
 
@@ -48,7 +58,7 @@ import uncommon.common.models.Image;
 import uncommon.common.models.TimeSlot;
 import uncommon.common.network.RetrofitInstance;
 
-public class MakeClassActivity extends AppCompatActivity {
+public class MakeClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final int numberOfTimeslot = 7;
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -72,10 +82,42 @@ public class MakeClassActivity extends AppCompatActivity {
 
     ArrayList<TimeSlot> timeSlotArrayList = new ArrayList<>();
 
+    Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_make_class);
+
+        context = this;
+        setContentView(R.layout.drawer_make_class);
+
+        // Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+
+        // Drawer layout
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Navigation
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Logo button to home
+        ImageButton logoButton = (ImageButton) findViewById(R.id.common_logo);
+        logoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                Intent logoIntent = new Intent(context, PlaceActivity.class);
+                startActivity(logoIntent);
+                finish();
+                return;
+            }
+        });
 
         className = (EditText) findViewById(R.id.class_name_edit_text);
         minGuestCount = (EditText) findViewById(R.id.min_edit_text);
@@ -464,4 +506,47 @@ public class MakeClassActivity extends AppCompatActivity {
         return epochTime;
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.nav_home: {
+                Intent navIntent = new Intent(context, PlaceActivity.class);
+                startActivity(navIntent);
+                finish();
+                break;
+            }
+            case R. id.nav_myres: {
+                Intent navIntent = new Intent(context, MyReservationActivity.class);
+                startActivity(navIntent);
+                break;
+            }
+            case R. id.nav_createClass: {
+                break;
+            }
+            case R. id.nav_invite: {
+                Intent navIntent = new Intent(context, InviteFriendsActivity.class);
+                startActivity(navIntent);
+                break;
+            }
+            case R. id.nav_about: {
+                Intent navIntent = new Intent(context, AboutActivity.class);
+                startActivity(navIntent);
+                break;
+            }
+            case R. id.nav_setting: {
+                break;
+            }
+            case R. id.nav_logout: {
+                LoginManager.getInstance().logOut();
+                Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                startActivity(navIntent);
+                finish();
+                break;
+            }
+
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

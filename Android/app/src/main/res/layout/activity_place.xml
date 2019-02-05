@@ -1,200 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.PlaceActivity">
+    android:orientation="vertical" >
 
-    <ScrollView
+    <include layout="@layout/toolbar_common"/>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints">
+        android:layout_height="match_parent"
+        tools:context=".activity.PlaceActivity">
 
-        <RelativeLayout
-            android:id="@+id/place"
-            android:layout_width="wrap_content"
+        <ScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            tools:layout_editor_absoluteX="0dp"
             tools:ignore="MissingConstraints">
 
-
-
-            <ImageView
-                android:id="@+id/peopleImgView"
+            <RelativeLayout
+                android:id="@+id/place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/classImgView"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:src="@drawable/baseline_notifications_black_18"/>
-
-            <TextView
-                android:id="@+id/resNotificationText"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="10dp"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:freezesText="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:singleLine="true"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                android:background="@drawable/upcoming_textview_border"
-                android:clickable="true"
-                android:onClick="click"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="EllipsizeMaxLines,MissingConstraints,OnClick" />
+                tools:layout_editor_absoluteX="0dp"
+                tools:ignore="MissingConstraints">
 
-            <TextView
-                android:id="@+id/LocationsTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/resNotificationText"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/locations"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <ImageView
+                    android:id="@+id/peopleImgView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/classImgView"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:src="@drawable/baseline_notifications_black_18"/>
 
-            <ImageButton
-                android:id="@+id/cafeImgButton"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_below="@id/LocationsTextView"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:srcCompat="@drawable/golden_gate_bridge_img" />
+                <TextView
+                    android:id="@+id/resNotificationText"
+                    android:layout_width="360dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="38dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:freezesText="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="20dp"
+                    android:background="@drawable/upcoming_textview_border"
+                    android:clickable="true"
+                    android:onClick="click"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="EllipsizeMaxLines,MissingConstraints,OnClick" />
 
-            <TextView
-                android:id="@+id/placeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_below="@id/cafeImgButton"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="-54dp"
-                android:text="San Francisco"
-                android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                tools:ignore="MissingConstraints"/>
+                <TextView
+                    android:id="@+id/LocationsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/resNotificationText"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/locations"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageButton
-                android:id="@+id/secondLocation"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_below="@id/cafeImgButton"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:srcCompat="@drawable/sanmateo"/>
+                <ImageButton
+                    android:id="@+id/cafeImgButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_below="@id/LocationsTextView"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:srcCompat="@drawable/golden_gate_bridge_img" />
 
-            <TextView
-                android:id="@+id/secondPlaceText"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_below="@id/secondLocation"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="-54dp"
-                android:text="San Mateo"
-                android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/placeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/cafeImgButton"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginTop="-54dp"
+                    android:text="San Francisco"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints"/>
 
-            <ImageButton
-                android:id="@+id/thirdLocation"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_below="@id/secondLocation"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/santaclara"/>
+                <ImageButton
+                    android:id="@+id/secondLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_below="@id/cafeImgButton"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:srcCompat="@drawable/sanmateo"/>
 
-            <TextView
-                android:id="@+id/thirdPlaceText"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_below="@id/thirdLocation"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="-54dp"
-                android:text="Santa Clara"
-                android:textColor="@color/white"
-                android:textSize="24dp"
-                android:textStyle="bold"
-                tools:ignore="MissingConstraints" />
+                <TextView
+                    android:id="@+id/secondPlaceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/secondLocation"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginTop="-54dp"
+                    android:text="San Mateo"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints" />
+
+                <ImageButton
+                    android:id="@+id/thirdLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_below="@id/secondLocation"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/santaclara"/>
+
+                <TextView
+                    android:id="@+id/thirdPlaceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/thirdLocation"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginTop="-54dp"
+                    android:text="Santa Clara"
+                    android:textColor="@color/white"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints" />
+
+                <Button
+                    android:id="@+id/reviewButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Button" />
+
+                <Button
+                    android:id="@+id/inviteFriends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="283dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="5dp"
+                    android:text="inviteFriends" />
+
+            </RelativeLayout>
+
+        </ScrollView>
 
             <Button
-                android:id="@+id/reviewButton"
+                android:id="@+id/reviewbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_below="@id/placeTextView"
+                android:layout_marginTop="30dp"
+                android:text="review"/>
 
             <Button
-                android:id="@+id/inviteFriends"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="283dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="5dp"
-                android:text="inviteFriends" />
+              android:id="@+id/newClassButton"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_below="@id/placeTextView"
+              android:layout_marginStart="244dp"
+              android:layout_marginEnd="8dp"
+              android:onClick="createClass"
+              android:text="NEW Class"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="@+id/reviewbutton"
+              tools:layout_editor_absoluteY="0dp" />
 
-        </RelativeLayout>
-
-    </ScrollView>
-
-        <Button
-            android:id="@+id/reviewbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/placeTextView"
-            android:layout_marginTop="30dp"
-            android:text="review"/>
-
-        <Button
-          android:id="@+id/newClassButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/placeTextView"
-          android:layout_marginStart="244dp"
-          android:layout_marginEnd="8dp"
-          android:onClick="createClass"
-          android:text="NEW Class"
-          app:layout_constraintEnd_toEndOf="parent"
-          app:layout_constraintStart_toStartOf="@+id/reviewbutton"
-          tools:layout_editor_absoluteY="0dp" />
-
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>

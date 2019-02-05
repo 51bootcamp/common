@@ -1,93 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="uncommon.common.activity.MyReservationActivity">
+    android:orientation="vertical" >
 
-    <ScrollView
+    <include layout="@layout/toolbar_common"/>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="match_parent"
+        tools:context="uncommon.common.activity.MyReservationActivity">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
 
-            <TextView
-                android:id="@+id/myReservationTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:text="My Reservation"
-                android:textSize="30dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/upcomingTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/myReservationTextView"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:text="Upcoming"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
-
-            <ListView
-                android:id="@+id/myReservationListView"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/upcomingTextView"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"/>
+                android:orientation="vertical">
 
-            <View
-                android:id="@+id/underListLines"
-                android:layout_width="375dp"
-                android:layout_height="3dp"
-                android:layout_below="@id/myReservationListView"
-                android:background="@drawable/horizental_lines"
-                android:layout_marginBottom="15dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="12dp"/>
+                <TextView
+                    android:id="@+id/myReservationTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="My Reservation"
+                    android:textSize="30dp"
+                    android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/passedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/underListLines"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="10dp"
-                android:text="Past"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/upcomingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/myReservationTextView"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Upcoming"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
 
-            <ListView
-                android:id="@+id/passedMyReservationListView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/passedTextView"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="10dp"/>
+                <ListView
+                    android:id="@+id/myReservationListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/upcomingTextView"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"/>
 
-        </RelativeLayout>
+                <View
+                    android:id="@+id/underListLines"
+                    android:layout_width="375dp"
+                    android:layout_height="3dp"
+                    android:layout_below="@id/myReservationListView"
+                    android:background="@drawable/horizental_lines"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="12dp"/>
 
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+                <TextView
+                    android:id="@+id/passedTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/underListLines"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Past"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <ListView
+                    android:id="@+id/passedMyReservationListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/passedTextView"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+    </android.support.constraint.ConstraintLayout>
+</LinearLayout>
