@@ -43,8 +43,8 @@ public interface ApiInterface {
     @GET("reserveList")
     Call<ReservationList> getReservationList();
 
-    @POST("review/")
-    Call<Review> writeReview(@Body Review review);
+    @POST("review/{reservationID}/")
+    Call<Review> writeReview(@Body Review review, @Path("reservationID") Integer reservationID);
 
     @GET("review/{classID}")
     Call<ReviewList> getReviewList(@Path("classID") Integer classID);

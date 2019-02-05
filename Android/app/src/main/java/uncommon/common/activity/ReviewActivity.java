@@ -10,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -74,7 +73,7 @@ public class ReviewActivity extends AppCompatActivity
 
         Bundle bundle = getIntent().getExtras();
         Integer selectedClassID = bundle.getInt("_classID");
-        Log.e("TEST",selectedClassID.toString());
+        Integer selectedReservationID = bundle.getInt("_reservationID");
 
         completeButton = (Button) findViewById(R.id.completeButton);
         reviewEditText = (EditText) findViewById(R.id.reviewEditText);
@@ -84,14 +83,12 @@ public class ReviewActivity extends AppCompatActivity
         completeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO(gayeon): change userEmail and classID after making reservation list
-                // new review goes to server
                 Review newReview = new Review(selectedClassID, titleEditText.getText().toString(),
                         reviewEditText.getText().toString(), reviewRating.getRating());
 
                 ApiInterface service = RetrofitInstance.getRetrofitInstance()
                         .create(ApiInterface.class);
-                Call<Review> request = service.writeReview(newReview);
+                Call<Review> request = service.writeReview(newReview, selectedReservationID);
                 request.enqueue(new Callback<Review>() {
                     @Override
                     public void onResponse(Call<Review> call, Response<Review> response) {

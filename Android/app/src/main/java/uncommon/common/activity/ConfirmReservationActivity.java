@@ -143,6 +143,9 @@ public class ConfirmReservationActivity extends AppCompatActivity
                 if(!res.getIsPassed()){
                     reviewButton.setVisibility(View.GONE);
                 }
+                if(res.getIsReviewed()){
+                    reviewButton.setVisibility(View.GONE);
+                }
 
             }
 
@@ -160,6 +163,7 @@ public class ConfirmReservationActivity extends AppCompatActivity
                         .class);
                 Bundle bundle = new Bundle();
                 reviewIntent.putExtra("_classID", classID);
+                reviewIntent.putExtra("_reservationID", reservationID);
                 reviewIntent.putExtras(bundle);
                 startActivity(reviewIntent);
             }
