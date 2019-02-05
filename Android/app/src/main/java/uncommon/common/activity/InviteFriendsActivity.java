@@ -6,7 +6,6 @@ import android.os.Bundle;
 import uncommon.common.R;
 
 public class InviteFriendsActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

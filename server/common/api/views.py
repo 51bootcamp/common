@@ -144,24 +144,24 @@ def getClassInfo(request, classID, date):
                             "expertName"        : expert.username,
                             "minGuestCount"     : selectedClass.minGuestCount,
                             "maxGuestCount"     : selectedClass.maxGuestCount,
+                            "availableTimeTable": availableTimeTable,
                             "price"             : selectedClass.price,
-                            "classRating"       : selectedClass.classRating,
-                            "availableTimeTable": availableTimeTable
-                        })
+                            "classRating": selectedClass.classRating,
+    })
 
 @csrf_exempt
-def imageUpload(request):
+def imageUpload(request, classID):
     if request.method == 'POST':
-        # just for checking image upload properly
-        selectedClass = Class.objects.get(pk = 4)
+
+        selectedClass = Class.objects.get(pk=classID)
 
         newImage = Image(coverImage=request.FILES['coverImage'],
                          ImageType=1,
-                         classID = selectedClass
+                         classID=selectedClass
                          )
         newImage.save()
 
-        return HttpResponse("upload image correctly", status = 200)
+        return HttpResponse("upload image correctly", status=200)
 
 class writeReviewView(APIView):
     @csrf_exempt
@@ -180,7 +180,7 @@ class writeReviewView(APIView):
 
         newReview.save()
 
-        return JsonResponse({"reviewIdx" : newReview.reviewIdx})
+        return JsonResponse({ "reviewIdx" : newReview.reviewIdx })
 
 def getReviewList(request, classID):
     try:
@@ -206,20 +206,6 @@ def getReviewList(request, classID):
                     reverse=False)
         return JsonResponse({"reviewList": li}, status=200)
 
-@csrf_exempt
-def imageUpload(request):
-    if request.method == 'POST':
-        # just for checking image upload properly
-        selectedClass = Class.objects.get(pk = 4)
-
-        newImage = Image(coverImage=request.FILES['coverImage'],
-                         ImageType=1,
-                         classID = selectedClass
-                         )
-        newImage.save()
-
-        return HttpResponse("upload image correctly", status = 200)
-
 class upcomingView(APIView):
     def get(self, request):
         now = time.time()
@@ -244,7 +230,8 @@ class upcomingView(APIView):
                         "expertName"    : expert.username,
                         "className"     : bookedClass.className,
                         "date"          : bookedTimeTable.date,
-                    })            
+                    })
+
 class getReservationView(APIView):
     def get(self, request, reservationID):
         now = time.time()
@@ -346,6 +333,38 @@ class getReservationList(APIView):
                 reverse=False)
 
             return JsonResponse({"reservationList": li}, status=200)
+
+class makeClassView(APIView):
+    @csrf_exempt
+    def makeClass(request):
+        jsonBody = json.loads(request.body)
+        selectedExpert = request.user
+
+        newClass = Class(className = jsonBody['className'],
+                         minGuestCount = jsonBody['minGuestCount'],
+                         maxGuestCount = jsonBody['maxGuestCount'],
+                         price = jsonBody['price'],
+                         expertEmail = selectedExpert
+                         )
+        newClass.save()
+
+        selectedDate = jsonBody['date']
+
+        print(jsonBody['timeSlotList'])
+
+        timeSlotList = jsonBody['timeSlotList']
+
+        for timeSlot in timeSlotList:
+            newTimeTable = TimeTable(date = selectedDate,
+                                     startTime = timeSlot['startTime'],
+                                     endTime = timeSlot['endTime'],
+                                     classID = newClass)
+            newTimeTable.save()
+
+        return JsonResponse({
+                    "classID": newClass.classID,
+                    "timeTable" : newTimeTable.timeTableIdx
+                })
 
 def getInviteCode(request, inviteCode):
     try:

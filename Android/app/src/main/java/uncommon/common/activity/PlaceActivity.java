@@ -177,4 +177,11 @@ public class PlaceActivity extends AppCompatActivity {
         }*/
         return true;
     }
+
+    public void createClass(View view) {
+
+        Intent createClassIntent = new Intent(PlaceActivity.this, MakeClassActivity.class);
+        startActivity(createClassIntent);
+
+    }
 }

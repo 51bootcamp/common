@@ -14,6 +14,9 @@ urlpatterns = [
     path('class/<str:date>', views.getClassList, name ='getClassList'),
     path('class/<str:date>/<int:classID>', views.getClassInfo, 
     	name = 'getClassInfo'),
+    path('makeClass/', views.makeClass, name = 'makeClass'),
+    path('invite/', views.getInviteCode, name = 'getInviteCode'),
+    path('upload/', views.imageUpload, name = 'imageUpload'),
     path('login/', views.login, name = 'login'),
     path('invite/<str:inviteCode>', views.getInviteCode, name = 'getInviteCode'),
 
