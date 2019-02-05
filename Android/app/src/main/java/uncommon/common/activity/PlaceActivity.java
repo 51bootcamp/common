@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -52,6 +53,8 @@ public class PlaceActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.drawer_place);
+
+        hideItem();
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -198,5 +201,14 @@ public class PlaceActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void hideItem() {
+        if (!RetrofitInstance.isLecturer) {
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_createClass).setVisible(false);
+        }
+        return;
     }
 }

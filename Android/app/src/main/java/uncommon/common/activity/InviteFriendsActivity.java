@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,6 +43,8 @@ public class InviteFriendsActivity extends AppCompatActivity
 
         context = this;
         setContentView(R.layout.drawer_invite);
+
+        hideItem();
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -145,4 +148,14 @@ public class InviteFriendsActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void hideItem() {
+        if (!RetrofitInstance.isLecturer) {
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_createClass).setVisible(false);
+        }
+        return;
+    }
+
 }
