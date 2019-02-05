@@ -29,7 +29,8 @@ import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.Review;
 import uncommon.common.network.RetrofitInstance;
 
-public class ReviewActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ReviewActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Button completeButton;
     private EditText reviewEditText;

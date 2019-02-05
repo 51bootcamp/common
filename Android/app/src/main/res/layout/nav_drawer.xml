@@ -6,6 +6,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="start"
     android:fitsSystemWindows="true"
-    app:headerLayout="@layout/nav_header_drawer_test"
+    app:headerLayout="@layout/nav_header"
     app:menu="@menu/common_drawer"
     xmlns:android="http://schemas.android.com/apk/res/android" />
