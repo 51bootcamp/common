@@ -79,7 +79,6 @@ public class ConfirmReservationActivity extends AppCompatActivity implements Nav
         ImageButton logoButton = (ImageButton) findViewById(R.id.common_logo);
         logoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                LoginManager.getInstance().logOut();
                 Intent logoIntent = new Intent(context, PlaceActivity.class);
                 startActivity(logoIntent);
                 finish();
