@@ -2,6 +2,7 @@ package uncommon.common.api_interface;
 
 import org.json.simple.JSONObject;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -9,6 +10,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import uncommon.common.models.Class;
 import uncommon.common.models.ClassList;
+import uncommon.common.models.Image;
 import uncommon.common.models.Reservation;
 import uncommon.common.models.ReservationList;
 import uncommon.common.models.Review;
@@ -49,5 +51,12 @@ public interface ApiInterface {
 
     @POST("signup/")
     Call<JSONObject> signup(@Body User user);
+
+    @POST("upload/{classID}/")
+    Call <Image> uploadImage(@Body RequestBody coverImage, @Path("classID") Integer classID);
+//    Call <Image> uploadImage(@Body JSONObject coverImage);
+
+    @POST("makeClass/")
+    Call<Class> makeClass(@Body JSONObject makeClass);
 
 }

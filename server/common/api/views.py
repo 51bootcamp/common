@@ -194,10 +194,12 @@ def makeClass(request):
 @csrf_exempt
 def imageUpload(request):
     if request.method == 'POST':
-        # just for checking image upload properly
-        selectedClass = Class.objects.get(pk = 4)
+        jsonBody = json.loads(request.body)
+        selectedClass = Class.objects.filter(classID = jsonBody['class'])
 
-        newImage = Image(coverImage=request.FILES['coverImage'],
+        print(selectedClass.className)
+
+        newImage = Image(coverImage=jsonBody['image'].FILES['coverImage'],
                          ImageType=1,
                          classID = selectedClass
                          )
