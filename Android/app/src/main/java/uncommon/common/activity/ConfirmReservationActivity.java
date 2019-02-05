@@ -142,6 +142,9 @@ public class ConfirmReservationActivity extends AppCompatActivity implements Nav
                 if(!res.getIsPassed()){
                     reviewButton.setVisibility(View.GONE);
                 }
+                if(res.getIsReviewed()){
+                    reviewButton.setVisibility(View.GONE);
+                }
 
             }
 
@@ -159,6 +162,7 @@ public class ConfirmReservationActivity extends AppCompatActivity implements Nav
                         .class);
                 Bundle bundle = new Bundle();
                 reviewIntent.putExtra("_classID", classID);
+                reviewIntent.putExtra("_reservationID", reservationID);
                 reviewIntent.putExtras(bundle);
                 startActivity(reviewIntent);
             }
