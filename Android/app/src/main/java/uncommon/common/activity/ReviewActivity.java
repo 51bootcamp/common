@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,8 @@ public class ReviewActivity extends AppCompatActivity
 
         context = this;
         setContentView(R.layout.drawer_review);
+
+        hideItem();
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -152,5 +155,14 @@ public class ReviewActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-}
 
+    private void hideItem() {
+        if (!RetrofitInstance.isLecturer) {
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_createClass).setVisible(false);
+        }
+        return;
+    }
+
+}

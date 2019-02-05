@@ -47,6 +47,8 @@ public class TrendingClassActivity2 extends AppCompatActivity implements Navigat
         context = this;
         setContentView(R.layout.drawer_trending2);
 
+        hideItem();
+
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -169,4 +171,14 @@ public class TrendingClassActivity2 extends AppCompatActivity implements Navigat
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void hideItem() {
+        if (!RetrofitInstance.isLecturer) {
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_createClass).setVisible(false);
+        }
+        return;
+    }
+
 }
