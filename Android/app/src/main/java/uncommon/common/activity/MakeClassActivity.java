@@ -101,7 +101,6 @@ public class MakeClassActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         epochTime /= 1000;
-        Toast.makeText(getApplicationContext(),"First selected date : " + selectedDate + "epochTime : \n " + epochTime ,Toast.LENGTH_LONG).show();
 
         //datePicker
         datePicker = (DatePicker)findViewById(R.id.datepicker);
@@ -116,11 +115,15 @@ public class MakeClassActivity extends AppCompatActivity {
                     public void onDateChanged(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth){
 
-                        selectedDate = String.format("%d-%d-%d:%d", year, monthOfYear + 1, dayOfMonth,0);
-                        thisDate = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth);
+                        selectedDate = String.format("%d-%d-%d:%d", year,
+                                monthOfYear + 1, dayOfMonth,0);
+                        thisDate = String.format("%d-%d-%d", year,
+                                monthOfYear + 1, dayOfMonth);
 
-                        DateFormat selectedDateFormat = new SimpleDateFormat("yyyy-MM-dd:HH");
-                        selectedDateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+                        DateFormat selectedDateFormat = new SimpleDateFormat
+                                ("yyyy-MM-dd:HH");
+                        selectedDateFormat.setTimeZone(TimeZone.getTimeZone
+                                ("America/Los_Angeles"));
 
                         try {
                             epochTime = selectedDateFormat.parse(selectedDate).getTime();
@@ -128,7 +131,7 @@ public class MakeClassActivity extends AppCompatActivity {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(getApplicationContext(),"Second selected date : " + selectedDate + "epochTime : " + epochTime ,Toast.LENGTH_LONG).show();
+
                     }
                 });
 
@@ -245,7 +248,6 @@ public class MakeClassActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             makeClass();
-//                            uploadImage();
                         }
                     });
 
@@ -271,7 +273,8 @@ public class MakeClassActivity extends AppCompatActivity {
                 Uri selectedImage = data.getData();
 
                 try {
-                    imageShow = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                    imageShow = MediaStore.Images.Media.getBitmap(getContentResolver(),
+                            selectedImage);
                     coverImage.setImageBitmap(imageShow);
                     coverImage.setVisibility(View.VISIBLE);
                     getRealPath(selectedImage);
