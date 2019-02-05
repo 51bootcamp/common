@@ -1,31 +1,44 @@
 package uncommon.common.activity;
 
-import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageButton;
 
 import com.facebook.login.LoginManager;
+import org.json.simple.JSONObject;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uncommon.common.R;
+import uncommon.common.api_interface.ApiInterface;
+import uncommon.common.network.RetrofitInstance;
 
 public class InviteFriendsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Context context;
+    EditText emailText;
+    TextView sendButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_invite_friends);
 
         context = this;
         setContentView(R.layout.drawer_invite);
@@ -54,6 +67,37 @@ public class InviteFriendsActivity extends AppCompatActivity
                 startActivity(logoIntent);
                 finish();
                 return;
+            }
+        });
+        
+        emailText = (EditText) findViewById(R.id.email_text);
+        sendButton = (TextView) findViewById(R.id.sendButton);
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ApiInterface service = RetrofitInstance.getLoginRetrofitInstance()
+                        .create(ApiInterface.class);
+
+                JSONObject requestBody = new JSONObject();
+                requestBody.put("email", emailText.getText().toString());
+
+                Call<Integer> call = service.sendMail(requestBody);
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+
+                        Toast.makeText(getApplicationContext(),
+                                "Send Email",Toast.LENGTH_LONG).show();
+                        Intent sendEmailIntent = new Intent(InviteFriendsActivity.this,
+                                InviteOnlyActivity.class);
+                        startActivity(sendEmailIntent);
+                    }
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+                    }
+                });
             }
         });
     }

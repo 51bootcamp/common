@@ -23,7 +23,7 @@ urlpatterns = [
     path('review/', views.writeReviewView.as_view(), name = 'writeReviewView'),
     
     path('review/<int:classID>', views.getReviewList, name = 'getReviewList'),
-    path('reserve/', views.reservationView.as_view(), name = 'reservation'),
+    path('reserve/<int:reservationID>', views.reservationView.as_view(), name = 'reservation'),
     path('reserve/<int:reservationID>', views.getReservationView.as_view(), 
         name = 'getReserve'),
     path('reserve/upcoming', views.upcomingView.as_view(), name = 'upcoming'),

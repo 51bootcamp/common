@@ -58,4 +58,7 @@ public interface ApiInterface {
     @POST("makeClass/")
     Call<Class> makeClass(@Body JSONObject makeClass);
 
+    @POST("sendMail/")
+    Call<Integer> sendMail(@Body JSONObject makeClass);
+
 }
