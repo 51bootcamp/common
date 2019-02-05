@@ -49,7 +49,7 @@ public class ConfirmReservationActivity extends AppCompatActivity
     private TextView resTimeTextView;
     private TextView resUserEmailTextInfo;
     private Integer classID;
-    Context context;
+    private Context context = this;
 
     String base_image_url = "http://52.8.187.167:8000";
     ImageView facebookProfileView;
@@ -58,7 +58,6 @@ public class ConfirmReservationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = this;
         setContentView(R.layout.drawer_confirm);
 
         hideItem();
