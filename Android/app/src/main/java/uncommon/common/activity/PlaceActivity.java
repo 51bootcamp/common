@@ -37,21 +37,21 @@ import uncommon.common.network.RetrofitInstance;
 public class PlaceActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ImageButton placeimgButton;
-    TextView resNotificationTextView;
-    TextView placeTextView;
-    String selectedDate;
-    Integer reservationID;
-    ImageView peopleImgView;
+    private ImageButton placeimgButton;
+    private TextView resNotificationTextView;
+    private TextView placeTextView;
+    private String selectedDate;
+    private Integer reservationID;
+    private ImageView peopleImgView;
 
-    ApiInterface service = RetrofitInstance.getRetrofitInstance().create(ApiInterface.class);
+    private ApiInterface service = RetrofitInstance.getRetrofitInstance()
+            .create(ApiInterface.class);
 
-    Context context;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         setContentView(R.layout.drawer_place);
 
         hideItem();
@@ -192,6 +192,7 @@ public class PlaceActivity extends AppCompatActivity
             case R. id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;

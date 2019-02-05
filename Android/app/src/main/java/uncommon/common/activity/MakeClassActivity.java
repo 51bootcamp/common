@@ -20,7 +20,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -114,6 +113,7 @@ public class MakeClassActivity extends AppCompatActivity
         logoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent logoIntent = new Intent(context, PlaceActivity.class);
+                logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoIntent);
                 finish();
                 return;
@@ -449,7 +449,9 @@ public class MakeClassActivity extends AppCompatActivity
                 Toast.makeText(getApplicationContext(),
                         "Create New Class",Toast.LENGTH_LONG).show();
                 Intent submitIntent = new Intent(MakeClassActivity.this,
-                        MainActivity.class);
+                        PlaceActivity.class);
+                submitIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(submitIntent);
             }
             @Override
@@ -512,6 +514,7 @@ public class MakeClassActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.nav_home: {
                 Intent navIntent = new Intent(context, PlaceActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;
@@ -540,6 +543,7 @@ public class MakeClassActivity extends AppCompatActivity
             case R. id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;

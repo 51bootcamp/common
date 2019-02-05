@@ -32,17 +32,16 @@ import uncommon.common.network.RetrofitInstance;
 public class TrendingClassActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Adapter adapter;
-    ViewPager classViewPager;
-    DatePicker datePicker;
-    String selectedDate;
-    Context context;
+    private Adapter adapter;
+    private ViewPager classViewPager;
+    private DatePicker datePicker;
+    private String selectedDate;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        context = this;
         setContentView(R.layout.drawer_trending);
 
         hideItem();
@@ -68,6 +67,7 @@ public class TrendingClassActivity extends AppCompatActivity
         logoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent logoIntent = new Intent(context, PlaceActivity.class);
+                logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoIntent);
                 finish();
                 return;
@@ -131,6 +131,7 @@ public class TrendingClassActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.nav_home: {
                 Intent navIntent = new Intent(context, PlaceActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;
@@ -161,6 +162,7 @@ public class TrendingClassActivity extends AppCompatActivity
             case R. id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;

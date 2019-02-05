@@ -84,6 +84,7 @@ public class ConfirmReservationActivity extends AppCompatActivity
         logoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent logoIntent = new Intent(context, PlaceActivity.class);
+                logoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(logoIntent);
                 finish();
                 return;
@@ -178,6 +179,7 @@ public class ConfirmReservationActivity extends AppCompatActivity
         switch (menuItem.getItemId()) {
             case R.id.nav_home: {
                 Intent navIntent = new Intent(context, PlaceActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;
@@ -208,6 +210,7 @@ public class ConfirmReservationActivity extends AppCompatActivity
             case R. id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent navIntent = new Intent(context, InviteOnlyActivity.class);
+                navIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(navIntent);
                 finish();
                 break;

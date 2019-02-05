@@ -14,13 +14,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class FacebookLoginCallback implements  FacebookCallback<LoginResult>{
-    private Context context;
     private String userEmail = "";
     private String userName = "";
     private AccountManager accountManager;
 
     public FacebookLoginCallback(Context context){
-        this.context = context;
         this.accountManager = new AccountManager(context);
     }
 
