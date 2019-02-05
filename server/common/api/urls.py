@@ -31,6 +31,7 @@ urlpatterns = [
         name = 'getReservationList'),
     path('signup/', views.signup, name = 'signup'),
     path('upload/', views.imageUpload, name = 'imageUpload'),
+    path('sendMail/', views.sendMailView.as_view(), name='sendMail'),
     url(r'^api-auth/', include('rest_framework.urls')),
 
 ]

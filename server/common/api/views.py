@@ -14,7 +14,10 @@ from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-import hashlib, json, jwt, pytz, time
+from django.core.mail import BadHeaderError, send_mail
+from django.http import HttpResponse, HttpResponseRedirect
+
+import hashlib, json, jwt, random, pytz, time
 
 def index(request):
     return HttpResponse("Hello woRld! you're at the api index.")
@@ -267,7 +270,8 @@ class getReservationView(APIView):
                                 "endTime"       : endTime,
                                 "guestCount"    : reservation.guestCount,
                                 "coverImg"      : classImage.coverImage.url,
-                                "isPassed"      : isPassed
+                                "isPassed"      : isPassed,
+                                "isReviewed"    : reservation.isReviewed
                             }) 
 
 class reservationView(APIView):
@@ -337,7 +341,6 @@ class getReservationList(APIView):
 
             li = sorted(li, key=lambda reservationList: reservationList["date"],
                 reverse=False)
-
             return JsonResponse({"reservationList": li}, status=200)
 
 class makeClassView(APIView):
@@ -384,3 +387,35 @@ def getInviteCode(request, inviteCode):
             availableCode.isExpired = True
             availableCode.save()
             return HttpResponse("Invite Code is existed", status=200)
+
+class sendMailView(APIView):
+    @csrf_exempt
+    def post(self, request):
+
+        jsonBody = json.loads(request.body)
+
+        string = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
+
+        code = ""
+
+        for i in range(6):
+            code += random.choice(string)
+
+        subject = "Common Invite Code"
+        message = "This is Applicaion Common Invite Code \n \n" + code
+        from_email = "51bootcamp.common@gmail.com"
+
+        if subject and message and from_email:
+            try:
+                send_mail(subject, message, from_email, [jsonBody['email']], fail_silently=False)
+                newInviteCode = InviteCode(
+                                randomCode = code
+                )
+
+                newInviteCode.save()
+                
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return HttpResponseRedirect('/contact/thanks/')
+        else:
+            return HttpResponse('Make sure all fields are entered and valid.')
