@@ -541,13 +541,15 @@ public class MakeClassActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
         int rotationInDegrees = exifToDegrees(rotation);
 
         Matrix matrix = new Matrix();
         if (rotation != 0) {matrix.preRotate(rotationInDegrees);}
 
-        Bitmap rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        Bitmap rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
 
         return rotatedImage;
     }
