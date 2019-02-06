@@ -264,18 +264,24 @@ public class ReservationActivity extends AppCompatActivity
         ticketCount = selectedClass.getMinGuestCount();
         numTickets.setText(Integer.toString(ticketCount));
 
+        downButton.setColorFilter(getResources().getColor(R.color.reserved));
+
         upButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(ticketCount >= selectedClass.getMaxGuestCount()){
-                    numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
+                if(++ticketCount >= selectedClass.getMaxGuestCount()){
                     upButton.setColorFilter(view.getContext().getResources().getColor(R.color
                             .reserved));
-                    Toast.makeText(ReservationActivity.this, "Too many Tickets!",
-                            Toast.LENGTH_LONG).show();
+                    if(ticketCount > selectedClass.getMaxGuestCount()){
+                        Toast.makeText(ReservationActivity.this, "Too many Tickets!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    numTickets.setText(Integer.toString(selectedClass.getMaxGuestCount()));
+                    ticketCount = Integer.parseInt(numTickets.getText().toString());
+
                 }
                 else {
-                    numTickets.setText(Integer.toString(++ticketCount));
+                    numTickets.setText(Integer.toString(ticketCount));
                     upButton.setColorFilter(view.getContext().getResources().getColor(R.color
                             .colorPrimaryText));
                 }
@@ -289,13 +295,19 @@ public class ReservationActivity extends AppCompatActivity
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ticketCount <= selectedClass.getMinGuestCount()) {
-                    numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
+                if (--ticketCount <= selectedClass.getMinGuestCount()) {
                     downButton.setColorFilter(view.getContext().getResources().getColor(R.color
                             .reserved));
+                    if(ticketCount < selectedClass.getMinGuestCount()){
+                        Toast.makeText(ReservationActivity.this, "Not enough Tickets!",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    numTickets.setText(Integer.toString(selectedClass.getMinGuestCount()));
+                    ticketCount = Integer.parseInt(numTickets.getText().toString());
+
                 }
                 else {
-                    numTickets.setText(Integer.toString(--ticketCount));
+                    numTickets.setText(Integer.toString(ticketCount));
                     downButton.setColorFilter(view.getContext().getResources().getColor(R.color
                             .colorPrimaryText));
                 }
@@ -314,6 +326,10 @@ public class ReservationActivity extends AppCompatActivity
                 AlertDialog.Builder builder = new AlertDialog.Builder(ReservationActivity.this);
                 // TODO (woongjin) need to refactor this block
                 //now its spaghetti code
+                if(selectedTime == null){
+                    Toast.makeText(ReservationActivity.this,
+                            "select time",Toast.LENGTH_LONG).show();
+                }
                 if(!(selectedTime == null || ticketCount == 0 ||
                         timeslot.get(selectedTimeSlotIdx).getIsBooked())){
                     // title
