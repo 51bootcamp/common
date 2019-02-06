@@ -19,6 +19,7 @@ public class RetrofitInstance {
 
     public static String JWT;
     public static Boolean isLecturer;
+    public static String username;
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {

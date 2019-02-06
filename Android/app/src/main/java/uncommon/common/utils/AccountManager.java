@@ -46,6 +46,7 @@ public class AccountManager {
                     RetrofitInstance.JWT = "Bearer " + response.body().get("token").toString();
                     RetrofitInstance.isLecturer = Boolean.valueOf(response.body()
                             .get("isLecturer").toString());
+                    RetrofitInstance.username = response.body().get("userName").toString();
                     Intent placeIntent = new Intent(context, PlaceActivity.class);
                     placeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -74,6 +75,7 @@ public class AccountManager {
                     RetrofitInstance.JWT = "Bearer " + response.body().get("token").toString();
                     RetrofitInstance.isLecturer = Boolean.valueOf(response.body()
                             .get("isLecturer").toString());
+                    RetrofitInstance.username = response.body().get("userName").toString();
                     Intent placeIntent = new Intent(context, PlaceActivity.class);
                     placeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_CLEAR_TASK);
