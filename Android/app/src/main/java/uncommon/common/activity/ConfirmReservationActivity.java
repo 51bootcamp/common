@@ -90,6 +90,26 @@ public class ConfirmReservationActivity extends AppCompatActivity
             }
         });
 
+        //Navigation header info
+        navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2,
+                                       int i3, int i4, int i5, int i6, int i7) {
+
+                navigationView.removeOnLayoutChangeListener( this );
+
+                TextView nav_name = (TextView) navigationView.findViewById(R.id.nav_header_name);
+                nav_name.setText(RetrofitInstance.username);
+
+                ImageView header_image = (ImageView) findViewById(R.id.nav_haeader_image);
+
+                Picasso.get().load( "https://graph.facebook.com/" +
+                        AccessToken.getCurrentAccessToken().getUserId() + "/picture?type=large")
+                        .transform(new CropCircleTransformation())
+                        .into(header_image);
+            }
+        });
+
         Bundle bundle = this.getIntent().getExtras();
 
         classImgView = (ImageView) this.findViewById(R.id.classImgView);

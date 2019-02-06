@@ -27,6 +27,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +36,7 @@ import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -114,6 +116,26 @@ public class ReservationActivity extends AppCompatActivity
                 startActivity(logoIntent);
                 finish();
                 return;
+            }
+        });
+
+        //Navigation header info
+        navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2,
+                                       int i3, int i4, int i5, int i6, int i7) {
+
+                navigationView.removeOnLayoutChangeListener( this );
+
+                TextView nav_name = (TextView) navigationView.findViewById(R.id.nav_header_name);
+                nav_name.setText(RetrofitInstance.username);
+
+                ImageView header_image = (ImageView) findViewById(R.id.nav_haeader_image);
+
+                Picasso.get().load( "https://graph.facebook.com/" +
+                        AccessToken.getCurrentAccessToken().getUserId() + "/picture?type=large")
+                        .transform(new CropCircleTransformation())
+                        .into(header_image);
             }
         });
 
