@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -331,9 +333,10 @@ public class MakeClassActivity extends AppCompatActivity
                 try {
                     imageShow = MediaStore.Images.Media.getBitmap(getContentResolver(),
                             selectedImage);
+                    getRealPath(selectedImage);
+                    imageShow = rotateImage(imageShow);
                     coverImage.setImageBitmap(imageShow);
                     coverImage.setVisibility(View.VISIBLE);
-                    getRealPath(selectedImage);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -520,6 +523,33 @@ public class MakeClassActivity extends AppCompatActivity
         long epochTime = 0l;
         epochTime = date + (9 + position*2)*3600;
         return epochTime;
+    }
+
+    private static int exifToDegrees(int exifOrientation) {
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
+        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        return 0;
+    }
+
+    public Bitmap rotateImage(Bitmap bitmap){
+        ExifInterface exif = null;
+        try {
+            exif = new ExifInterface(coverImageFile.getAbsolutePath());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        int rotationInDegrees = exifToDegrees(rotation);
+
+        Matrix matrix = new Matrix();
+        if (rotation != 0) {matrix.preRotate(rotationInDegrees);}
+
+        Bitmap rotatedImage = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        return rotatedImage;
     }
 
     @Override
