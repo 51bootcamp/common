@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 
@@ -60,6 +61,12 @@ public class AboutActivity extends AppCompatActivity
                 return;
             }
         });
+
+        String aboutIntro = "Common is an app where a group " +
+                "of friends find a class and a space where " +
+                "they can socialize and learn together.";
+        TextView textView = (TextView) findViewById(R.id.about_text);
+        textView.setText(aboutIntro);
     }
 
     @Override
