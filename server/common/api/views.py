@@ -401,8 +401,11 @@ class sendMailView(APIView):
         for i in range(6):
             code += random.choice(string)
 
-        subject = "Common Invite Code"
-        message = "This is Applicaion Common Invite Code \n \n" + code
+        subject = "Your Common invitation code."
+        message = "Welcome! \n " \
+                  "Please use the following code to create your account." \
+                  "\n \n Invitation Code : " + code + \
+                  "\n \n Enter this code for common application.\n Thank you!"
         from_email = "51bootcamp.common@gmail.com"
 
         if subject and message and from_email:
