@@ -2,6 +2,8 @@ package uncommon.common.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
@@ -11,11 +13,13 @@ import com.facebook.GraphResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import uncommon.common.R;
 import uncommon.common.utils.AccountManager;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity<SPLASH_TIME_OUT> extends AppCompatActivity {
 
+    private static int SPLASH_TIME_OUT = 3000;
     private String userName;
     private String userEmail;
     private AccountManager accountManager = new AccountManager(this);
@@ -24,13 +28,20 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
-        if (currentAccessToken != null) { requestMe(currentAccessToken); }
-        else{
-            Intent InviteOnlyIntent = new Intent(SplashActivity.this, InviteOnlyActivity.class);
-            startActivity(InviteOnlyIntent);
-            finish();
-        }
+        setContentView(R.layout.activity_splash);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AccessToken currentAccessToken = AccessToken.getCurrentAccessToken();
+                if (currentAccessToken != null) { requestMe(currentAccessToken); }
+                else{
+                    Intent InviteOnlyIntent = new Intent(SplashActivity.this, InviteOnlyActivity.class);
+                    startActivity(InviteOnlyIntent);
+                    finish();
+                }
+            }
+        },1200);
+
     }
 
     public void requestMe(AccessToken token) {

@@ -38,6 +38,7 @@ import uncommon.common.api_interface.ApiInterface;
 import uncommon.common.models.ClassList;
 import uncommon.common.models.Reservation;
 import uncommon.common.network.RetrofitInstance;
+import uncommon.common.utils.GradientTransformation;
 
 public class PlaceActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +61,26 @@ public class PlaceActivity extends AppCompatActivity
         setContentView(R.layout.drawer_place);
 
         hideItem();
+
+        ImageButton cafeImgButton = (ImageButton) findViewById(R.id.cafeImgButton);
+        ImageButton secondLocation = (ImageButton) findViewById(R.id.secondLocation);
+        ImageButton thirdLocation = (ImageButton) findViewById(R.id.thirdLocation);
+
+        Picasso.get().load("http://52.8.187.167:8000/media/golden_gate_bridge.jpg")
+                .fit()
+                .centerCrop()
+                .transform(new GradientTransformation())
+                .into(cafeImgButton);
+        Picasso.get().load("http://52.8.187.167:8000/media/berkeley.jpg")
+                .resize(2048, 1600)
+                .onlyScaleDown()
+                .transform(new GradientTransformation())
+                .into(secondLocation);
+        Picasso.get().load("http://52.8.187.167:8000/media/santaclara.png")
+                .resize(2048, 1600)
+                .onlyScaleDown()
+                .transform(new GradientTransformation())
+                .into(thirdLocation);
 
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
